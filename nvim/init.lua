@@ -2,6 +2,7 @@
 -- 1. neovim 0.8+
 -- 2. node和npm，设置好国内镜像
 -- 3. 安装ripgrep、make (windows可以通过scoop进行安装（scoop的安装查看https://zhuanlan.zhihu.com/p/594363658）)
+-- 4. 安装fd，(optional 更快的file browser)   TODO: 
 --
 
 
@@ -30,3 +31,7 @@ end
 -- TODO: 14. 安装copilot玩一玩
 -- TODO: 15. 保存的session给个名字
 -- TODO: 16. cmdline中，使用esc会运行当前命令，能不能取消掉
+-- TODO: 17. session和nvim-tree结合不好
+-- TODO: 18. session的重命名
+-- TODO: 19. telescope session和telescope filebrowser上的快捷键配置
+-- TODO: 20. nvimTree设置root dir

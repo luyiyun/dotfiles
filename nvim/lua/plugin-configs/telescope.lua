@@ -2,6 +2,7 @@ local wk = loadModule("which-key", "plugin-configs")
 local telescope = loadModule("telescope", "plugin-configs")
 local actions = loadModule("telescope.actions", "plugin-configs")
 local builtin = loadModule("telescope.builtin", "plugin-configs")
+local fb_actions = loadModule("telescope", "plugin-configs").extensions.file_browser.actions
 
 wk.register({
   ["<leader>f"] = {
@@ -15,20 +16,20 @@ wk.register({
     s = {"<cmd>Telescope persisted<cr>", "telescope sessions"}
   }
 })
-local imap = {
-  ["<C-j>"] = actions.move_selection_next,
-  ["<C-k>"] = actions.move_selection_previous,
-  ["<C-q>"] = actions.close,
-}
-local nmap = {
-  ["<C-c>"] = false,
-}
 
 telescope.setup({
   defaults = {
     mappings = {
-      i = imap,
-      n = nmap,
+      i = {
+        ["<C-j>"] = actions.move_selection_next,
+        ["<C-k>"] = actions.move_selection_previous,
+        ["<C-q>"] = actions.close,
+        ["<A-q>"] = actions.close,  -- NOTE: 按起来更舒服一些
+        -- ["<esc>"] = actions.close,  --  NOTE: 不要映射esc，因为还要用它来进行i和n的转换
+      },
+      n = {
+        ["<C-c>"] = false,
+      },
     }
   },
   extensions = {
@@ -43,7 +44,39 @@ telescope.setup({
       theme = "ivy",
       -- disables netrw and use telescope-file-browser in its place
       hijack_netrw = true,
-      -- mappings = {},
+      mappings = {
+        ['i'] = {
+          ["<c-a>"] = fb_actions.create,
+          ["<c-r>"] = fb_actions.rename,
+          ["<c-c>"] = fb_actions.copy,
+          ["<c-m>"] = fb_actions.move,
+          ["<c-d>"] = fb_actions.remove,
+          ["<c-x>"] = fb_actions.remove,
+          ["<c-o>"] = fb_actions.open,
+          ["<c-H>"] = fb_actions.goto_parent_dir,
+          ["<c-A>"] = fb_actions.select_all,
+          ["<c-w>"] = fb_actions.goto_cwd,
+          ["<c-s>"] = fb_actions.change_cwd,
+          ["<A-c>"] = false,
+          ["<c-g>"] = false,
+          ["<c-t>"] = false,
+          ["<c-h>"] = false,
+          ["<c-f>"] = false,
+        },
+        ["n"] = {
+          a = fb_actions.create,
+          r = fb_actions.rename,
+          c = fb_actions.copy,
+          d = fb_actions.remove,
+          x = fb_actions.remove,
+          o = fb_actions.open,
+          ["<cr>"] = fb_actions.open,
+          H = fb_actions.goto_parent_dir,
+          A = fb_actions.select_all,
+          w = fb_actions.goto_cwd,
+          s = fb_actions.change_cwd,
+        }
+      },
     },
   }
 })
