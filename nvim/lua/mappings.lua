@@ -31,6 +31,15 @@ vim.g.localleader = " "
 -- 取消高亮
 nnoremap("-", "<cmd>nohl<CR>")
 
+-- 将esc在cmdline的行为覆盖掉
+vim.api.nvim_set_keymap("c", "<esc>", "<C-c>", {noremap = true, silent = true})
+-- NOTE: cmdline中，使用esc会运行当前命令，这无法关闭，可以使用<C-c>来代替，详情见：
+--  https://github.com/neovim/neovim/issues/21585
+--  https://groups.google.com/g/vim_use/c/8Mhs9spyzCM/m/qEFr6AFshWcJ
+--  实际上在vim中，cpoptions设置中如果存在x字符，则esc会执行命令；如果没有x字符则不执行。
+--  neovim的cpoptions默认并没有x字符，但neovim为了实现一个功能，让其绕过了cpoptions，
+--  所以cpoptions的设置并没有奏效。
+
 -- 分屏时上下左右移动
 nnoremap("<C-j>", "<C-w>j")
 nnoremap("<C-h>", "<C-w>h")

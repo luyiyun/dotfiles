@@ -29,7 +29,7 @@ if fn.empty(fn.glob(install_path)) > 0 then
     install_path,
   }
   packer_bootstrap = fn.system(args);
-  vim.cmd [[packadd packer.nvim]]
+ vim.cmd [[packadd packer.nvim]]
 end
 
 -- ╭──────────────────────────────────────────────────────────────────────────────╮
@@ -84,13 +84,23 @@ return require("packer").startup({
         "romgrk/barbar.nvim", requires = "kyazdani42/nvim-web-devicons",
         config = function() require("plugin-configs.barbar") end,
     })
+    -- use {
+    --   'akinsho/bufferline.nvim', tag = "v3.*",
+    --   requires = 'nvim-tree/nvim-web-devicons',
+    --   config = function() require("bufferline").setup() end
+    -- }
 
     -- ╭──────────────────────────────────────────────────────────────────────────────╮
     -- │                                  底部状态栏                                  │
     -- ╰──────────────────────────────────────────────────────────────────────────────╯
-    use({
-        "feline-nvim/feline.nvim",
-        config = function() require("plugin-configs.feline") end,
+    -- use({
+    --     "feline-nvim/feline.nvim",
+    --     config = function() require("plugin-configs.feline") end,
+    -- })
+    use ({
+      'nvim-lualine/lualine.nvim',
+      requires = { 'kyazdani42/nvim-web-devicons', opt = true },
+      config = function () require("plugin-configs.lualine") end
     })
 
     -- ╭──────────────────────────────────────────────────────────────────────────────╮
@@ -166,10 +176,10 @@ return require("packer").startup({
     use({ "hrsh7th/vim-vsnip" })                     -- vim-vsnip 插件，提供snippets
     -- use({ "hrsh7th/cmp-nvim-lsp-signature-help" })   -- { name = 'nvim_lsp_signature_help' }
     -- use({ "hrsh7th/cmp-nvim-lua" })                  -- { name = 'nvim_lua' }
-    use({ "glepnir/lspsaga.nvim"})                   -- UI 增强，将诊断、定义跳转等展示方式进行了增强
     -- use({ "jose-elias-alvarez/null-ls.nvim" })       -- 多语言代码检查工具, 功能类似 ESLint
     use({ "rafamadriz/friendly-snippets" })          -- 常见编程语言 snippets
 
+    use({ "glepnir/lspsaga.nvim"})                   -- UI 增强，将诊断、定义跳转等展示方式进行了增强
 
     -- ╭──────────────────────────────────────────────────────────────────────────────╮
     -- │                                 文件搜索                                     │
@@ -178,12 +188,14 @@ return require("packer").startup({
       'nvim-telescope/telescope.nvim', tag = '0.1.0',
       requires = { {'nvim-lua/plenary.nvim'} },
       config = function() require("plugin-configs.telescope") end,
-      -- NOTE: 下面插件的配置都放在了telescope的配置中
+      -- NOTE: 下面插件的配置大多需要放在telescope的配置中，也有一些需要自己启动的，我放在了自己的文件中
     }
     -- 加快搜索速度
     use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
     -- 路径(文件夹)搜索
     use {"nvim-telescope/telescope-file-browser.nvim"}
+    -- 其将neovim自己的vim.ui.select使用telescope来控制，用来配合session-manager更好使用
+    use {'nvim-telescope/telescope-ui-select.nvim' , config = function() require("plugin-configs.ui_select") end}
 
     -- ╭──────────────────────────────────────────────────────────────────────────────╮
     -- │                         加速启动时间 & 识别文件类型                          │
@@ -261,12 +273,18 @@ return require("packer").startup({
     -- ╭──────────────────────────────────────────────────────────────────────────────╮
     -- │                               session管理                                    │
     -- ╰──────────────────────────────────────────────────────────────────────────────╯
+    -- NOTE: persistd.nvim和nvim-tree的配合不好
+    -- use({
+    --   "olimorris/persisted.nvim",
+    --   --module = "persisted", -- For lazy loading
+    --   config = function() require("plugin-configs.persisted") end
+    --
+    -- })
     use({
-      "olimorris/persisted.nvim",
-      --module = "persisted", -- For lazy loading
-      config = function() require("plugin-configs.persisted") end
-
+      "Shatur/neovim-session-manager",
+      config = function() require("plugin-configs.session-manager") end
     })
+
 
     -- ╭──────────────────────────────────────────────────────────────────────────────╮
     -- │                             vim内部的terminal                                │
@@ -285,7 +303,14 @@ return require("packer").startup({
     --   -- 取消所有的默认键位映射，只保留一个
     --   vim.opt.VM_default_mappings=0
     -- end})
-
+    
+    -- ╭──────────────────────────────────────────────────────────────────────────────╮
+    -- │                                   git集成                                    │
+    -- ╰──────────────────────────────────────────────────────────────────────────────╯
+    use({
+      "lewis6991/gitsigns.nvim",
+      config = function() require("plugin-configs.gitsigns") end
+    })
     -- ╭──────────────────────────────────────────────────────────────────────────────╮
     -- │                                 安装插件插件                                 │
     -- ╰──────────────────────────────────────────────────────────────────────────────╯

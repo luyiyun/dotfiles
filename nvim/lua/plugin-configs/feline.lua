@@ -115,7 +115,8 @@ local components = {
       {
         name = "rootdir",
         provider = function()
-          local rootDir = table.remove(vim.fn.split(vim.fn.getcwd(), '/'));
+          -- local rootDir = table.remove(vim.fn.split(vim.fn.getcwd(), '/'));
+          local rootDir = vim.fn.getcwd()
           if rootDir ~= nil then
             return rootDir .. " ";
           end

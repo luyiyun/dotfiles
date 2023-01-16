@@ -2,7 +2,7 @@ local wk = loadModule("which-key", "plugin-configs")
 local telescope = loadModule("telescope", "plugin-configs")
 local actions = loadModule("telescope.actions", "plugin-configs")
 local builtin = loadModule("telescope.builtin", "plugin-configs")
-local fb_actions = loadModule("telescope", "plugin-configs").extensions.file_browser.actions
+-- local fb_actions = telescope.extensions.file_browser.actions
 
 wk.register({
   ["<leader>f"] = {
@@ -13,7 +13,8 @@ wk.register({
     h = {builtin.help_tags, "Lists available help tags and opens a new window with the relevant help info on <cr>"},
     o = {builtin.oldfiles, "Lists previously open files"},
     F = {"<cmd>Telescope file_browser<cr>", "telescope file browser"},
-    s = {"<cmd>Telescope persisted<cr>", "telescope sessions"}
+    -- s = {"<cmd>Telescope persisted<cr>", "telescope sessions"}
+    s = {"<cmd>SessionManager load_session<cr>", "telescope sessions"}
   }
 })
 
@@ -43,44 +44,36 @@ telescope.setup({
     file_browser = {
       theme = "ivy",
       -- disables netrw and use telescope-file-browser in its place
-      hijack_netrw = true,
-      mappings = {
-        ['i'] = {
-          ["<c-a>"] = fb_actions.create,
-          ["<c-r>"] = fb_actions.rename,
-          ["<c-c>"] = fb_actions.copy,
-          ["<c-m>"] = fb_actions.move,
-          ["<c-d>"] = fb_actions.remove,
-          ["<c-x>"] = fb_actions.remove,
-          ["<c-o>"] = fb_actions.open,
-          ["<c-H>"] = fb_actions.goto_parent_dir,
-          ["<c-A>"] = fb_actions.select_all,
-          ["<c-w>"] = fb_actions.goto_cwd,
-          ["<c-s>"] = fb_actions.change_cwd,
-          ["<A-c>"] = false,
-          ["<c-g>"] = false,
-          ["<c-t>"] = false,
-          ["<c-h>"] = false,
-          ["<c-f>"] = false,
-        },
-        ["n"] = {
-          a = fb_actions.create,
-          r = fb_actions.rename,
-          c = fb_actions.copy,
-          d = fb_actions.remove,
-          x = fb_actions.remove,
-          o = fb_actions.open,
-          ["<cr>"] = fb_actions.open,
-          H = fb_actions.goto_parent_dir,
-          A = fb_actions.select_all,
-          w = fb_actions.goto_cwd,
-          s = fb_actions.change_cwd,
-        }
-      },
+      hijack_netrw = false,
+      -- NOTE: 自己设置的mappings总是出问题，还是使用默认的吧
+      -- - `<cr>`: opens the currently selected file, or navigates to the
+      --   currently selected directory
+      -- - `<A-c>/c`: Create file/folder at current `path` (trailing path
+      --   separator creates folder)
+      -- - `<A-r>/r`: Rename multi-selected files/folders
+      -- - `<A-m>/m`: Move multi-selected files/folders to current `path`
+      -- - `<A-y>/y`: Copy (multi-)selected files/folders to current `path`
+      -- - `<A-d>/d`: Delete (multi-)selected files/folders
+      -- - `<C-o>/o`: Open file/folder with default system application
+      -- - `<C-g>/g`: Go to parent directory
+      -- - `<C-e>/e`: Go to home directory
+      -- - `<C-w>/w`: Go to current working directory (cwd)
+      -- - `<C-t>/t`: Change nvim's cwd to selected folder/file(parent)
+      -- - `<C-f>/f`: Toggle between file and folder browser
+      -- - `<C-h>/h`: Toggle hidden files/folders
+      -- - `<C-s>/s`: Toggle all entries ignoring `./` and `../`
+      -- mappings = {
+      --   ["i"] = { },
+      --   ["n"] = { }
+      -- },
     },
+    -- ["ui-select"] = {
+    --   require("telescope.themes").get_dropdown {
+    --     -- even more opts
+    --   }
+    -- },
   }
 })
 
 telescope.load_extension("fzf")
 telescope.load_extension("file_browser")
-telescope.load_extension("persisted")

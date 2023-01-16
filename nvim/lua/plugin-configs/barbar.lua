@@ -62,9 +62,12 @@ wk.register({
 -- ╰──────────────────────────────────────────────────────────────────────────────╯
 -- 当目录树打开时的解决方案：
 -- 这里我们改用专属于nvim-tree的特定解决方案
-local nvim_tree_events = loadModule('nvim-tree.events', 'plugin-configs')
-local bufferline_api = loadModule('bufferline.api', 'plugin-configs')
-local bufferline = loadModule("bufferline", "plugin-configs")
+local nvim_tree_events = loadModule('nvim-tree.events', 'plugin-configs/barbar')
+local bufferline_api = loadModule('bufferline.api', 'plugin-configs/barbar')
+local bufferline = loadModule("bufferline", "plugin-configs/barbar")
+-- local hl = loadModule("bufferline.utils", "plugin-configs/barbar").hl
+local icons = loadModule("icons", "plugin-configs/barbar")
+
 
 local function get_tree_size()
   return require'nvim-tree.view'.View.width
@@ -127,17 +130,17 @@ bufferline.setup({
 
   -- Enables / disables diagnostic symbols
   diagnostics = {
-    -- you can use a list
-    {enabled = true, icon = 'ﬀ'}, -- ERROR
-    {enabled = false}, -- WARN
-    {enabled = false}, -- INFO
-    {enabled = true},  -- HINT
+    -- you can use a list NOTE: use default icons
+    -- {enabled = true}, -- ERROR 
+    -- {enabled = false}, -- WARN
+    -- {enabled = false}, -- INFO
+    -- {enabled = true},  -- HINT
 
     -- OR `vim.diagnostic.severity`
-    [vim.diagnostic.severity.ERROR] = {enabled = true, icon = 'ﬀ'},
-    [vim.diagnostic.severity.WARN] = {enabled = false},
-    [vim.diagnostic.severity.INFO] = {enabled = false},
-    [vim.diagnostic.severity.HINT] = {enabled = true},
+    [vim.diagnostic.severity.ERROR] = {enabled = true, icon = icons.diagnostics.BoldError},
+    [vim.diagnostic.severity.WARN] = {enabled = false, icon = icons.diagnostics.BoldWarning},
+    [vim.diagnostic.severity.INFO] = {enabled = false, icon = icons.diagnostics.BoldInformation},
+    [vim.diagnostic.severity.HINT] = {enabled = true, icon = icons.diagnostics.BoldHint},
   },
 
   -- Excludes buffers from the tabline
@@ -167,11 +170,11 @@ bufferline.setup({
   icon_custom_colors = false,
 
   -- Configure icons o1n the bufferline.
-  icon_separator_active = '▎',
-  icon_separator_inactive = '▎',
-  icon_close_tab = '',
-  icon_close_tab_modified = '●',
-  icon_pinned = '車',
+  icon_separator_active = icons.ui.BoldLineLeft,
+  icon_separator_inactive = icons.ui.BoldLineLeft,  -- '▎',
+  icon_close_tab = icons.ui.Close,  -- '',
+  icon_close_tab_modified = icons.ui.Circle, -- '●',
+  icon_pinned = icons.ui.Pin, -- '車',
 
   -- If true, new buffers will be inserted at the start/end of the list.
   -- Default is to insert after current buffer.

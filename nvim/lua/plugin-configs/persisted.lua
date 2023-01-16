@@ -19,9 +19,4 @@ require("persisted").setup({
     reset_prompt_after_deletion = true, -- whether to reset prompt after session deleted
   },
 })
--- NOTE:还有一部分设置在telescope.lua中
---
--- function()
---   require("persisted").setup()
---   require("telescope").load_extension("persisted") -- To load the telescope extension
--- end,
+require("telescope").load_extension("persisted")

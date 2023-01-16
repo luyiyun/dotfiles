@@ -19,12 +19,11 @@ mason_lspconfig.setup({
   automatic_installation = false, -- 自动安装LSP服务端
   -- 要安装的LSP服务:
   -- https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
-  ensure_installed       = {
-    "sumneko_lua",
-    "clangd",
-    "pyright",
-    "yamlls",
-  }
+  ensure_installed       = { }
+  -- "sumneko_lua",
+  -- "clangd",
+  -- "pyright",
+  -- "yamlls",
 });
 
 
@@ -89,17 +88,18 @@ vim.diagnostic.config({
   -- },
 })
 -- 现在是代码诊断的相关跳转快捷键设置
-wk.register({
-  ["<leader>d"] = {
-    name = "code diagnostic",
-    o = { vim.diagnostic.open_float, "open floating window" };
-    q = { vim.diagnostic.setloclist, "set local list" };
-  },
-  ["["] = { name = "go to previous ..." },
-  ["[d"] = { vim.diagnostic.goto_prev, "go to previous diagnostic position" };
-  ["]"] = { name = "go to next ..." },
-  ["]d"] = { vim.diagnostic.goto_next, "go to next diagnostic position" };
-})
+-- NOTE: 使用lspsaga来实现相应功能，更加漂亮
+-- wk.register({
+--   ["<leader>d"] = {
+--     name = "code diagnostic",
+--     o = { vim.diagnostic.open_float, "open floating window" };
+--     q = { vim.diagnostic.setloclist, "set local list" };
+--   },
+--   ["["] = { name = "go to previous ..." },
+--   ["[d"] = { vim.diagnostic.goto_prev, "go to previous diagnostic position" };
+--   ["]"] = { name = "go to next ..." },
+--   ["]d"] = { vim.diagnostic.goto_next, "go to next diagnostic position" };
+-- })
 -- 除了代码诊断之外的其他快捷键配置，将使用一个on_attach函数传入lsp内部，只有在其
 -- 生效的buffer上启用
 -- Use an on_attach function to only map the following keys
@@ -116,19 +116,22 @@ local on_attach = function(_, bufnr)
     ------------------------------------------------------------------------------------
     -- 定义跳转
     ------------------------------------------------------------------------------------
-    ["g"] = { name = "go to defination or declaration" },
-    ["gd"] = { vim.lsp.buf.definition, "go to defination" },
-    ["gD"] = { vim.lsp.buf.lsp_document_symbols, "go to declaration" },
-    ["gi"] = { vim.lsp.buf.implementation, "go to implementation" },
+    -- NOTE: 使用lspsaga来实现相应功能，更加漂亮
+    -- ["g"] = { name = "go to defination or declaration" },
+    -- ["gd"] = { vim.lsp.buf.definition, "go to defination" },
+    -- ["gD"] = { vim.lsp.buf.lsp_document_symbols, "go to declaration" },
+    -- ["gi"] = { vim.lsp.buf.implementation, "go to implementation" },
     -- ["<leader>fd"] = {"<cmd>Telescope lsp_definitions<cr>", "List all definations"},
     ["<leader>fy"] = { "<cmd>Telescope lsp_document_symbols<cr>", "List all document symbols" },
     ------------------------------------------------------------------------------------
     -- 光标悬停 hover
     ------------------------------------------------------------------------------------
-    ["<leader>h"] = { vim.lsp.buf.hover, "Hover" },
+    -- NOTE: 使用lspsaga来实现相应功能，更加漂亮（现在改成了gh）
+    -- ["<leader>h"] = { vim.lsp.buf.hover, "Hover" },
     ------------------------------------------------------------------------------------
     -- 格式和代码修复
     ------------------------------------------------------------------------------------
+    -- NOTE: 使用lspsaga来实现相应功能，更加漂亮
     ["<leader>r"] = { name = "code fix" },
     ["<leader>rf"] = { function() vim.lsp.buf.format { async = true } end, "formatting" },
     ["<leader>rn"] = { vim.lsp.buf.rename, "rename" },
