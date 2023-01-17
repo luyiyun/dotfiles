@@ -59,6 +59,10 @@ cmap("<C-k>", "<C-p>")
 -- save
 nnoremap("<C-s>", "<cmd>write!<CR>")
 
+-- 左右缩进，这样移动后不会退出visual mode
+vnoremap("<", "<gv")
+vnoremap(">", ">gv")
+
 
 -- ╭──────────────────────────────────────────────────────────────────────────────╮
 -- │                                 日常编辑使用                                 │
@@ -145,10 +149,6 @@ wk.register({
 -- nnoremap("<leader>bY", '<cmd>%y "<CR>')
 -- nnoremap("<S-h>", "<cmd>bprevious<CR>")
 -- nnoremap("<S-l>", "<cmd>bnext<CR>")
-
--- 左右缩进
--- vnoremap("<", "<gv")
--- vnoremap(">", ">gv")
 
 -- 上下移动选中行
 -- xnoremap("<C-j>", "<cmd>move '>+1<CR>gv-gv")

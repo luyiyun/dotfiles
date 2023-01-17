@@ -59,6 +59,10 @@ return require("packer").startup({
         "navarasu/onedark.nvim",
         config = function() require("plugin-configs.onedark") end,
     })
+    -- use({
+    --  'marko-cerovac/material.nvim',
+    --  config = function () require("plugin-configs.material") end
+    -- })
 
     -- ╭──────────────────────────────────────────────────────────────────────────────╮
     -- │                                  文件图标                                    │
@@ -97,6 +101,7 @@ return require("packer").startup({
     --     "feline-nvim/feline.nvim",
     --     config = function() require("plugin-configs.feline") end,
     -- })
+    -- NOTE: feline有很多问题，这里将其更换为使用更多的lualine，基本问题都得到了解决
     use ({
       'nvim-lualine/lualine.nvim',
       requires = { 'kyazdani42/nvim-web-devicons', opt = true },
@@ -311,6 +316,16 @@ return require("packer").startup({
       "lewis6991/gitsigns.nvim",
       config = function() require("plugin-configs.gitsigns") end
     })
+
+    -- ╭──────────────────────────────────────────────────────────────────────────────╮
+    -- │                                   UI信息                                     │
+    -- ╰──────────────────────────────────────────────────────────────────────────────╯
+    --
+    use({
+      "rcarriga/nvim-notify",
+      -- config = function() require("notify").notify("notify installed") end
+    })
+
     -- ╭──────────────────────────────────────────────────────────────────────────────╮
     -- │                                 安装插件插件                                 │
     -- ╰──────────────────────────────────────────────────────────────────────────────╯

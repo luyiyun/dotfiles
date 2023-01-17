@@ -10,7 +10,7 @@ onedark.setup({
   term_colors          = true,
   ending_tildes        = false,
   cmp_itemkind_reverse = false,
-  toggle_style_key     = nil,
+  toggle_style_key     = "<leader>fc",
   toggle_style_list    = {
     'dark',
     'darker',

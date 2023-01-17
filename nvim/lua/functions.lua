@@ -51,12 +51,16 @@ end
 -- ╭──────────────────────────────────────────────────────────────────────────────╮
 -- │  安全的加载模块                                                              │
 -- ╰──────────────────────────────────────────────────────────────────────────────╯
+local notify_ok, notify = pcall(require, "notify");
+if notify_ok then
+  vim.notify = notify
+end
 function loadModule(require_path, scope)
   local status_ok, module = pcall(require, require_path);
   if status_ok then
     return module;
   else
-    vim.notify(string.format("[%s]%s not found", scope, require_path));
+    vim.notify(string.format("[%s]%s not found", scope, require_path), "error");
     return {};
   end
 end
