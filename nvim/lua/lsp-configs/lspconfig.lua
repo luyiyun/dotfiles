@@ -176,6 +176,12 @@ mason_lspconfig.setup_handlers {
           useLibraryCodeForTypes = true
         }}
       }
+    elseif server_name == "clangd" then
+      lsp_cfg["cmd"] = {
+        "clangd",
+        -- NOTE: 现在是使用~/.config/clangd/config.yaml文件进行配置，详情请见
+        -- NOTE: https://clangd.llvm.org/config#compileflags
+      }
 
     end
     require("lspconfig")[server_name].setup(lsp_cfg);

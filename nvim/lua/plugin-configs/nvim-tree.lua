@@ -21,7 +21,7 @@ vim.g.loaded_netrwPlugin = 1
 
 
 nvimtree.setup({
-  open_on_setup       = false, -- 启动时直接打开
+  open_on_setup       = true, -- 启动时直接打开
   disable_netrw       = true,
   hijack_netrw        = true,
   update_cwd          = true,
@@ -33,7 +33,7 @@ nvimtree.setup({
     update_cwd = true,
   },
   git                 = {
-    enable       = false,
+    enable       = true,
     ignore       = true,
     timeout      = 400,
     show_on_dirs = false,
@@ -119,4 +119,3 @@ nvimtree.setup({
 
 -- 创建文件时, 自动编辑这个文件
 events.on_file_created(function(file) vim.cmd("edit " .. file.fname) end)
-

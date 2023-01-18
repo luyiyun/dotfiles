@@ -56,8 +56,9 @@ nnoremap("<C-Up>", "<cmd>resize+1 <CR>")
 cmap("<C-j>", "<C-n>")
 cmap("<C-k>", "<C-p>")
 
--- save
-nnoremap("<C-s>", "<cmd>write!<CR>")
+-- save and quit
+vim.keymap.set({"n", "v"}, "<C-s>", "<cmd>:w<CR>", {noremap = true, silent = true})
+vim.keymap.set({"n", "v"}, "<C-q>", "<cmd>:q<CR>", {noremap = true, silent = true})
 
 -- 左右缩进，这样移动后不会退出visual mode
 vnoremap("<", "<gv")
@@ -70,7 +71,7 @@ vnoremap(">", ">gv")
 local wk = loadModule("which-key", "keybindings");
 wk.register({
     w = {
-        name = "Windows",
+        name = "+Windows",
         s = {"<cmd>split<CR>", "horizontally split"},
         v = {"<cmd>vsplit<CR>", "vertically split"},
         o = {"<cmd>only<CR>", "remove all windows except current one"},
@@ -79,16 +80,16 @@ wk.register({
         k = {"<c-w>K", "move current window on top"},
         l = {"<c-w>L", "move current window on right"},
     },
-    s = {
-        name = "Saving Files",
-        s = {"<cmd>write<CR>", "save current buffer"},
-        a = {"<cmd>wa<CR>", "save all buffers"},
-    },
-    q = {
-        name = "Quit",
-        q = {"<cmd>q<CR>", "quit current buffer and close window"},
-        b = {"<cmd>wqa<CR>", "quit all windows"}
-    }
+    -- s = {
+    --     name = "Saving Files",
+    --     s = {"<cmd>write<CR>", "save current buffer"},
+    --     a = {"<cmd>wa<CR>", "save all buffers"},
+    -- },
+    -- q = {
+    --     name = "Quit",
+    --     q = {"<cmd>q<CR>", "quit current buffer and close window"},
+    --     b = {"<cmd>wqa<CR>", "quit all windows"}
+    -- }
 }, {prefix = "<leader>"})
 
 
