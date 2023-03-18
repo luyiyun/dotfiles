@@ -35,6 +35,8 @@ opt.showmatch = true
 opt.matchtime = 1
 -- 使用24-bit RGB colors，一些插件需要开启
 opt.termguicolors = true
+-- 隐藏命令行
+opt.cmdheight = 0
 
 
 -----------------------------------------------------------------------------------------

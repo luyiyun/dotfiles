@@ -18,7 +18,6 @@ local lsp_configs = {
   "mason",      -- LSP安装管理
   "lspconfig",  -- LSP config
   "diagnostic", -- LSP 代码诊断 UI 修改
-  "lspsaga",    -- LSP UI 增强
   "cmp",        -- 代码提示和 snippets
 };
 

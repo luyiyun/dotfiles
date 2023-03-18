@@ -58,7 +58,7 @@ wk.register({
 -- }, { mode = "t" })
 
 
-lspsaga.init_lsp_saga({
+lspsaga.setup({
   -- Options with default value
   -- "single" | "double" | "rounded" | "bold" | "plus"
   border_style = "single",
@@ -170,4 +170,3 @@ lspsaga.init_lsp_saga({
   -- like server_filetype_map = { metals = { "sbt", "scala" } }
   server_filetype_map = {},
 })
-

@@ -208,7 +208,7 @@ return require("packer").startup({
     use({
       "nathom/filetype.nvim",
       config = function() require("plugin-configs.filetype") end,
-    })   
+    })
 
     -- ╭──────────────────────────────────────────────────────────────────────────────╮
     -- │                                   缩进显示                                   │
@@ -273,7 +273,7 @@ return require("packer").startup({
     -- │                                  启动页                                      │
     -- ╰──────────────────────────────────────────────────────────────────────────────╯
     use {'glepnir/dashboard-nvim', config = function() require("plugin-configs.dashboard") end}
-    
+
 
     -- ╭──────────────────────────────────────────────────────────────────────────────╮
     -- │                               session管理                                    │
@@ -308,7 +308,7 @@ return require("packer").startup({
     --   -- 取消所有的默认键位映射，只保留一个
     --   vim.opt.VM_default_mappings=0
     -- end})
-    
+
     -- ╭──────────────────────────────────────────────────────────────────────────────╮
     -- │                                   git集成                                    │
     -- ╰──────────────────────────────────────────────────────────────────────────────╯
@@ -347,6 +347,21 @@ return require("packer").startup({
       end
     })
 
+    -- ╭──────────────────────────────────────────────────────────────────────────────╮
+    -- │                            cmdline和notify美化                               │
+    -- ╰──────────────────────────────────────────────────────────────────────────────╯
+    use({
+      "folke/noice.nvim",
+      config = function() require("plugin-configs.noice") end,
+      requires = {
+        -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+        "MunifTanjim/nui.nvim",
+        -- OPTIONAL:
+        --   `nvim-notify` is only needed, if you want to use the notification view.
+        --   If not available, we use `mini` as the fallback
+        "rcarriga/nvim-notify",
+        }
+    })
     -- ╭──────────────────────────────────────────────────────────────────────────────╮
     -- │                                 安装插件插件                                 │
     -- ╰──────────────────────────────────────────────────────────────────────────────╯

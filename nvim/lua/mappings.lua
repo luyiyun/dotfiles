@@ -68,29 +68,29 @@ vnoremap(">", ">gv")
 -- ╭──────────────────────────────────────────────────────────────────────────────╮
 -- │                                 日常编辑使用                                 │
 -- ╰──────────────────────────────────────────────────────────────────────────────╯
-local wk = loadModule("which-key", "keybindings");
-wk.register({
-    w = {
-        name = "+Windows",
-        s = {"<cmd>split<CR>", "horizontally split"},
-        v = {"<cmd>vsplit<CR>", "vertically split"},
-        o = {"<cmd>only<CR>", "remove all windows except current one"},
-        h = {"<c-w>H", "move current window on left"},
-        j = {"<c-w>J", "move current window on bottom"},
-        k = {"<c-w>K", "move current window on top"},
-        l = {"<c-w>L", "move current window on right"},
-    },
-    -- s = {
-    --     name = "Saving Files",
-    --     s = {"<cmd>write<CR>", "save current buffer"},
-    --     a = {"<cmd>wa<CR>", "save all buffers"},
-    -- },
-    -- q = {
-    --     name = "Quit",
-    --     q = {"<cmd>q<CR>", "quit current buffer and close window"},
-    --     b = {"<cmd>wqa<CR>", "quit all windows"}
-    -- }
-}, {prefix = "<leader>"})
+-- local wk = loadModule("which-key", "keybindings");
+-- wk.register({
+--     w = {
+--         name = "+Windows",
+--         s = {"<cmd>split<CR>", "horizontally split"},
+--         v = {"<cmd>vsplit<CR>", "vertically split"},
+--         o = {"<cmd>only<CR>", "remove all windows except current one"},
+--         h = {"<c-w>H", "move current window on left"},
+--         j = {"<c-w>J", "move current window on bottom"},
+--         k = {"<c-w>K", "move current window on top"},
+--         l = {"<c-w>L", "move current window on right"},
+--     },
+--     -- s = {
+--     --     name = "Saving Files",
+--     --     s = {"<cmd>write<CR>", "save current buffer"},
+--     --     a = {"<cmd>wa<CR>", "save all buffers"},
+--     -- },
+--     -- q = {
+--     --     name = "Quit",
+--     --     q = {"<cmd>q<CR>", "quit current buffer and close window"},
+--     --     b = {"<cmd>wqa<CR>", "quit all windows"}
+--     -- }
+-- }, {prefix = "<leader>"})
 
 
 

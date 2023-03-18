@@ -10,8 +10,11 @@
 require("functions")
 require("options")
 require("mappings")
-require("plugins")
+require("plugins_lazy")
+-- require("plugins_packer")
 require("lsp-configs")
+
+vim.cmd [[silent! colorscheme onedark]]
 
 -- neovide
 -- vim.g.isNeovide = false;
@@ -25,10 +28,11 @@ vim.api.nvim_set_hl(0, "BufferVisibleERROR", {bg = "#282c34", fg = "#e86671"})
 vim.api.nvim_set_hl(0, "BufferVisibleINFO", {bg = "#282c34", fg = "#ffb7b7"})
 vim.api.nvim_set_hl(0, "BufferVisibleHINT", {bg = "#282c34", fg = "#d5508f"})
 
---
+-- TODO: 0. 使用lazy.nvim的懒加载机制，慢慢提高neovim的启动速度
+-- TODO: 0. 对noice.nvim进行配置，探索其更多的功能（比如statusline中的组件）
+-- TODO: 0. noice.nvim，通知显示的时间太长，可能会遮挡住文件，可能难以进行编辑
 -- TODO: 1. lspsaga的配置还存在一些问题，比如查看文档等不太方便
 -- TODO: 2. 找一个新的多行操作插件
--- TODO: 3. 寻找一个更好的处理...
 -- TODO: 4. 安装neodev，将vim lua api的signatures加入到lsp中
 -- TODO: 5. 使用alpha-nvim替换dashboard
 -- TODO: 7. 更好的处理缩进的方法（比如回车后让括号、光标的位置更加适合我的习惯）
@@ -42,3 +46,4 @@ vim.api.nvim_set_hl(0, "BufferVisibleHINT", {bg = "#282c34", fg = "#d5508f"})
 -- TODO: 21. gitsigns的配置
 -- TODO: 22. statusline中加入开启的LSP server的信息
 -- TODO: 23. 多个windows开启时，使用nvim-tree打开文件需要进行窗口选择，这时候会出现字符错误
+-- TODO: 24. 探索一下easy motion插件的更多用法，比如定向查找之类的
