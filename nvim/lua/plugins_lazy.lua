@@ -377,6 +377,13 @@ require("lazy").setup(
       "lewis6991/gitsigns.nvim",
       config = function() require("plugin-configs.gitsigns") end
     },
+    -- ---------
+    -- -整合tmux-
+    -- ---------
+    {
+      "aserowy/tmux.nvim",
+      config = function() require("plugin-configs.tmux") end
+    },
 
 
   },

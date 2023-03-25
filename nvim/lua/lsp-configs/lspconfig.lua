@@ -19,11 +19,12 @@ mason_lspconfig.setup({
   automatic_installation = false, -- 自动安装LSP服务端
   -- 要安装的LSP服务:
   -- https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
-  ensure_installed       = { }
-  -- "sumneko_lua",
-  -- "clangd",
-  -- "pyright",
-  -- "yamlls",
+  ensure_installed       = {
+    "sumneko_lua",
+    -- "clangd",
+    "pyright",
+    -- "yamlls",
+  }
 });
 
 

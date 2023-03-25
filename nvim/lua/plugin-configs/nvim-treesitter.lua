@@ -26,7 +26,7 @@ wk.register({
 treesitterConfigs.setup({
   sync_install     = true,
   auto_install     = true,
-  ensure_installed = {},  -- { "json", "lua", "markdown", "vim", "yaml", "cpp", "cuda", "c", "python"},
+  ensure_installed = {"lua", "vim", "json", "markdown", "python"},  -- { "json", "lua", "markdown", "vim", "yaml", "cpp", "cuda", "c", "python"},
   keymaps          = {
       init_selection    = '<CR>',
       node_incremental  = '<CR>',
