@@ -30,7 +30,7 @@ map('n', '<A-0>', '<Cmd>BufferLast<CR>', opts)
 map('n', '<A-p>', '<Cmd>BufferPin<CR>', opts)
 -- Close buffer
 map('n', '<A-q>', '<Cmd>BufferClose<CR>', opts)
-map('n', '<A-o>', '<Cmd>BufferCloseAllButCurrent<CR>', opts)
+-- map('n', '<A-o>', '<Cmd>BufferCloseAllButCurrent<CR>', opts)  -- NOTE: 总是容易误触
 -- Wipeout buffer
 --                 :BufferWipeout
 -- Close commands
@@ -131,7 +131,7 @@ bufferline.setup({
   -- Enables / disables diagnostic symbols
   diagnostics = {
     -- you can use a list NOTE: use default icons
-    -- {enabled = true}, -- ERROR 
+    -- {enabled = true}, -- ERROR
     -- {enabled = false}, -- WARN
     -- {enabled = false}, -- INFO
     -- {enabled = true},  -- HINT
