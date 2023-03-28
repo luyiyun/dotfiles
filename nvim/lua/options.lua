@@ -81,11 +81,13 @@ opt.softtabstop = 2
 opt.shiftwidth = 2
 -- insert mode下，使用空格来替换制表符，如果想要插入真正的制表符，请使用ctrl-v<TAB>
 opt.expandtab = true
--- 当开始一个新的行时，自动应用上一行的缩进，默认开启
-opt.autoindent = true
--- 进行c-like的自动缩进（据说会影响性能，先不开启了)
-opt.smartindent = false
 
+-- NOTE: 这些缩进设置都不满足我的要求，这里我直接使用treesitter的缩进，效果更好
+-- 进行c-like的自动缩进（据说会影响性能，先不开启了)
+-- 当开始一个新的行时，自动应用上一行的缩进，默认开启
+opt.autoindent = false
+opt.smartindent = false
+opt.cindent = false
 
 
 -----------------------------------------------------------------------------------------
@@ -146,7 +148,7 @@ opt.swapfile = false
 -- 创建备份文件
 opt.writebackup = true
 -- 备份文件路径，.表示当前文件所在路径
-opt.backupdir = {".", backup_dir}
+opt.backupdir = {"."}
 
 
 -----------------------------------------------------------------------------------------

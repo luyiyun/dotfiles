@@ -35,7 +35,6 @@ vim.api.nvim_set_hl(0, "BufferVisibleHINT", {bg = "#282c34", fg = "#d5508f"})
 -- TODO: 2. 找一个新的多行操作插件
 -- TODO: 4. 安装neodev，将vim lua api的signatures加入到lsp中
 -- TODO: 5. 使用alpha-nvim替换dashboard
--- TODO: 7. 更好的处理缩进的方法（比如回车后让括号、光标的位置更加适合我的习惯）
 -- TODO: 8. plugin lazy loading
 -- TODO: 10. 取消inactivate buffer的buffer显示（barbar)
 -- TODO: 11. null-ls的安装和配置
@@ -46,4 +45,3 @@ vim.api.nvim_set_hl(0, "BufferVisibleHINT", {bg = "#282c34", fg = "#d5508f"})
 -- TODO: 21. gitsigns的配置
 -- TODO: 22. statusline中加入开启的LSP server的信息
 -- TODO: 23. 多个windows开启时，使用nvim-tree打开文件需要进行窗口选择，这时候会出现字符错误
--- TODO: 24. 探索一下easy motion插件的更多用法，比如定向查找之类的
