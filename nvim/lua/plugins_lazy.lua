@@ -207,6 +207,14 @@ require("lazy").setup(
       config = function() require("plugin-configs.indent_blankline") end,
     },
 
+    -- ----------
+    -- -智能缩进-
+    -- ----------
+    {
+      'nmac427/guess-indent.nvim',
+      config = function() require('guess-indent').setup {} end,
+    },
+
     -- --------------
     -- -重复上次操作-
     -- --------------
