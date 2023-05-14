@@ -30,7 +30,7 @@ opt.signcolumn = 'yes'
 -- 不自动换行显示
 opt.wrap = false
 -- 当键入括号的右半侧时，自动高亮一下整个括号
-opt.showmatch = true
+opt.showmatch = false
 -- showmatch的时间，单位是0.1s
 opt.matchtime = 1
 -- 使用24-bit RGB colors，一些插件需要开启

@@ -47,8 +47,8 @@ nnoremap("<C-k>", "<C-w>k")
 nnoremap("<C-l>", "<C-w>l")
 
 -- 在分屏时调整当前窗口大小
-nnoremap("<C-Right>", "<cmd>vertical resize-1<CR>")
-nnoremap("<C-Left>", "<cmd>vertical resize+1<CR>")
+nnoremap("<C-Right>", "<cmd>vertical resize+1<CR>")
+nnoremap("<C-Left>", "<cmd>vertical resize-1<CR>")
 nnoremap("<C-Down>", "<cmd>resize-1<CR>")
 nnoremap("<C-Up>", "<cmd>resize+1 <CR>")
 

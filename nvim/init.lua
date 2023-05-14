@@ -28,6 +28,7 @@ vim.api.nvim_set_hl(0, "BufferVisibleERROR", {bg = "#282c34", fg = "#e86671"})
 vim.api.nvim_set_hl(0, "BufferVisibleINFO", {bg = "#282c34", fg = "#ffb7b7"})
 vim.api.nvim_set_hl(0, "BufferVisibleHINT", {bg = "#282c34", fg = "#d5508f"})
 
+-- TODO: 0. 取消光标移动到括号时的高亮
 -- TODO: 0. 使用lazy.nvim的懒加载机制，慢慢提高neovim的启动速度
 -- TODO: 0. 对noice.nvim进行配置，探索其更多的功能（比如statusline中的组件）
 -- TODO: 0. noice.nvim，通知显示的时间太长，可能会遮挡住文件，可能难以进行编辑
