@@ -32,6 +32,9 @@ vim.api.nvim_set_hl(0, "BufferVisibleERROR", {bg = "#282c34", fg = "#e86671"})
 vim.api.nvim_set_hl(0, "BufferVisibleINFO", {bg = "#282c34", fg = "#ffb7b7"})
 vim.api.nvim_set_hl(0, "BufferVisibleHINT", {bg = "#282c34", fg = "#d5508f"})
 
+-- TODO: 将main中的配置分离成单个文件，并将plugin config中的内容加入其中，并参考
+-- TODO:  LazyVim的配置，将懒加载机制充分利用
+
 -- TODO: 0. 取消光标移动到括号时的高亮
 -- TODO: 0. 使用lazy.nvim的懒加载机制，慢慢提高neovim的启动速度
 -- TODO: 0. 对noice.nvim进行配置，探索其更多的功能（比如statusline中的组件）
