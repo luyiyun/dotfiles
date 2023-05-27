@@ -78,14 +78,6 @@ return {
         -- NOTE: 只存在于dependencies中的插件将进行lazy load
         -- { "rcarriga/nvim-notify" },
 
-        -- --------
-        -- -启动页-
-        -- --------
-        {
-          'glepnir/dashboard-nvim',
-          config = function() require("plugin-configs.dashboard") end
-        },
-
         -- ╭──────────────────────────────────────────────────────────────────────────────╮
         -- │                                  编辑增强                                    │
         -- ╰──────────────────────────────────────────────────────────────────────────────╯
