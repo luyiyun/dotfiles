@@ -89,6 +89,13 @@ return {
       { "<leader>fF", "<cmd>Telescope file_browser<cr>", desc = "Telescope file browser" },
       { "<leader>fs", "<cmd>SessionManager load_session<cr>", desc = "Telescope sessions" },
       { "<leader>fc", function() require("telescope.builtin")["colorscheme"]({enable_preview = false}) end, desc = "Colorscheme with preview" },
+      { "<leader>fc", function() require("telescope.builtin")["colorscheme"]({enable_preview = false}) end, desc = "Colorscheme with preview" },
+      { "<leader>fu", function() require("telescope.builtin")["lsp_document_symbols"]({
+        symbols = { "Class", "Function", "Method", "Constructor", "Interface", "Module", "Struct", "Trait", "Field", "Property"},
+      }) end, desc = "Goto Symbol (Workspace)" },
+      { "<leader>fU", function() require("telescope.builtin")["lsp_dynamic_workspace_symbols"]({
+        symbols = { "Class", "Function", "Method", "Constructor", "Interface", "Module", "Struct", "Trait", "Field", "Property"},
+      }) end, desc = "Goto Symbol (Workspace)" },
     }
   },
 

@@ -34,18 +34,6 @@ return {
     --   config = function() require("plugin-configs.nvim-web-devicons") end,
     -- },
 
-    -- ----------
-    -- -颜色主题-
-    -- ----------
-    {
-      "navarasu/onedark.nvim",
-      config = function() require("plugin-configs.onedark") end,
-    },
-    {"RRethy/nvim-base16"},
-    {"tanvirtin/monokai.nvim"},
-    { 'marko-cerovac/material.nvim' },
-    { "catppuccin/nvim", name = "catppuccin" },
-
     -- ------------------
     -- -侧边栏文件目录树-
     -- ------------------
