@@ -71,17 +71,12 @@ require("lazy").setup(
     -- ----------
     {
       "navarasu/onedark.nvim",
-      -- config = function() require("plugin-configs.onedark") end,
+      config = function() require("plugin-configs.onedark") end,
     },
-    -- use({"RRethy/nvim-base16"})
-    -- use({
-    --   "tanvirtin/monokai.nvim",
-    --   config = [[require("plugin-configs.monokai")]]
-    -- })
-    -- use({
-    --  'marko-cerovac/material.nvim',
-    --  config = function () require("plugin-configs.material") end
-    -- })
+    {"RRethy/nvim-base16"},
+    {"tanvirtin/monokai.nvim"},
+    { 'marko-cerovac/material.nvim' },
+    { "catppuccin/nvim", name = "catppuccin" },
 
     -- ------------------
     -- -侧边栏文件目录树-

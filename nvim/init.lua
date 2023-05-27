@@ -14,7 +14,11 @@ require("plugins_lazy")
 -- require("plugins_packer")
 require("lsp-configs")
 
-vim.cmd [[silent! colorscheme onedark]]
+-- vim.cmd [[silent! colorscheme onedark]]
+-- vim.g.material_style = "lighter"
+-- vim.cmd [[silent! colorscheme material]]
+-- vim.cmd [[silent! colorscheme catppuccin-latte]]
+vim.cmd.colorscheme("base16-gruvbox-dark-soft")
 
 -- neovide
 -- vim.g.isNeovide = false;
