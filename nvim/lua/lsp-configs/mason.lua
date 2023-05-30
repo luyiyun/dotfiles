@@ -25,8 +25,8 @@ local keymaps = {
 }
 
 mason.setup({
-  keymaps = keymaps,
-  max_concurrent_installers = 10,
+  -- keymaps = keymaps,
+  -- max_concurrent_installers = 10,
   ui = {
     icons = {
       package_installed = "✓",

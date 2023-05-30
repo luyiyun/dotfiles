@@ -22,5 +22,6 @@ local lsp_configs = {
 };
 
 for _, item in pairs(lsp_configs) do
-  loadModule("lsp-configs." .. item, "lsp-configs/init");
+  -- require("lsp-configs." .. item)
+  loadModule("lsp-configs/" .. item, "lsp-configs/init");
 end

@@ -41,7 +41,6 @@ vim.api.nvim_set_hl(0, "BufferVisibleHINT", {bg = "#282c34", fg = "#d5508f"})
 -- TODO: 0. noice.nvim，通知显示的时间太长，可能会遮挡住文件，可能难以进行编辑
 -- TODO: 1. lspsaga的配置还存在一些问题，比如查看文档等不太方便
 -- TODO: 2. 找一个新的多行操作插件
--- TODO: 4. 安装neodev，将vim lua api的signatures加入到lsp中
 -- TODO: 5. 使用alpha-nvim替换dashboard
 -- TODO: 8. plugin lazy loading
 -- TODO: 10. 取消inactivate buffer的buffer显示（barbar)

@@ -20,12 +20,13 @@ mason_lspconfig.setup({
   -- 要安装的LSP服务:
   -- https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
   ensure_installed       = {
-    "sumneko_lua",
+    "lua_ls",
     -- "clangd",
     "pyright",
     -- "yamlls",
   }
 });
+mason_lspconfig.setup()
 
 
 -- ╭──────────────────────────────────────────────────────────────────────────────╮
@@ -157,7 +158,7 @@ mason_lspconfig.setup_handlers {
       on_attach = on_attach,
     }
     -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-    if server_name == "sumneko_lua" then
+    if server_name == "lua_ls" then
       lsp_cfg["settings"] = {
         Lua = {
           runtime = { version = 'LuaJIT' },

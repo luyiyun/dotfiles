@@ -128,21 +128,6 @@ bufferline.setup({
   --  - middle-click: delete buffer
   clickable = true,
 
-  -- Enables / disables diagnostic symbols
-  diagnostics = {
-    -- you can use a list NOTE: use default icons
-    -- {enabled = true}, -- ERROR
-    -- {enabled = false}, -- WARN
-    -- {enabled = false}, -- INFO
-    -- {enabled = true},  -- HINT
-
-    -- OR `vim.diagnostic.severity`
-    [vim.diagnostic.severity.ERROR] = {enabled = true, icon = icons.diagnostics.BoldError},
-    [vim.diagnostic.severity.WARN] = {enabled = false, icon = icons.diagnostics.BoldWarning},
-    [vim.diagnostic.severity.INFO] = {enabled = false, icon = icons.diagnostics.BoldInformation},
-    [vim.diagnostic.severity.HINT] = {enabled = true, icon = icons.diagnostics.BoldHint},
-  },
-
   -- Excludes buffers from the tabline
   exclude_ft = {},
   exclude_name = {},
@@ -158,23 +143,55 @@ bufferline.setup({
   -- Enable highlighting visible buffers
   highlight_visible = true,
 
-  -- Enable/disable icons
-  -- if set to 'numbers', will show buffer index in the tabline
-  -- if set to 'both', will show buffer index and icons in the tabline
-  icons = true,
 
-  -- If set, the icon color will follow its corresponding buffer
-  -- highlight group. By default, the Buffer*Icon group is linked to the
-  -- Buffer* group (see Highlighting below). Otherwise, it will take its
-  -- default value as defined by devicons.
-  icon_custom_colors = false,
+  icons = {
+    -- Configure the base icons on the bufferline.
+    -- Valid options to display the buffer index and -number are `true`, 'superscript' and 'subscript'
+    buffer_index = false,
+    buffer_number = false,
+    button = '',
+    -- Enables / disables diagnostic symbols
+    diagnostics = {
+      -- [vim.diagnostic.severity.ERROR] = {enabled = true, icon = 'ﬀ'},
+      -- [vim.diagnostic.severity.WARN] = {enabled = false},
+      -- [vim.diagnostic.severity.INFO] = {enabled = false},
+      -- [vim.diagnostic.severity.HINT] = {enabled = true},
+      -- OR `vim.diagnostic.severity`
+      [vim.diagnostic.severity.ERROR] = {enabled = true, icon = icons.diagnostics.BoldError},
+      [vim.diagnostic.severity.WARN] = {enabled = false, icon = icons.diagnostics.BoldWarning},
+      [vim.diagnostic.severity.INFO] = {enabled = false, icon = icons.diagnostics.BoldInformation},
+      [vim.diagnostic.severity.HINT] = {enabled = true, icon = icons.diagnostics.BoldHint},
+    },
+    gitsigns = {
+      added = {enabled = true, icon = '+'},
+      changed = {enabled = true, icon = '~'},
+      deleted = {enabled = true, icon = '-'},
+    },
+    filetype = {
+      -- Sets the icon's highlight group.
+      -- If false, will use nvim-web-devicons colors
+      custom_colors = false,
 
-  -- Configure icons o1n the bufferline.
-  icon_separator_active = icons.ui.BoldLineLeft,
-  icon_separator_inactive = icons.ui.BoldLineLeft,  -- '▎',
-  icon_close_tab = icons.ui.Close,  -- '',
-  icon_close_tab_modified = icons.ui.Circle, -- '●',
-  icon_pinned = icons.ui.Pin, -- '車',
+      -- Requires `nvim-web-devicons` if `true`
+      enabled = true,
+    },
+    separator = {left = icons.ui.BoldLineLeft, right = ''},
+
+    -- Configure the icons on the bufferline when modified or pinned.
+    -- Supports all the base icon options.
+    modified = {button = icons.ui.Circle},
+    pinned = {button = icons.ui.Pin, filename = true},
+
+    -- Use a preconfigured buffer appearance— can be 'default', 'powerline', or 'slanted'
+    preset = 'default',
+
+    -- Configure the icons on the bufferline based on the visibility of a buffer.
+    -- Supports all the base icon options, plus `modified` and `pinned`.
+    alternate = {filetype = {enabled = false}},
+    current = {buffer_index = true},
+    inactive = {button = '×'},
+    visible = {modified = {buffer_number = false}},
+  },
 
   -- If true, new buffers will be inserted at the start/end of the list.
   -- Default is to insert after current buffer.
