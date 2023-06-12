@@ -100,6 +100,7 @@ cmp.setup({
     -- 配置补全所用的源
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
+        { name = 'path' },
         { name = 'vsnip' }, -- For vsnip users.
         -- { name = 'luasnip' }, -- For luasnip users.
         -- { name = 'ultisnips' }, -- For ultisnips users.
@@ -163,4 +164,3 @@ cmp.setup.cmdline(':', {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({{ name = 'path' }}, {{ name = 'cmdline' }})
 })
-

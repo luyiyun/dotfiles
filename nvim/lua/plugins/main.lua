@@ -251,13 +251,6 @@ return {
                     config = function() require("plugin-configs.toggleterm") end
                   },
                   -- ---------
-                  -- -整合git-
-                  -- ---------
-                  {
-                    "lewis6991/gitsigns.nvim",
-                    config = function() require("plugin-configs.gitsigns") end
-                  },
-                  -- ---------
                   -- -整合tmux-
                   -- ---------
                   {
