@@ -40,6 +40,7 @@ return {
         --
         map({'n', 'v'}, '<leader>gs', ':Gitsigns stage_hunk<CR>')
         map({'n', 'v'}, '<leader>gu', ':Gitsigns undo_stage_hunk<CR>')
+        map({'n', 'v'}, '<leader>gr', ':Gitsigns reset_hunk<CR>')
         map('n', '<leader>gp', gss.preview_hunk)
         -- map('n', '<leader>hS', gs.stage_buffer)
         -- map('n', '<leader>hu', gs.undo_stage_hunk)

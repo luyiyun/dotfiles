@@ -158,11 +158,11 @@ return {
               -- })
               -- NOTE: leap在visual mode下会是x键失效，这是我常用的一个键（用来删除），所以还是转向了
               -- easymotion-like的插件（hop）
-              {
-                'phaazon/hop.nvim',
-                branch = 'v2', -- optional but strongly recommended
-                config = function() require("plugin-configs.hop") end
-              },
+              -- {
+              --   'phaazon/hop.nvim',
+              --   branch = 'v2', -- optional but strongly recommended
+              --   config = function() require("plugin-configs.hop") end
+              -- },
 
               -- ------------------
               -- -两侧字符快速修改-
