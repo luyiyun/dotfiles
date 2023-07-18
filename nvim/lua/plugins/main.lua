@@ -37,12 +37,12 @@ return {
     -- ------------------
     -- -侧边栏文件目录树-
     -- ------------------
-    {
-      'nvim-tree/nvim-tree.lua',
-      dependencies = 'nvim-tree/nvim-web-devicons', -- optional, for file icons
-      verson = 'nightly', -- optional, updated every week. (see issue #1193)
-      config = function() require("plugin-configs.nvim-tree") end,
-    },
+    -- {
+    --   'nvim-tree/nvim-tree.lua',
+    --   dependencies = 'nvim-tree/nvim-web-devicons', -- optional, for file icons
+    --   verson = 'nightly', -- optional, updated every week. (see issue #1193)
+    --   config = function() require("plugin-configs.nvim-tree") end,
+    -- },
 
     -- ------------
     -- -底部状态栏-
@@ -84,22 +84,22 @@ return {
         -- --------------------------------------------------
         -- -Treesitter相关（语法解析工具，让编辑器理解代码）-
         -- --------------------------------------------------
-        {
-          "nvim-treesitter/nvim-treesitter",
-          build = function()
-            local installer = loadModule("nvim-treesitter.install", "plugin-configs")
-            installer.prefer_git = false
-            installer.compilers = {"gcc", "clang"}
-            local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
-            ts_update()
-          end,
-          config = function() require("plugin-configs.nvim-treesitter") end,
-        },
-        -- treesitter的一个模块，其可以为嵌套的括号显示不同的颜色
-        {
-          "p00f/nvim-ts-rainbow",
-          dependencies = "nvim-treesitter/nvim-treesitter",
-        },
+        -- {
+        --   "nvim-treesitter/nvim-treesitter",
+        --   build = function()
+        --     local installer = loadModule("nvim-treesitter.install", "plugin-configs")
+        --     installer.prefer_git = false
+        --     installer.compilers = {"gcc", "clang"}
+        --     local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+        --     ts_update()
+        --   end,
+        --   config = function() require("plugin-configs.nvim-treesitter") end,
+        -- },
+        -- -- treesitter的一个模块，其可以为嵌套的括号显示不同的颜色
+        -- {
+        --   "p00f/nvim-ts-rainbow",
+        --   dependencies = "nvim-treesitter/nvim-treesitter",
+        -- },
 
         -- ------
         -- -注释-
@@ -204,7 +204,7 @@ return {
                   "cappyzawa/trim.nvim",
                   config = function ()
                     loadModule("trim").setup({
-                      disable = {},
+                      -- disable = {},
                       patterns = {},
                       trim_trailing = true,
                       trim_last_line = true,
@@ -216,11 +216,11 @@ return {
                 -- ╭──────────────────────────────────────────────────────────────────────────────╮
                 -- │                                 快捷键菜单                                   │
                 -- ╰──────────────────────────────────────────────────────────────────────────────╯
-                {
-                  "folke/which-key.nvim",
-                  commit = "6885b669523ff4238de99a7c653d47b81b5506d",
-                  config = function() require("plugin-configs.which-key") end,
-                },
+                -- {
+                --   "folke/which-key.nvim",
+                --   commit = "6885b669523ff4238de99a7c653d47b81b5506d",
+                --   config = function() require("plugin-configs.which-key") end,
+                -- },
 
 
                 -- -------------

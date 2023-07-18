@@ -7,6 +7,7 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
+      "nvimdev/lspsaga.nvim",
       -- { "folke/neoconf.nvim", cmd = "Neoconf", config = true },
       -- NOTE: 为了应用neodev，首先需要将mason,mason-lspconfig,nvim-lspconfig都升级到
       -- NOTE: 最新版本，然后使用新的lua的LSP名称（lua_ls，而非sumneko_lua）
@@ -34,11 +35,6 @@ return {
   -- use({ "hrsh7th/cmp-nvim-lsp-signature-help" })   -- { name = 'nvim_lsp_signature_help' }
   -- use({ "hrsh7th/cmp-nvim-lua" })                  -- { name = 'nvim_lua' }
   -- use({ "jose-elias-alvarez/null-ls.nvim" })       -- 多语言代码检查工具, 功能类似 ESLint
-  { "rafamadriz/friendly-snippets" },          -- 常见编程语言 snippets
+  { "rafamadriz/friendly-snippets" }          -- 常见编程语言 snippets
 
-  {
-    "glepnir/lspsaga.nvim",
-    event = 'BufRead',
-    config = function() require('plugin-configs.lspsaga') end
-  },                   -- UI 增强，将诊断、定义跳转等展示方式进行了增强
 }

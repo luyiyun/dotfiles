@@ -117,7 +117,7 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 
-alias proxy="export http_proxy=http://127.0.0.1:9981;export https_proxy=http://127.0.0.1:9981"
+alias proxy="export http_proxy=http://127.0.0.1:7890;export https_proxy=http://127.0.0.1:7890"
 alias unproxy="unset http_proxy;unset https_proxy"
 alias 'clash'='nohup clash -f ~/.config/clash/config.yaml -d ~/.config/clash/ > /dev/null 2>&1 &'
 alias 'unclash'='pkill -9 clash'
