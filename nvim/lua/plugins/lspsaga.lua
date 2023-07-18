@@ -13,7 +13,7 @@ return {
     keys = {
       {"gd", "<cmd>Lspsaga peek_definition<CR>", desc = "Lspsaga go to definition[lspsaga]"},
       {"gf", "<cmd>Lspsaga finder<CR>", desc = "Lspsaga finder[lspsaga]"},
-      {"gh", "<cmd>Lspsaga hover_doc<CR>", desc = "Lspsaga hover[lspsaga]"},
+      {"K", "<cmd>Lspsaga hover_doc<CR>", desc = "Lspsaga hover[lspsaga]"},
       -- {"[d", "<cmd>Lspsaga diagnostic_jump_prev<cr>", desc = "previous diagnosis[lspsaga]"},
       -- {"[e", function() require("lspsaga.diagnostic").goto_prev({ severity = vim.diagnostic.severity.ERROR }) end, desc = "previous error[lspsaga]"},
       -- {"]d", "<cmd>Lspsaga diagnostic_jump_next<cr>", desc = "next diagnosis[lspsaga]"},
