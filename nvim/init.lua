@@ -7,18 +7,18 @@
 --
 
 
-require("functions")
-require("options")
-require("mappings")
-require("plugins_lazy")
+require("functions")            -- custom utility functions
+require("options")              -- basic settings (like line number, tab size, ...)
+require("mappings")             -- basic keyboard mappings (like leader, switching windows, ...)
+require("plugins_lazy")         -- plugins managed by lazy.nvim
 -- require("plugins_packer")
-require("lsp-configs")
+-- require("lsp-configs")
 
--- vim.cmd [[silent! colorscheme onedark]]
+vim.cmd [[silent! colorscheme onedark]]
 -- vim.g.material_style = "lighter"
 -- vim.cmd [[silent! colorscheme material]]
 -- vim.cmd [[silent! colorscheme catppuccin-latte]]
-vim.cmd.colorscheme("base16-gruvbox-dark-soft")
+-- vim.cmd.colorscheme("base16-gruvbox-dark-soft")
 
 -- neovide
 -- vim.g.isNeovide = false;
@@ -28,9 +28,9 @@ vim.cmd.colorscheme("base16-gruvbox-dark-soft")
 -- end
 
 -- 配置颜色方案
-vim.api.nvim_set_hl(0, "BufferVisibleERROR", {bg = "#282c34", fg = "#e86671"})
-vim.api.nvim_set_hl(0, "BufferVisibleINFO", {bg = "#282c34", fg = "#ffb7b7"})
-vim.api.nvim_set_hl(0, "BufferVisibleHINT", {bg = "#282c34", fg = "#d5508f"})
+-- vim.api.nvim_set_hl(0, "BufferVisibleERROR", {bg = "#282c34", fg = "#e86671"})
+-- vim.api.nvim_set_hl(0, "BufferVisibleINFO", {bg = "#282c34", fg = "#ffb7b7"})
+-- vim.api.nvim_set_hl(0, "BufferVisibleHINT", {bg = "#282c34", fg = "#d5508f"})
 
 -- TODO: 将main中的配置分离成单个文件，并将plugin config中的内容加入其中，并参考
 -- TODO:  LazyVim的配置，将懒加载机制充分利用
