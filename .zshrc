@@ -101,21 +101,6 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/rong/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/rong/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/rong/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/rong/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
 
 # alias proxy="export http_proxy=http://127.0.0.1:7890;export https_proxy=http://127.0.0.1:7890"
 # alias unproxy="unset http_proxy;unset https_proxy"
@@ -126,3 +111,26 @@ alias 'unclash'='sudo bash ~/Softwares/clash-for-linux/shutdown.sh'
 
 
 export TERM='xterm-256color'
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/rong/mambaforge/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/rong/mambaforge/etc/profile.d/conda.sh" ]; then
+        . "/home/rong/mambaforge/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/rong/mambaforge/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+
+if [ -f "/home/rong/mambaforge/etc/profile.d/mamba.sh" ]; then
+    . "/home/rong/mambaforge/etc/profile.d/mamba.sh"
+fi
+# <<< conda initialize <<<
+
+# llvm-10
+# export PATH=$HOME/Softwares/clang+llvm-10.0.0-x86_64-linux-gnu-ubuntu-18.04/bin/:$PATH
+# export LD_LIBRARY_PATH=$HOME/Softwares/clang+llvm-10.0.0-x86_64-linux-gnu-ubuntu-18.04/lib/:$LD_LIBRARY_PATH

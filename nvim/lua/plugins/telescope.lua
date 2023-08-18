@@ -87,7 +87,6 @@ return {
       { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Lists available help tags" },
       { "<leader>fo", "<cmd>Telescope oldfiles<cr>", desc = "Lists previously open files" },
       { "<leader>fF", "<cmd>Telescope file_browser<cr>", desc = "Telescope file browser" },
-      { "<leader>fs", "<cmd>SessionManager load_session<cr>", desc = "Telescope sessions" },
       { "<leader>fc", function() require("telescope.builtin")["colorscheme"]({enable_preview = false}) end, desc = "Colorscheme with preview" },
       { "<leader>fc", function() require("telescope.builtin")["colorscheme"]({enable_preview = false}) end, desc = "Colorscheme with preview" },
       { "<leader>fu", function() require("telescope.builtin")["lsp_document_symbols"]({

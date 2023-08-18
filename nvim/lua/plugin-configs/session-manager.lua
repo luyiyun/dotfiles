@@ -25,4 +25,3 @@ session_manager.setup({
 --     require('nvim-tree').toggle(false, true)
 --   end,
 -- })
-

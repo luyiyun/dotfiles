@@ -37,7 +37,9 @@ return {
         keys = {
           close = "<ESC>"
         },
-
+      },
+      code_action = {
+        enable = false,
       },
       -- border_style = "single",
       -- saga_winblend = 15,

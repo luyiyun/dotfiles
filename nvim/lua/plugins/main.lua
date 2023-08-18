@@ -9,10 +9,11 @@ return {
   -- -----------------------------
   -- -加速启动时间 & 识别文件类型-
   -- -----------------------------
-  {
-    "nathom/filetype.nvim",
-    config = function() require("plugin-configs.filetype") end,
-  },
+  -- NOTE: 在最新版本的nvim中会出现错误，所以不再使用它
+  -- {
+  --   "nathom/filetype.nvim",
+  --   config = function() require("plugin-configs.filetype") end,
+  -- },
 
   -- ---------------------------------
   -- -加速颜色显示 & 文本直接显示颜色-
@@ -61,11 +62,11 @@ return {
       -- --------------
       -- -顶部buffer栏-
       -- --------------
-      {
-        "romgrk/barbar.nvim",
-        dependencies = "nvim-tree/nvim-web-devicons",
-        config = function() require("plugin-configs.barbar") end,
-      },
+      -- {
+      --   "romgrk/barbar.nvim",
+      --   dependencies = "nvim-tree/nvim-web-devicons",
+      --   config = function() require("plugin-configs.barbar") end,
+      -- },
       -- use {
         --   'akinsho/bufferline.nvim', tag = "v3.*",
         --   requires = 'nvim-tree/nvim-web-devicons',
@@ -223,9 +224,6 @@ return {
                 -- },
 
 
-                -- -------------
-                -- -session管理-
-                -- -------------
                 -- NOTE: persistd.nvim和nvim-tree的配合不好
                 -- use({
                   --   "olimorris/persisted.nvim",
@@ -233,10 +231,6 @@ return {
                   --   config = function() require("plugin-configs.persisted") end
                   --
                   -- })
-                  {
-                    "Shatur/neovim-session-manager",
-                    config = function() require("plugin-configs.session-manager") end
-                  },
 
 
                   -- ╭──────────────────────────────────────────────────────────────────────────────╮
