@@ -35,29 +35,15 @@ return {
 
       -- 当目录树打开时，令bufferline的左侧有一块特定的区域
       -- 这里我们改用专属于nvim-tree的特定解决方案
-      local nvim_tree_events = require("nvim-tree.events")
-      local bufferline_api = require('bufferline.api')
-      local function get_tree_size()
-        return require'nvim-tree.view'.View.width
+      local ok, nvim_tree_events = pcall(require, "nvim-tree.events")  -- 这样可以保证之后存在nvim-tree的插件时才会调用该函数
+      if ok then
+        local bufferline_api = require('bufferline.api')
+        local function get_tree_size() return require'nvim-tree.view'.View.width end
+        nvim_tree_events.subscribe('TreeOpen', function() bufferline_api.set_offset(get_tree_size()) end)
+        nvim_tree_events.subscribe('Resize', function() bufferline_api.set_offset(get_tree_size()) end)
+        nvim_tree_events.subscribe('TreeClose', function() bufferline_api.set_offset(0) end)
       end
-
-      nvim_tree_events.subscribe('TreeOpen', function()
-        bufferline_api.set_offset(get_tree_size())
-      end)
-
-      nvim_tree_events.subscribe('Resize', function()
-        bufferline_api.set_offset(get_tree_size())
-      end)
-
-      nvim_tree_events.subscribe('TreeClose', function()
-        bufferline_api.set_offset(0)
-      end)
     end
 
   },
-  -- use {
-    --   'akinsho/bufferline.nvim', tag = "v3.*",
-    --   requires = 'nvim-tree/nvim-web-devicons',
-    --   config = function() require("bufferline").setup() end
-    -- }
 }
