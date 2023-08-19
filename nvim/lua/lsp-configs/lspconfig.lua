@@ -26,7 +26,7 @@ mason_lspconfig.setup({
     -- "yamlls",
   }
 });
-mason_lspconfig.setup()
+-- mason_lspconfig.setup()
 
 
 -- ╭──────────────────────────────────────────────────────────────────────────────╮
