@@ -6,10 +6,12 @@ return {
   -- -文件查找器-
   -- ------------
   {
-    'nvim-telescope/telescope.nvim', tag = '0.1.2',
+    'nvim-telescope/telescope.nvim', -- tag = '0.1.2',
+    commit = vim.fn.has("nvim-0.9.0") == 0 and "057ee0f8783" or nil,
+    version = false,
     dependencies = {
       'nvim-lua/plenary.nvim',
-      { 'nvim-telescope/telescope-ui-select.nvim'},
+      'nvim-telescope/telescope-ui-select.nvim',
       -- --------------
       -- -加快搜索速度-
       -- --------------
@@ -17,11 +19,7 @@ return {
       -- ----------
       -- -路径搜索-
       -- ----------
-      {
-        "nvim-telescope/telescope-file-browser.nvim",
-        -- lazy = true,
-        -- keys = { { "<leader>fF", "<cmd>Telescope file_browser<cr>", desc = "Telescope file browser" } }
-      },
+      "nvim-telescope/telescope-file-browser.nvim",
     },
     config = function()
       local telescope = require("telescope")
