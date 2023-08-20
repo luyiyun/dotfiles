@@ -3,7 +3,7 @@ return {
   -- │                           MASON: lsp servers managers                        │
   -- ╰──────────────────────────────────────────────────────────────────────────────╯
   {
-    "williamboman/mason.nvim",  -- mason官方不推荐进行lazy loading
+    "williamboman/mason.nvim", -- mason官方不推荐进行lazy loading
     -- build = ":MasonUpdate",
     opts = {
       -- keymaps = {
@@ -44,7 +44,7 @@ return {
     dependencies = {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim", -- 用来链接mason和lspconfig之间的gap，比如名称的区别
-      { "folke/neodev.nvim", opts = {}}, -- 提供用于neovim插件开发的lua api的提示，需要保证在lspconfig之前启动
+      { "folke/neodev.nvim", opts = {} },  -- 提供用于neovim插件开发的lua api的提示，需要保证在lspconfig之前启动
       -- NOTE: 为了应用neodev，首先需要将mason,mason-lspconfig,nvim-lspconfig都升级到
       -- NOTE: 最新版本，然后使用新的lua的LSP名称（lua_ls，而非sumneko_lua）
 
@@ -122,7 +122,7 @@ return {
       local has_cmp_nlsp, cmp_nlsp = pcall(require, "cmp_nvim_lsp")
       local on_attach = function(_, bufnr)
         -- complete
-        if not has_cmp_nlsp then  -- 如果没有cmp，则设置手动版本
+        if not has_cmp_nlsp then -- 如果没有cmp，则设置手动版本
           -- Enable completion triggered by <c-x><c-o>
           vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
         end
@@ -138,11 +138,10 @@ return {
         vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
 
         -- format
-        vim.keymap.set('n', '<leader>rf', function() vim.lsp.buf.format {async = true} end, bufopts)
+        vim.keymap.set('n', '<leader>rf', function() vim.lsp.buf.format { async = true } end, bufopts)
 
         -- code action
         vim.keymap.set('n', '<leader>ra', vim.lsp.buf.code_action, bufopts)
-
       end
 
       ------------------------------------------------------------------------------------
@@ -171,19 +170,41 @@ return {
                   telemetry = { enable = false },
                   workspase = {
                     library = vim.api.nvim_get_runtime_file("", true),
-                    checkThirdParty = false  -- remove luv warnings
+                    checkThirdParty = false
                   }
                 }
               }
+              -- lsp_cfg["on_init"] = function(client)
+              --   local path = client.workspace_folders[1].name
+              --   if not vim.loop.fs_stat(path .. '/.luarc.json') and not vim.loop.fs_stat(path .. '/.luarc.jsonc') then
+              --     client.config.settings = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+              --       runtime = {
+              --         -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+              --         version = 'LuaJIT'
+              --       },
+              --       -- Make the server aware of Neovim runtime files
+              --       workspace = {
+              --         library = { vim.env.VIMRUNTIME }
+              --         -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
+              --         -- library = vim.api.nvim_get_runtime_file("", true)
+              --       }
+              --     })
+              --
+              --     client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+              --   end
+              --   return true
+              -- end
             elseif server_name == "pyright" then
               lsp_cfg["settings"] = {
-                python = { analysis = {
-                  autoSearchPaths = true,
-                  diagnosticMode = "workspace",
-                  -- NOTE: 以下两行可以避免type-stubs所引起的问题
-                  typeCheckingMode = 'off',
-                  useLibraryCodeForTypes = true
-                }}
+                python = {
+                  analysis = {
+                    autoSearchPaths = true,
+                    diagnosticMode = "workspace",
+                    -- NOTE: 以下两行可以避免type-stubs所引起的问题
+                    typeCheckingMode = 'off',
+                    useLibraryCodeForTypes = true
+                  }
+                }
               }
             elseif server_name == "clangd" then
               lsp_cfg["cmd"] = {
@@ -191,7 +212,6 @@ return {
                 -- NOTE: 现在是使用~/.config/clangd/config.yaml文件进行配置，详情请见
                 -- NOTE: https://clangd.llvm.org/config#compileflags
               }
-
             end
             require("lspconfig")[server_name].setup(lsp_cfg);
           end,
