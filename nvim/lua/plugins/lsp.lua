@@ -28,9 +28,9 @@ return {
     }
   },
 
-  -- ╭──────────────────────────────────────────────────────────────────────────────╮
-  -- │                     LSP: diagnosis                      │
-  -- ╰──────────────────────────────────────────────────────────────────────────────╯
+  -- ╭──────────────────────────────────────────────╮
+  -- │                     LSP                      │
+  -- ╰──────────────────────────────────────────────╯
   -- lsp server提供的功能主要有：代码诊断(diagnostic)、定义跳转(tagfunc\go-defination)、
   --  格式整理(format)、光标悬停(hover)、代码自动补全(complete)、代码修复(reference\implement\code_action)、
   -- 某个LSP server可能只拥有以上功能中的几个，所以其会对应一个capabilities来说明这个问题
@@ -50,11 +50,9 @@ return {
 
       -- "nvimdev/lspsaga.nvim",
       -- { "folke/neoconf.nvim", cmd = "Neoconf", config = true },
+      -- "hrsh7th/cmp-nvim-lsp",
       -- {
-      --   "hrsh7th/cmp-nvim-lsp",
-      --   cond = function()
-      --     return require("lazyvim.util").has("nvim-cmp")
-      --   end,
+      --   cond = function() return require("lazyvim.util").has("nvim-cmp") end,
       -- },
     },
     config = function()
@@ -121,10 +119,13 @@ return {
       --        格式化 format,
       --        code action
       ------------------------------------------------------------------------------------
+      local has_cmp_nlsp, cmp_nlsp = pcall(require, "cmp_nvim_lsp")
       local on_attach = function(_, bufnr)
         -- complete
-        -- Enable completion triggered by <c-x><c-o>
-        vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+        if not has_cmp_nlsp then  -- 如果没有cmp，则设置手动版本
+          -- Enable completion triggered by <c-x><c-o>
+          vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+        end
 
         -- go defination
         local bufopts = { noremap = true, silent = true, buffer = bufnr }
@@ -155,10 +156,11 @@ return {
           -- and will be called for each installed server that doesn't have
           -- a dedicated handler.
           function(server_name) -- default handler (optional)
-            local lsp_cfg = {
-              -- capabilities = capabilities,
-              on_attach = on_attach,
-            }
+            local lsp_cfg = { on_attach = on_attach }
+            if has_cmp_nlsp then
+              lsp_cfg["capabilities"] = cmp_nlsp.default_capabilities()
+            end
+
             -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
             if server_name == "lua_ls" then
               lsp_cfg["settings"] = {
@@ -205,17 +207,4 @@ return {
       end
     end,
   },
-
-  -- { "hrsh7th/cmp-nvim-lsp" },                  -- 使cmp可以利用到lsp中的source
-  -- { "hrsh7th/cmp-vsnip" },                     -- 使cmp可以利用到vsnip中的source
-  -- { "hrsh7th/cmp-buffer" },                    -- { name = 'buffer' },
-  -- { "hrsh7th/cmp-path" },                      -- { name = 'path' }
-  -- { "hrsh7th/cmp-cmdline" },                   -- { name = 'cmdline' }
-  -- { "hrsh7th/nvim-cmp" },                      -- 补全引擎，nvim虽然能够作为客户端和LSP通讯，但是其没有自动补全（可以手动补全）
-  -- { "hrsh7th/vim-vsnip" },                     -- vim-vsnip 插件，提供snippets
-  -- use({ "hrsh7th/cmp-nvim-lsp-signature-help" })   -- { name = 'nvim_lsp_signature_help' }
-  -- use({ "hrsh7th/cmp-nvim-lua" })                  -- { name = 'nvim_lua' }
-  -- use({ "jose-elias-alvarez/null-ls.nvim" })       -- 多语言代码检查工具, 功能类似 ESLint
-  -- { "rafamadriz/friendly-snippets" }          -- 常见编程语言 snippets
-
 }

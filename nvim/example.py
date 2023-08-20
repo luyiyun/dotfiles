@@ -9,6 +9,5 @@ def main():
     torch.randint()
 
 
-
 if __name__ == "__main__":
     main()

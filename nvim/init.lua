@@ -7,12 +7,10 @@
 --
 
 
-require("functions")    -- custom utility functions
-require("options")      -- basic settings (like line number, tab size, ...)
-require("mappings")     -- basic keyboard mappings (like leader, switching windows, ...)
-require("plugins_lazy") -- plugins managed by lazy.nvim
--- require("plugins_packer")
--- require("lsp-configs")
+require("functions")        -- custom utility functions
+require("options")          -- basic settings (like line number, tab size, ...)
+require("mappings")         -- basic keyboard mappings (like leader, switching windows, ...)
+require("plugins_lazy")     -- plugins managed by lazy.nvim
 
 vim.cmd [[silent! colorscheme onedark]]
 -- vim.g.material_style = "lighter"
@@ -31,24 +29,20 @@ vim.cmd [[silent! colorscheme onedark]]
 -- vim.api.nvim_set_hl(0, "BufferVisibleERROR", {bg = "#282c34", fg = "#e86671"})
 -- vim.api.nvim_set_hl(0, "BufferVisibleINFO", {bg = "#282c34", fg = "#ffb7b7"})
 -- vim.api.nvim_set_hl(0, "BufferVisibleHINT", {bg = "#282c34", fg = "#d5508f"})
-
--- TODO: 将main中的配置分离成单个文件，并将plugin config中的内容加入其中，并参考
--- TODO:  LazyVim的配置，将懒加载机制充分利用
+--
+--
+--
+-- TODO: lua_ls 存在一个问题，其会在每次一开始询问是否配置luv，并且无法关掉
 
 -- TODO: 0. 取消光标移动到括号时的高亮
--- TODO: 0. 使用lazy.nvim的懒加载机制，慢慢提高neovim的启动速度
 -- TODO: 0. 对noice.nvim进行配置，探索其更多的功能（比如statusline中的组件）
 -- TODO: 0. noice.nvim，通知显示的时间太长，可能会遮挡住文件，可能难以进行编辑
 -- TODO: 1. lspsaga的配置还存在一些问题，比如查看文档等不太方便
 -- TODO: 2. 找一个新的多行操作插件
--- TODO: 5. 使用alpha-nvim替换dashboard
--- TODO: 8. plugin lazy loading
 -- TODO: 10. 取消inactivate buffer的buffer显示（barbar)
--- TODO: 11. null-ls的安装和配置
--- TODO: 12. 设置一个按键，可以手动开启补全
+-- TODO: 11. guard.nvim的安装和配置
 -- TODO: 13. 现在无法同时创建多个terminal
 -- TODO: 14. 安装copilot玩一玩
 -- TODO: 20. nvimTree设置root dir
 -- TODO: 21. gitsigns的配置
 -- TODO: 22. statusline中加入开启的LSP server的信息
--- TODO: 23. 多个windows开启时，使用nvim-tree打开文件需要进行窗口选择，这时候会出现字符错误
