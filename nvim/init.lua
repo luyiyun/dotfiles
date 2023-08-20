@@ -7,10 +7,10 @@
 --
 
 
-require("functions")            -- custom utility functions
-require("options")              -- basic settings (like line number, tab size, ...)
-require("mappings")             -- basic keyboard mappings (like leader, switching windows, ...)
-require("plugins_lazy")         -- plugins managed by lazy.nvim
+require("functions")    -- custom utility functions
+require("options")      -- basic settings (like line number, tab size, ...)
+require("mappings")     -- basic keyboard mappings (like leader, switching windows, ...)
+require("plugins_lazy") -- plugins managed by lazy.nvim
 -- require("plugins_packer")
 -- require("lsp-configs")
 
