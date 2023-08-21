@@ -49,9 +49,35 @@ return {
     'goolord/alpha-nvim',
     event = "VimEnter",
     dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = function ()
-        -- require'alpha'.setup(require'alpha.themes.startify'.config)  -- vim-startify theme
-        require'alpha'.setup(require'alpha.themes.dashboard'.config)  -- dashboard theme
+    config = function()
+      -- custom display
+      -- Set header
+      local dashboard = require("alpha.themes.dashboard")
+      dashboard.section.header.val = {
+        "                                      ",
+        " ██████╗  ██████╗ ███╗   ██╗ ██████╗  ",
+        " ██╔══██╗██╔═══██╗████╗  ██║██╔════╝  ",
+        " ██████╔╝██║   ██║██╔██╗ ██║██║  ███╗ ",
+        " ██╔══██╗██║   ██║██║╚██╗██║██║   ██║ ",
+        " ██║  ██║╚██████╔╝██║ ╚████║╚██████╔╝ ",
+        " ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝  ",
+        "                                      ",
+      }
+      -- Set menu
+      dashboard.section.buttons.val = {
+        dashboard.button("e", "  > New file", ":ene <BAR> startinsert <CR>"),
+        dashboard.button("SPC f f", "  > Find file"),
+        dashboard.button("SPC f o", "  > Recent"),
+        dashboard.button("SPC f s", "  > Sessions"),
+        dashboard.button("CRLT q", "  > Quit NVIM"),
+      }
+      -- Set footer
+      local fortune = require("alpha.fortune")
+      dashboard.section.footer.val = fortune()
+
+      -- require'alpha'.setup(require'alpha.themes.startify'.config)  -- vim-startify theme
+      require 'alpha'.setup(require 'alpha.themes.dashboard'.config) -- dashboard theme
+
     end
   }
 }
