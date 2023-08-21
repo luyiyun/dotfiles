@@ -11,7 +11,7 @@ return {
     version = false,
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'nvim-telescope/telescope-ui-select.nvim',
+      'nvim-telescope/telescope-ui-select.nvim', -- 用于neovim-session-manager
       -- --------------
       -- -加快搜索速度-
       -- --------------
