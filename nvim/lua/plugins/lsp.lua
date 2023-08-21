@@ -69,6 +69,7 @@ return {
             -- "clangd",
             "pyright",
             "yamlls",
+            -- 这里支持lsp的自动安装，不支持formatter和其他
           }
         })
       end
