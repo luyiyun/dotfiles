@@ -69,6 +69,10 @@ return {
       window = {
         mappings = {
           ["<space>"] = "none",
+          ["S"] = "none",  -- 取消open_split的默认设置
+          ["o"] = "open",
+          ["s"] = "open_split",
+          ["v"] = "open_vsplit",
         },
       },
       default_component_configs = {
