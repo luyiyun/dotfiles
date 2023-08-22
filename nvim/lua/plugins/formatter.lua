@@ -18,30 +18,28 @@ return {
   --     })
   --   end
   -- },
-  -- {
-  --   "jose-elias-alvarez/null-ls.nvim",
-  --   event = { "BufReadPost", "BufNewFile" },
-  --   dependencies = {
-  --       "williamboman/mason.nvim",
-  --       "jay-babu/mason-null-ls.nvim",
-  --   },
-  --   config = function()
-  --       local linters = {
-  --           "black",
-  --           "prettier",
-  --           "stylua",
-  --           "jq",
-  --           "black",
-  --           "isort"
-  --       }
-  --       require("mason-null-ls").setup({
-  --           ensure_installed = linters,
-  --           handlers = {},
-  --       })
-  --       local null_ls = require("null-ls")
-  --       null_ls.setup({
-  --           sources = {},
-  --       })
-  --   end
-  -- }
+  {
+    "jose-elias-alvarez/null-ls.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    dependencies = {
+        "williamboman/mason.nvim",
+        "jay-babu/mason-null-ls.nvim",
+    },
+    config = function()
+        local linters = {
+            "black",
+            "prettier",
+            "stylua",
+            "jq",
+            "black",
+            "isort"
+        }
+        require("mason-null-ls").setup({
+            ensure_installed = linters,
+            handlers = {},
+        })
+        local null_ls = require("null-ls")
+        null_ls.setup({ sources = {} })
+    end
+  }
 }

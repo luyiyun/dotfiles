@@ -12,9 +12,13 @@ return {
         elseif #clients == 1 then
           return clients[1].name
         else
-          local name = ""
+          local name = nil
           for _, v in ipairs(clients) do
-            name = name .. "/" .. v.name
+            if name == nil then
+              name = v.name
+            else
+              name = name .. "/" .. v.name
+            end
           end
           return name
         end
