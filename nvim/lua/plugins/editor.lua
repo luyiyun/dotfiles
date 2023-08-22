@@ -96,5 +96,16 @@ return {
     "karb94/neoscroll.nvim",
     event = "VeryLazy",
     opts = {},
+  },
+  {
+    "rainbowhxch/accelerated-jk.nvim",
+    event = "VeryLazy",
+    keys = {
+      {"j", "<Plug>(accelerated_jk_j)"},
+      {"k", "<Plug>(accelerated_jk_k)"},
+      -- {"gj", "<Plug>(accelerated_jk_gj)"},
+      -- {"gk", "<Plug>(accelerated_jk_gk)"},
+    },
+    config = true
   }
 }
