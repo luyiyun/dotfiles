@@ -32,7 +32,8 @@ return {
             "stylua",
             "jq",
             "black",
-            "isort"
+            "isort",
+            "flake8"
         }
         require("mason-null-ls").setup({
             ensure_installed = linters,
