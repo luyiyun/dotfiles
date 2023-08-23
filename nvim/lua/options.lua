@@ -165,22 +165,23 @@ opt.splitright = true
 -----------------------------------------------------------------------------------------
 -- 不同的文件类型使用不同的设置
 -----------------------------------------------------------------------------------------
--- 这里我们使用filetype插件来实现相同的功能，速度会更快
--- 但是实际上我们并没有在filetype插件中进行设置，也实现了这个功能（即python的tab是4，其他是2）?????
--- vim.api.nvim_create_autocmd("FileType", {
---   pattern = '*',
---   callback = function(args)
---       if vim.endswith(args.file, "py") then
---           vim.opt_local.tabstop = 4  -- 文件中制表符所占用的空格数量
---           vim.opt_local.softtabstop = 4  -- 编辑文件时，新输入的制表符所对应的空格数量
---           vim.opt_local.shiftwidth = 4  -- 每次缩进使用的空格数量，当使用>>或<<时
---       else
---           vim.opt_local.tabstop = 2  -- 文件中制表符所占用的空格数量
---           vim.opt_local.softtabstop = 2  -- 编辑文件时，新输入的制表符所对应的空格数量
---           vim.opt_local.shiftwidth = 2  -- 每次缩进使用的空格数量，当使用>>或<<时
---       end
---   end
--- })
+-- NOTE: 在最新版本的neovim中，filetype插件会报错，而且neovim内置的filetype
+-- 启动速度也还可以了，所以不再使用filetype插件，而是直接使用autocmd来进行设置
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = '*',
+  callback = function(args)
+      if vim.endswith(args.file, "py") then
+          vim.opt_local.tabstop = 4  -- 文件中制表符所占用的空格数量
+          vim.opt_local.softtabstop = 4  -- 编辑文件时，新输入的制表符所对应的空格数量
+          vim.opt_local.shiftwidth = 4  -- 每次缩进使用的空格数量，当使用>>或<<时
+					vim.opt_local.colorcolumn = "81"
+      else
+          vim.opt_local.tabstop = 2  -- 文件中制表符所占用的空格数量
+          vim.opt_local.softtabstop = 2  -- 编辑文件时，新输入的制表符所对应的空格数量
+          vim.opt_local.shiftwidth = 2  -- 每次缩进使用的空格数量，当使用>>或<<时
+      end
+  end
+})
 
 
 -----------------------------------------------------------------------------------------
