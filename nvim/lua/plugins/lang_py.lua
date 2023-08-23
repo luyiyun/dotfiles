@@ -7,10 +7,13 @@ return {
     keys = {
       { "<leader>vs", "<cmd>:VenvSelect<cr>", desc = "select python enviroment" },
       -- key mapping for directly retrieve from cache. You may set autocmd if you prefer the no hand approach
-      -- "<leader>vc", "<cmd>:VenvSelectCached<cr>"
+      { "<leader>vc", "<cmd>:VenvSelectCached<cr>", desc = "selec python enviroment cached" },
+      { "<leader>vd", function() require("venv-selector").deactivate_venv() end, desc = "python enviroment deactivate" }
     },
     opts = {
       anaconda_path = "$HOME/mambaforge/envs/",
+      search = false,
+      search_workspace = false,
     }
   }
 }
