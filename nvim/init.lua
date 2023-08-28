@@ -18,11 +18,11 @@ vim.cmd([[silent! colorscheme onedark]])
 -- vim.cmd.colorscheme("base16-gruvbox-dark-soft")
 
 -- neovide
--- vim.g.isNeovide = false;
--- if vim.fn.exists("g:neovide") == 1 then
---   vim.g.isNeovide = true;
---   require("neovide")
--- end
+vim.g.isNeovide = false;
+if vim.fn.exists("g:neovide") == 1 then
+  vim.g.isNeovide = true;
+  require("neovide")
+end
 
 -- 配置颜色方案
 -- vim.api.nvim_set_hl(0, "BufferVisibleERROR", {bg = "#282c34", fg = "#e86671"})

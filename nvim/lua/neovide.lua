@@ -21,10 +21,10 @@ end
 
 -- 设置字体
 local setFontSize = function (font_family, font_size)
-  vim.opt.guifont = string.format("%s:h%s", font_family, font_size or "14")
+  vim.opt.guifont = string.format("%s:h%s", font_family, font_size or 10)
 end
--- setFontSize("Hack Nerd Font Mono", 14)
--- setFontSize("Nerd Font", 14)
+-- setFontSize("Hack Nerd Font Mono", 10)
+setFontSize("FiraCode Nerd Font Mono", 10)
 
 -- 设置快捷键
 -- local keyset = vim.api.nvim_set_keymap;
