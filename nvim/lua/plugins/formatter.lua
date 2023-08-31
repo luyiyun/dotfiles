@@ -37,10 +37,35 @@ return {
         }
         require("mason-null-ls").setup({
             ensure_installed = linters,
-            handlers = {},
+            handlers = {
+              -- black = function(source_name, methods)
+              --
+              -- end
+            },
         })
         local null_ls = require("null-ls")
-        null_ls.setup({ sources = {} })
+        null_ls.setup({ sources = {
+          null_ls.builtins.formatting.black.with({
+            extra_args = {"--line-length=79"},
+          }),
+          null_ls.builtins.diagnostics.flake8,
+          -- ls.builtins.diagnostics.mypy.with({
+          --   -- https://github.com/jose-elias-alvarez/null-ls.nvim/issues/1208#issuecomment-1343562820
+          --   cwd = function (_) return vim.fn.getcwd() end,
+          -- }),
+          -- ls.builtins.diagnostics.shellcheck,
+        } })
     end
-  }
+  },
+  -- {
+  --   "mhartington/formatter.nvim",
+  --   event = { "BufReadPost", "BufNewFile" },
+  --   -- dependencies = {
+  --   --     "williamboman/mason.nvim",
+  --   --     "jay-babu/mason-null-ls.nvim",
+  --   -- },
+  --   opts = {
+  --
+  --   }
+  -- }
 }
