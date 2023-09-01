@@ -26,35 +26,29 @@ return {
         "jay-babu/mason-null-ls.nvim",
     },
     config = function()
-        local linters = {
-            "black",
-            "prettier",
-            "stylua",
-            "jq",
-            "black",
-            "isort",
-            "flake8"
-        }
-        require("mason-null-ls").setup({
-            ensure_installed = linters,
-            handlers = {
-              -- black = function(source_name, methods)
-              --
-              -- end
-            },
-        })
+        -- local linters = {
+        --     "black",
+        --     -- "prettier",
+        --     -- "stylua",
+        --     -- "jq",
+        --     "isort",
+        --     "flake8"
+        -- }
         local null_ls = require("null-ls")
+        local diagnostics = require("null-ls").builtins.diagnostics
+        local formatting = require("null-ls").builtins.formatting
+
         null_ls.setup({ sources = {
-          null_ls.builtins.formatting.black.with({
-            extra_args = {"--line-length=79"},
-          }),
-          null_ls.builtins.diagnostics.flake8,
-          -- ls.builtins.diagnostics.mypy.with({
-          --   -- https://github.com/jose-elias-alvarez/null-ls.nvim/issues/1208#issuecomment-1343562820
-          --   cwd = function (_) return vim.fn.getcwd() end,
-          -- }),
-          -- ls.builtins.diagnostics.shellcheck,
+          formatting.black.with({ extra_args = {"--line-length=79"} }),
+          formatting.isort,
+          diagnostics.flake8.with({ extra_args = {"--ignore=E731"} }),
+          -- E731: 使用def而不是lambda
         } })
+        local mnl = require("mason-null-ls")
+        mnl.setup({
+            ensure_installed = nil,
+            automatic_installed = true,
+        })
     end
   },
   -- {
