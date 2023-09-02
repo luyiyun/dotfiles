@@ -44,7 +44,7 @@ return {
     dependencies = {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim", -- 用来链接mason和lspconfig之间的gap，比如名称的区别
-      { "folke/neodev.nvim", opts = {} },  -- 提供用于neovim插件开发的lua api的提示，需要保证在lspconfig之前启动
+      "folke/neodev.nvim",                 -- 提供用于neovim插件开发的lua api的提示，需要保证在lspconfig之前启动
       -- NOTE: 为了应用neodev，首先需要将mason,mason-lspconfig,nvim-lspconfig都升级到
       -- NOTE: 最新版本，然后使用新的lua的LSP名称（lua_ls，而非sumneko_lua）
 
@@ -56,6 +56,46 @@ return {
       -- },
     },
     config = function()
+      -- NOTE: 所有的lsp以及它们的配置
+      -- 这里支持lsp，不支持linter和formatter等其他
+      local servers = {
+        lua_ls = {
+          settings = {
+            Lua = {
+              runtime = { version = 'LuaJIT' },
+              diagnostics = { globals = { "vim" } },
+              completion = { enable = true, callSnippet = "Replace" },
+              telemetry = { enable = false },
+              workspase = {
+                library = vim.api.nvim_get_runtime_file("", true),
+                checkThirdParty = false
+              }
+            }
+          }
+        },
+        pyright = {
+          settings = {
+            python = {
+              analysis = {
+                autoSearchPaths = true,
+                diagnosticMode = "workspace",
+                -- NOTE: 以下两行可以避免type-stubs所引起的问题
+                typeCheckingMode = 'off',
+                useLibraryCodeForTypes = true
+              }
+            }
+          }
+        },
+        yamlls = {},
+        -- clangd = {
+        --   cmd = {
+        --     "clangd",
+        --     -- NOTE: 现在是使用~/.config/clangd/config.yaml文件进行配置，详情请见
+        --     -- NOTE: https://clangd.llvm.org/config#compileflags
+        --   }
+        -- }
+      }
+
       -- mason-lspconfig是对于mason的补充，用来更好的让mason和lspconfig两个插件共同工作
       -- 三个插件的启动顺序必须要保证：mason->mason-lspconfig->使用lspconfig来设置lsp server
       local has_mslp, mslp = pcall(require, "mason-lspconfig")
@@ -64,13 +104,7 @@ return {
           automatic_installation = true, -- 自动安装LSP服务端
           -- 要安装的LSP服务:
           -- https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
-          ensure_installed       = {
-            "lua_ls",
-            -- "clangd",
-            "pyright",
-            "yamlls",
-            -- 这里支持lsp的自动安装，不支持formatter和其他
-          }
+          ensure_installed       = vim.tbl_keys(servers)
         })
       end
 
@@ -148,6 +182,7 @@ return {
       ------------------------------------------------------------------------------------
       -- 启动LSP
       ------------------------------------------------------------------------------------
+      require("neodev").setup({})
       -- 正常启动lsp的方式（使用lspconfig的api）: require("lspconfig").lua_ls.setup({})
       -- 但是，这里我们使用mason-lspconfig的api，其可以保证在需要的时候自动开启lsp server
       if has_mslp then
@@ -160,61 +195,9 @@ return {
             if has_cmp_nlsp then
               lsp_cfg["capabilities"] = cmp_nlsp.default_capabilities()
             end
-
-            -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-            if server_name == "lua_ls" then
-              lsp_cfg["settings"] = {
-                Lua = {
-                  runtime = { version = 'LuaJIT' },
-                  diagnostics = { globals = { "vim" } },
-                  completion = { enable = true, callSnippet = "Replace" },
-                  telemetry = { enable = false },
-                  workspase = {
-                    library = vim.api.nvim_get_runtime_file("", true),
-                    checkThirdParty = false
-                  }
-                }
-              }
-              -- lsp_cfg["on_init"] = function(client)
-              --   local path = client.workspace_folders[1].name
-              --   if not vim.loop.fs_stat(path .. '/.luarc.json') and not vim.loop.fs_stat(path .. '/.luarc.jsonc') then
-              --     client.config.settings = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-              --       runtime = {
-              --         -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-              --         version = 'LuaJIT'
-              --       },
-              --       -- Make the server aware of Neovim runtime files
-              --       workspace = {
-              --         library = { vim.env.VIMRUNTIME }
-              --         -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-              --         -- library = vim.api.nvim_get_runtime_file("", true)
-              --       }
-              --     })
-              --
-              --     client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
-              --   end
-              --   return true
-              -- end
-            elseif server_name == "pyright" then
-              lsp_cfg["settings"] = {
-                python = {
-                  analysis = {
-                    autoSearchPaths = true,
-                    diagnosticMode = "workspace",
-                    -- NOTE: 以下两行可以避免type-stubs所引起的问题
-                    typeCheckingMode = 'off',
-                    useLibraryCodeForTypes = true
-                  }
-                }
-              }
-            elseif server_name == "clangd" then
-              lsp_cfg["cmd"] = {
-                "clangd",
-                -- NOTE: 现在是使用~/.config/clangd/config.yaml文件进行配置，详情请见
-                -- NOTE: https://clangd.llvm.org/config#compileflags
-              }
-            end
-            require("lspconfig")[server_name].setup(lsp_cfg);
+            require("lspconfig")[server_name].setup(
+              vim.tbl_deep_extend("keep", lsp_cfg, servers[server_name])
+            );
           end,
           -- 下面提供的是本身lsp之外的配置，不要再次setup lsp-config，因为这意味着配置了两边
           -- Next, you can provide a dedicated handler for specific servers.
