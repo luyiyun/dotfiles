@@ -11,8 +11,8 @@ require("options") -- basic settings (like line number, tab size, ...)
 require("mappings") -- basic keyboard mappings (like leader, switching windows, ...)
 require("plugins_lazy") -- plugins managed by lazy.nvim
 
--- vim.cmd([[silent! colorscheme onedark]])
-vim.cmd([[silent! colorscheme tokyonight-day]])
+vim.cmd([[silent! colorscheme onedark]])
+-- vim.cmd([[silent! colorscheme tokyonight-day]])
 -- vim.g.material_style = "lighter"
 -- vim.cmd [[silent! colorscheme material]]
 -- vim.cmd [[silent! colorscheme catppuccin-latte]]
