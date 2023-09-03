@@ -32,17 +32,26 @@ vim.cmd([[silent! colorscheme onedark]])
 --
 --
 --
--- TODO: lua_ls 存在一个问题，其会在每次一开始询问是否配置luv，并且无法关掉
-
+-- TODO: 加入一个merge conflict的插件
 -- TODO: 0. 取消光标移动到括号时的高亮
 -- TODO: 0. 对noice.nvim进行配置，探索其更多的功能（比如statusline中的组件）
 -- TODO: 0. noice.nvim，通知显示的时间太长，可能会遮挡住文件，可能难以进行编辑
 -- TODO: 1. lspsaga的配置还存在一些问题，比如查看文档等不太方便
 -- TODO: 2. 找一个新的多行操作插件
 -- TODO: 10. 取消inactivate buffer的buffer显示（barbar)
--- TODO: 11. guard.nvim的安装和配置
 -- TODO: 13. 现在无法同时创建多个terminal
 -- TODO: 14. 安装copilot玩一玩
--- TODO: 20. nvimTree设置root dir
 -- TODO: 21. gitsigns的配置
--- TODO: 22. statusline中加入开启的LSP server的信息
+
+
+-- 问题解决：
+-- lua_ls 存在一个问题，其会在每次一开始询问是否配置luv，并且无法关掉。
+--     除了要对lua_ls的参数进行设置,还要删除掉.luarc.json文件，令其重新生成。
+-- guard.nvim的安装和配置
+--     现在使用null-ls
+-- nvimTree设置root dir
+--     现在使用neotree，其有快捷键来设置root_dir，同时我们也仿照LazyVim写了一个自动化获取root dir的函数
+-- statusline中加入开启的LSP server的信息
+--     已解决，见bottom_bar.lua
+-- symbols-outline会报错
+--     使用telescope自带的lsp_document_symbols (<leader>fu)
