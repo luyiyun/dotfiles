@@ -155,29 +155,63 @@ return {
       --        code action
       ------------------------------------------------------------------------------------
       local has_cmp_nlsp, cmp_nlsp = pcall(require, "cmp_nvim_lsp")
-      local on_attach = function(_, bufnr)
-        -- complete
-        if not has_cmp_nlsp then -- 如果没有cmp，则设置手动版本
-          -- Enable completion triggered by <c-x><c-o>
-          vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-        end
+      -- local on_attach = function(_, bufnr)
+      --   -- complete
+      --   if not has_cmp_nlsp then -- 如果没有cmp，则设置手动版本
+      --     -- Enable completion triggered by <c-x><c-o>
+      --     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+      --   end
+      --
+      --   -- go defination
+      --   local bufopts = { noremap = true, silent = true, buffer = bufnr }
+      --   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+      --
+      --   -- hover
+      --   vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+      --
+      --   -- rename
+      --   vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
+      --
+      --   -- format
+      --   vim.keymap.set('n', '<leader>rf', function() vim.lsp.buf.format { async = true } end, bufopts)
+      --
+      --   -- code action
+      --   vim.keymap.set('n', '<leader>ra', vim.lsp.buf.code_action, bufopts)
+      -- end
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+        callback = function(ev)
+          if not has_cmp_nlsp then -- 如果没有cmp，则设置手动版本
+            -- Enable completion triggered by <c-x><c-o>
+            vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+          end
 
-        -- go defination
-        local bufopts = { noremap = true, silent = true, buffer = bufnr }
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+          -- Buffer local mappings.
+          -- See `:help vim.lsp.*` for documentation on any of the below functions
+          local opts = { buffer = ev.buf }
+          -- vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+          -- go defination
+          vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+          -- hover
+          vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+          -- rename
+          vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+          -- code action
+          vim.keymap.set({ 'n', 'v' }, '<space>ra', vim.lsp.buf.code_action, opts)
+          -- format
+          vim.keymap.set('n', '<space>rf', function() vim.lsp.buf.format { async = true } end, opts)
 
-        -- hover
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-
-        -- rename
-        vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
-
-        -- format
-        vim.keymap.set('n', '<leader>rf', function() vim.lsp.buf.format { async = true } end, bufopts)
-
-        -- code action
-        vim.keymap.set('n', '<leader>ra', vim.lsp.buf.code_action, bufopts)
-      end
+          -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+          -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+          -- vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+          -- vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+          -- vim.keymap.set('n', '<space>wl', function()
+          --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+          -- end, opts)
+          -- vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+          -- vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+        end,
+      })
 
       ------------------------------------------------------------------------------------
       -- 启动LSP
@@ -191,7 +225,8 @@ return {
           -- and will be called for each installed server that doesn't have
           -- a dedicated handler.
           function(server_name) -- default handler (optional)
-            local lsp_cfg = { on_attach = on_attach }
+            -- local lsp_cfg = { on_attach = on_attach }
+            local lsp_cfg = {}
             if has_cmp_nlsp then
               lsp_cfg["capabilities"] = cmp_nlsp.default_capabilities()
             end
