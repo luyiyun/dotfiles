@@ -32,7 +32,7 @@ vim.g.localleader = " "
 nnoremap("-", "<cmd>nohl<CR>")
 
 -- 将esc在cmdline的行为覆盖掉
-vim.api.nvim_set_keymap("c", "<esc>", "<C-c>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap("c", "<esc>", "<C-c>", { noremap = true, silent = true })
 -- NOTE: cmdline中，使用esc会运行当前命令，这无法关闭，可以使用<C-c>来代替，详情见：
 --  https://github.com/neovim/neovim/issues/21585
 --  https://groups.google.com/g/vim_use/c/8Mhs9spyzCM/m/qEFr6AFshWcJ
@@ -52,13 +52,19 @@ nnoremap("<C-Left>", "<cmd>vertical resize-1<CR>")
 nnoremap("<C-Down>", "<cmd>resize-1<CR>")
 nnoremap("<C-Up>", "<cmd>resize+1 <CR>")
 
+-- move the current window to specicied position
+nnoremap("<leader>wh", "<C-w>H")
+nnoremap("<leader>wj", "<C-w>J")
+nnoremap("<leader>wk", "<C-w>K")
+nnoremap("<leader>wl", "<C-w>L")
+
 -- 命令行左右移动/上下选中
 cmap("<C-j>", "<C-n>")
 cmap("<C-k>", "<C-p>")
 
 -- save and quit
-vim.keymap.set({"n", "v"}, "<C-s>", "<cmd>:w<CR>", {noremap = true, silent = true})
-vim.keymap.set({"n", "v"}, "<C-q>", "<cmd>:q<CR>", {noremap = true, silent = true})
+vim.keymap.set({ "n", "v" }, "<C-s>", "<cmd>:w<CR>", { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<C-q>", "<cmd>:q<CR>", { noremap = true, silent = true })
 
 -- 左右缩进，这样移动后不会退出visual mode
 vnoremap("<", "<gv")
