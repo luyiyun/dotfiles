@@ -6,18 +6,6 @@ return {
     "williamboman/mason.nvim", -- mason官方不推荐进行lazy loading
     -- build = ":MasonUpdate",
     opts = {
-      -- keymaps = {
-      --   toggle_package_expand   = "o", -- 展开
-      --   install_package         = "i", -- 安装
-      --   update_package          = "u", -- 更新
-      --   update_all_packages     = "U", -- 更新所有
-      --   check_package_version   = "c", -- 检查版本
-      --   check_outdated_packages = "C", -- 检查所有
-      --   uninstall_package       = "X", -- 删除
-      --   cancel_installation     = "<C-c>", -- 取消安装
-      --   apply_language_filter   = "<C-f>", -- 筛选
-      -- },
-      -- max_concurrent_installers = 10,
       ui = {
         icons = {
           package_installed = "✓",
@@ -47,17 +35,12 @@ return {
       "folke/neodev.nvim",                 -- 提供用于neovim插件开发的lua api的提示，需要保证在lspconfig之前启动
       -- NOTE: 为了应用neodev，首先需要将mason,mason-lspconfig,nvim-lspconfig都升级到
       -- NOTE: 最新版本，然后使用新的lua的LSP名称（lua_ls，而非sumneko_lua）
-
-      -- "nvimdev/lspsaga.nvim",
-      -- { "folke/neoconf.nvim", cmd = "Neoconf", config = true },
-      -- "hrsh7th/cmp-nvim-lsp",
-      -- {
-      --   cond = function() return require("lazyvim.util").has("nvim-cmp") end,
-      -- },
     },
     config = function()
-      -- NOTE: 所有的lsp以及它们的配置
+      ------------------------------------------------------------------------------------
+      -- 所有的lsp以及它们的配置
       -- 这里支持lsp，不支持linter和formatter等其他
+      ------------------------------------------------------------------------------------
       local servers = {
         lua_ls = {
           settings = {
@@ -111,40 +94,42 @@ return {
       ------------------------------------------------------------------------------------
       -- (配置) 代码诊断 diagnositc
       ------------------------------------------------------------------------------------
-      -- 每当开启一个LSP时，其都会提供这个功能。这部分的配置主要包括两个部分：
-      --  1. 如何展示诊断信息；
-      --  2. 相关位置的代码跳转
-      --
-      -- 首先是左侧signcolumn的图标显示
-      local signs = {
-        { name = "DiagnosticSignError", text = "💢" },
-        { name = "DiagnosticSignWarn", text = "😱" },
-        { name = "DiagnosticSignHint", text = "🤔" },
-        { name = "DiagnosticSignInfo", text = "😐" },
-      }
-      -- local signs = {
-      --   { name = "DiagnosticSignError", text = "" },
-      --   { name = "DiagnosticSignWarn",  text = "" },
-      --   { name = "DiagnosticSignHint",  text = "" },
-      --   { name = "DiagnosticSignInfo",  text = "" },
-      -- }
-      for _, sign in ipairs(signs) do -- 提示信息图标设置
-        vim.fn.sign_define(sign.name, {
-          texthl = sign.name,
-          text   = sign.text
+      local has_cmp_nlsp, cmp_nlsp = pcall(require, "cmp_nvim_lsp") -- 没有setup，就没有开启
+      local has_lspsaga, _ = pcall(require, "lspsaga")
+
+      ------------------------------------------------------------------------------------
+      -- (配置) 代码诊断 diagnositc
+      ------------------------------------------------------------------------------------
+      if not has_lspsaga then
+        -- 每当开启一个LSP时，其都会提供这个功能。这部分的配置主要包括两个部分：
+        --  1. 如何展示诊断信息；
+        --  2. 相关位置的代码跳转
+        --
+        -- 首先是左侧signcolumn的图标显示
+        local signs = {
+          { name = "DiagnosticSignError", text = "💢" }, -- ""
+          { name = "DiagnosticSignWarn", text = "😱" }, -- ""
+          { name = "DiagnosticSignHint", text = "🤔" }, -- ""
+          { name = "DiagnosticSignInfo", text = "😐" }, -- ""
+        }
+        for _, sign in ipairs(signs) do -- 提示信息图标设置
+          vim.fn.sign_define(sign.name, {
+            texthl = sign.name,
+            text   = sign.text
+          })
+        end
+        vim.diagnostic.config({
+          virtual_text     = true, -- 是否显示显示提示文字
+          update_in_insert = true,
+          underline        = true,
+          severity_sort    = true,
+          signs            = true, -- 显示图标
         })
+        vim.keymap.set('n', 'ge', vim.diagnostic.open_float)
+        vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+        vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+        -- vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
       end
-      vim.diagnostic.config({
-        virtual_text     = true, -- 是否显示显示提示文字
-        update_in_insert = true,
-        underline        = true,
-        severity_sort    = true,
-        signs            = true, -- 显示图标
-      })
-      vim.keymap.set('n', 'ge', vim.diagnostic.open_float)
-      vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-      vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-      -- vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
 
       ------------------------------------------------------------------------------------
       -- (配置) 代码补全 complete,
@@ -154,64 +139,42 @@ return {
       --        格式化 format,
       --        code action
       ------------------------------------------------------------------------------------
-      local has_cmp_nlsp, cmp_nlsp = pcall(require, "cmp_nvim_lsp")
-      -- local on_attach = function(_, bufnr)
-      --   -- complete
-      --   if not has_cmp_nlsp then -- 如果没有cmp，则设置手动版本
-      --     -- Enable completion triggered by <c-x><c-o>
-      --     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-      --   end
-      --
-      --   -- go defination
-      --   local bufopts = { noremap = true, silent = true, buffer = bufnr }
-      --   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-      --
-      --   -- hover
-      --   vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-      --
-      --   -- rename
-      --   vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
-      --
-      --   -- format
-      --   vim.keymap.set('n', '<leader>rf', function() vim.lsp.buf.format { async = true } end, bufopts)
-      --
-      --   -- code action
-      --   vim.keymap.set('n', '<leader>ra', vim.lsp.buf.code_action, bufopts)
-      -- end
-      vim.api.nvim_create_autocmd('LspAttach', {
-        group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-        callback = function(ev)
-          if not has_cmp_nlsp then -- 如果没有cmp，则设置手动版本
-            -- Enable completion triggered by <c-x><c-o>
-            vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
-          end
+      if not has_lspsaga then
+        vim.api.nvim_create_autocmd('LspAttach', {
+          group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+          callback = function(ev)
+            if not has_cmp_nlsp then -- 如果没有cmp，则设置手动版本
+              -- Enable completion triggered by <c-x><c-o>
+              vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+            end
 
-          -- Buffer local mappings.
-          -- See `:help vim.lsp.*` for documentation on any of the below functions
-          local opts = { buffer = ev.buf }
-          -- vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-          -- go defination
-          vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-          -- hover
-          vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-          -- rename
-          vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
-          -- code action
-          vim.keymap.set({ 'n', 'v' }, '<space>ra', vim.lsp.buf.code_action, opts)
-          -- format
-          vim.keymap.set('n', '<space>rf', function() vim.lsp.buf.format { async = true } end, opts)
+            -- Buffer local mappings.
+            -- See `:help vim.lsp.*` for documentation on any of the below functions
+            local opts = { buffer = ev.buf }
+            -- vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+            -- go defination
+            vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+            -- hover
+            vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+            -- rename
+            vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+            -- code action
+            vim.keymap.set({ 'n', 'v' }, '<space>ra', vim.lsp.buf.code_action, opts)
+            -- format
+            vim.keymap.set('n', '<space>rf', function() vim.lsp.buf.format { async = true } end, opts)
 
-          -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-          -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
-          -- vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
-          -- vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
-          -- vim.keymap.set('n', '<space>wl', function()
-          --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-          -- end, opts)
-          -- vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
-          -- vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-        end,
-      })
+            -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+            -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+            -- vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+            -- vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+            -- vim.keymap.set('n', '<space>wl', function()
+            --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+            -- end, opts)
+            -- vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+            -- vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+          end,
+        })
+      end
 
       ------------------------------------------------------------------------------------
       -- 启动LSP
@@ -246,4 +209,29 @@ return {
       end
     end,
   },
+  -- ╭──────────────────────────────────────────────╮
+  -- │               beautiful LSP                  │
+  -- ╰──────────────────────────────────────────────╯
+  -- {
+  --   'nvimdev/lspsaga.nvim',
+  --   event = "LspAttach",
+  --   dependencies = {
+  --       'nvim-treesitter/nvim-treesitter', -- optional
+  --       'nvim-tree/nvim-web-devicons'     -- optional
+  --   },
+  --   opts = {},
+  --   keys = {
+  --     {"gf", "<cmd>Lspsaga finder<CR>", desc = "Lspsaga finder[lspsaga]"},
+  --     {"]d", "<cmd>Lspsaga diagnostic_jump_next", desc = "Lspsaga jump next diag"},
+  --     {"[d", "<cmd>Lspsaga diagnostic_jump_prev", desc = "Lspsaga jump previous diag"},
+  --     {"gd", "<cmd>Lspsaga peek_definition<CR>", desc = "Lspsaga go to definition[lspsaga]"},
+  --     {"K", "<cmd>Lspsaga hover_doc<CR>", desc = "Lspsaga hover[lspsaga]"},
+  --     {"<leader>rn", "<cmd>Lspsaga rename<CR>", desc = "Lspsaga rename"},
+  --     -- {"<leader>dl", "<cmd>Lspsaga show_line_diagnostics<CR>", desc = "Show line diagnostics[lspsaga]"},
+  --     -- {"<leader>dc", "<cmd>Lspsaga show_cursor_diagnostics<CR>", desc = "Show cursor diagnostics[lspsaga]"},
+  --     -- {"<leader>da", "<cmd>Lspsaga code_action<CR>", desc = "code action quickFix[lspsaga]"},
+  --     -- {"<leader>ds", "<cmd>LSoutlineToggle<CR>", desc = "show symbols[]"},
+  --     -- {"<leader>dr", "<cmd>Lspsaga rename<CR>", desc = "edit symbol name[lspsaga]"},
+  --   },
+  -- }
 }
