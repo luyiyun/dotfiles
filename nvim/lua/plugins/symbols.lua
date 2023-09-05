@@ -22,4 +22,52 @@ return {
   --   },
   --   keys = { { "<leader>s", "<cmd>AerialToggle!<cr>", "Toggle symbols outline" }, }
   -- }
+  --
+  --
+  ------------------------------------------------------------------
+  -- a VS Code like winbar in order to get LSP context and file name
+  ------------------------------------------------------------------
+  {
+    "utilyre/barbecue.nvim",
+    event = "VeryLazy",
+    name = "barbecue",
+    version = "*",
+    dependencies = {
+      "SmiteshP/nvim-navic",
+      "nvim-tree/nvim-web-devicons", -- optional dependency
+    },
+    opts = {
+      -- configurations go here
+    },
+  },
+
+  ------------------------------------------------------------------
+  -- lsp symbols navigator
+  ------------------------------------------------------------------
+  {
+    "SmiteshP/nvim-navbuddy",
+    event = "VeryLazy",
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      "SmiteshP/nvim-navic",
+      "MunifTanjim/nui.nvim",
+      "numToStr/Comment.nvim",          -- Optional
+      "nvim-telescope/telescope.nvim"   -- Optional
+    },
+    keys = {
+      {"<leader>s", "<cmd>Navbuddy<cr>", "symbols outline"},
+    },
+    config = function()
+      local navbuddy = require("nvim-navbuddy")
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          local buffer = args.buf
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          navbuddy.attach(client, buffer)
+        end
+      })
+      navbuddy.setup({})
+    end
+  }
+
 }
