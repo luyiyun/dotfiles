@@ -41,9 +41,10 @@ return {
         null_ls.setup({ sources = {
           formatting.black.with({ extra_args = {"--line-length=79"} }),
           formatting.isort,
-          diagnostics.flake8.with({ extra_args = {"--ignore=E731,W503"} }),
+          diagnostics.flake8.with({ extra_args = {"--ignore=E731,W503,E402"} }),
           -- E731: 使用def而不是lambda
           -- W503: binary break one line
+          -- E402: import must be at the top of file
         } })
         local mnl = require("mason-null-ls")
         mnl.setup({ ensure_installed = nil, automatic_installation = true })
