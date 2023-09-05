@@ -140,3 +140,14 @@ function get_root()
   ---@cast root string
   return root
 end
+
+-- ╭──────────────────────────────────────────────────────────────────────────────╮
+-- │ set the font size                                                            │
+-- ╰──────────────────────────────────────────────────────────────────────────────╯
+function setFontSize(font_family, font_size)
+  vim.opt.guifont = string.format("%s:h%s", font_family, font_size or 10)
+end
+
+function set_fcfs()
+  setFontSize("FiraCode Nerd Font Mono", 10)
+end

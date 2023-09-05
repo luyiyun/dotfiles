@@ -19,11 +19,11 @@ vim.cmd([[silent! colorscheme onedark]])
 -- vim.cmd.colorscheme("base16-gruvbox-dark-soft")
 
 -- neovide
--- vim.g.isNeovide = false;
--- if vim.fn.exists("g:neovide") == 1 then
---   vim.g.isNeovide = true;
---   require("neovide")
--- end
+vim.g.isNeovide = false;
+if vim.fn.exists("g:neovide") == 1 then
+  vim.g.isNeovide = true;
+  require("neovide")
+end
 
 -- 配置颜色方案
 -- vim.api.nvim_set_hl(0, "BufferVisibleERROR", {bg = "#282c34", fg = "#e86671"})
@@ -32,6 +32,8 @@ vim.cmd([[silent! colorscheme onedark]])
 --
 --
 --
+-- TODO: 切换branch时自动刷新buffer
+-- TODO: 每次从nvim使用session manager转换到python相关的工作环境时会报错
 -- TODO: 加入一个merge conflict的插件
 -- TODO: 0. 取消光标移动到括号时的高亮
 -- TODO: 0. 对noice.nvim进行配置，探索其更多的功能（比如statusline中的组件）
@@ -55,3 +57,4 @@ vim.cmd([[silent! colorscheme onedark]])
 --     已解决，见bottom_bar.lua
 -- symbols-outline会报错
 --     使用telescope自带的lsp_document_symbols (<leader>fu)
+--     use navbuddy and barbucue
