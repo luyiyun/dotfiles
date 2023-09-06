@@ -71,7 +71,7 @@ ZSH_THEME="bira"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
+plugins=(git zsh-syntax-highlighting zsh-autosuggestions zsh-vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -134,4 +134,3 @@ if [ -f "/home/rongzhiwei/mambaforge/etc/profile.d/mamba.sh" ]; then
     . "/home/rongzhiwei/mambaforge/etc/profile.d/mamba.sh"
 fi
 # <<< conda initialize <<<
-
