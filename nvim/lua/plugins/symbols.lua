@@ -59,6 +59,10 @@ return {
     },
     config = function()
       local navbuddy = require("nvim-navbuddy")
+      -- local icons = {}
+      -- for k, v in ipairs(require("icons").kind) do
+      --   icons[k] = v .. " "
+      -- end
       -- vim.api.nvim_create_autocmd("LspAttach", {
       --   callback = function(args)
       --     local buffer = args.buf
@@ -70,7 +74,8 @@ return {
         lsp = {
           auto_attach = true,
           preference = { "pyright", "lua_ls", "yamlls" }
-        }
+        },
+        icons = require("icons").kind
       })
     end
   }

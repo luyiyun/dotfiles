@@ -50,6 +50,7 @@ return {
     Repo = "",
     Octoface = "",
     Branch = "",
+    Conflict = "",
   },
   ui = {
     ArrowCircleDown = "",
@@ -153,4 +154,3 @@ return {
     CircuitBoard = "",
   },
 }
-

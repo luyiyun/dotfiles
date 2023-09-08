@@ -16,6 +16,7 @@ vim.cmd([[silent! colorscheme onedark]])
 -- vim.g.material_style = "lighter"
 -- vim.cmd [[silent! colorscheme material]]
 -- vim.cmd [[silent! colorscheme catppuccin-latte]]
+-- vim.cmd [[silent! colorscheme catppuccin-frappe]]
 -- vim.cmd.colorscheme("base16-gruvbox-dark-soft")
 
 -- neovide

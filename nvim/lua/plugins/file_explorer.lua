@@ -69,7 +69,7 @@ return {
       window = {
         mappings = {
           ["<space>"] = "none",
-          ["S"] = "none",  -- 取消open_split的默认设置
+          ["S"] = "none", -- 取消open_split的默认设置
           ["o"] = "open",
           ["s"] = "open_split",
           ["v"] = "open_vsplit",
@@ -85,6 +85,28 @@ return {
       },
     },
     config = function(_, opts)
+      local icons = require("icons")
+      vim.tbl_extend("error", {
+        icon = {
+          folder_closed = icons.ui.Folder,
+          folder_open = icons.ui.FolderOpen,
+          folder_empty = icons.ui.EmptyFolder,
+        },
+        git_status = {
+          symbols = {
+            added = icons.git.LineAdded,
+            modified = icons.git.LineModified,
+            deleted = icons.git.FileDeleted,
+            rename = icons.git.FileRenamed,
+            untracked = icons.git.FileUntracked,
+            ignored = icons.git.FileIgnored,
+            unstaged = icons.git.FileUnstaged,
+            staged = icons.git.FileStaged,
+            conflict = icons.git.Conflict,
+          }
+        }
+      })
+
       require("neo-tree").setup(opts)
       vim.api.nvim_create_autocmd("TermClose", {
         pattern = "*lazygit",
