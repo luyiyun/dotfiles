@@ -7,6 +7,7 @@
   "cmp-nvim-lsp": { "branch": "main", "commit": "44b16d11215dce86f253ce0c30949813c0a90765" },
   "cmp-path": { "branch": "main", "commit": "91ff86cd9c29299a64f968ebb45846c485725f23" },
   "cmp-vsnip": { "branch": "main", "commit": "989a8a73c44e926199bfd05fa7a516d51f2d2752" },
+  "distant.nvim": { "branch": "v0.3", "commit": "17bcd37f8d91dcb987456be456d8a95db1a772ba" },
   "flash.nvim": { "branch": "main", "commit": "c92ecbff98fdc8770c283aa3934349e6889195dd" },
   "friendly-snippets": { "branch": "main", "commit": "8f5db6c5b691a6bbaa5dabd9afeb164ef8a06d04" },
   "heirline.nvim": { "branch": "master", "commit": "c52391dc4428d503f65e6bcb1533e6334f22a136" },
