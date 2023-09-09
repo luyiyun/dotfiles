@@ -86,7 +86,7 @@ return {
     },
     config = function(_, opts)
       local icons = require("icons")
-      vim.tbl_extend("error", {
+      vim.tbl_extend("error", opts, {
         icon = {
           folder_closed = icons.ui.Folder,
           folder_open = icons.ui.FolderOpen,
