@@ -39,6 +39,8 @@ opt.termguicolors = true
 opt.cmdheight = 0
 -- 判定为组合键的间隔时间
 opt.timeoutlen = 150
+-- 设置一个global status bar  使用lualine来设置
+-- opt.laststatus = 3
 
 
 -----------------------------------------------------------------------------------------
