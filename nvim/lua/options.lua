@@ -38,7 +38,7 @@ opt.termguicolors = true
 -- 隐藏命令行
 opt.cmdheight = 0
 -- 判定为组合键的间隔时间
-opt.timeoutlen = 150
+opt.timeoutlen = 500  -- for Comment.nvim
 
 
 -----------------------------------------------------------------------------------------

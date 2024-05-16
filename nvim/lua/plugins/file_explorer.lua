@@ -38,84 +38,92 @@ return {
     keys = {
       {
         "<leader>tt",
-        function() require("neo-tree.command").execute({ toggle = true, dir = get_root() }) end,
-        desc = "Explorer NeoTree (root dir)",
+        "<cmd>Neotree toggle<cr>",
+        desc = "Explorer NeoTree",
       },
       {
-        "<leader>te",
-        function()
-          require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
-        end,
-        desc = "Explorer NeoTree (cwd)",
+        "<leader>tb",
+        "<cmd>Neotree toggle source=buffers<cr>",
+        desc = "Explorer NeoTree buffers",
+      },
+      {
+        "<leader>tl",
+        "<cmd>Neotree toggle position=current<cr>",
+        desc = "Explorer NeoTree within current window",
       },
     },
-    deactivate = function() vim.cmd([[Neotree close]]) end,
-    init = function()
-      if vim.fn.argc() == 1 then
-        local stat = vim.loop.fs_stat(vim.fn.argv(0))
-        if stat and stat.type == "directory" then
-          require("neo-tree")
-        end
-      end
-    end,
-    opts = {
-      sources = { "filesystem", "buffers", "git_status", "document_symbols" },
-      open_files_do_not_replace_types = { "terminal", "Trouble", "qf", "Outline" },
-      filesystem = {
-        bind_to_cwd = false,
-        follow_current_file = { enabled = true },
-        use_libuv_file_watcher = true,
-      },
-      window = {
-        mappings = {
-          ["<space>"] = "none",
-          ["S"] = "none", -- 取消open_split的默认设置
-          ["o"] = "open",
-          ["s"] = "open_split",
-          ["v"] = "open_vsplit",
-        },
-      },
-      default_component_configs = {
-        indent = {
-          with_expanders = true, -- if nil and file nesting is enabled, will enable expanders
-          expander_collapsed = "",
-          expander_expanded = "",
-          expander_highlight = "NeoTreeExpander",
-        },
-      },
-    },
+    opts = {},
     config = function(_, opts)
-      local icons = require("icons")
-      vim.tbl_extend("error", {
-        icon = {
-          folder_closed = icons.ui.Folder,
-          folder_open = icons.ui.FolderOpen,
-          folder_empty = icons.ui.EmptyFolder,
-        },
-        git_status = {
-          symbols = {
-            added = icons.git.LineAdded,
-            modified = icons.git.LineModified,
-            deleted = icons.git.FileDeleted,
-            rename = icons.git.FileRenamed,
-            untracked = icons.git.FileUntracked,
-            ignored = icons.git.FileIgnored,
-            unstaged = icons.git.FileUnstaged,
-            staged = icons.git.FileStaged,
-            conflict = icons.git.Conflict,
-          }
-        }
-      })
+      -- local icons = require("icons")
+      -- vim.tbl_extend("error", {
+      --   icon = {
+      --     folder_closed = icons.ui.Folder,
+      --     folder_open = icons.ui.FolderOpen,
+      --     folder_empty = icons.ui.EmptyFolder,
+      --   },
+      --   git_status = {
+      --     symbols = {
+      --       added = icons.git.LineAdded,
+      --       modified = icons.git.LineModified,
+      --       deleted = icons.git.FileDeleted,
+      --       rename = icons.git.FileRenamed,
+      --       untracked = icons.git.FileUntracked,
+      --       ignored = icons.git.FileIgnored,
+      --       unstaged = icons.git.FileUnstaged,
+      --       staged = icons.git.FileStaged,
+      --       conflict = icons.git.Conflict,
+      --     }
+      --   }
+      -- })
+      vim.fn.sign_define("DiagnosticSignError", {text = " ", texthl = "DiagnosticSignError"})
+      vim.fn.sign_define("DiagnosticSignWarn", {text = " ", texthl = "DiagnosticSignWarn"})
+      vim.fn.sign_define("DiagnosticSignInfo", {text = " ", texthl = "DiagnosticSignInfo"})
+      vim.fn.sign_define("DiagnosticSignHint", {text = "󰌵", texthl = "DiagnosticSignHint"})
 
       require("neo-tree").setup(opts)
-      vim.api.nvim_create_autocmd("TermClose", {
-        pattern = "*lazygit",
-        callback = function()
-          if package.loaded["neo-tree.sources.git_status"] then
-            require("neo-tree.sources.git_status").refresh()
-          end
-        end,
-      })
+      -- vim.api.nvim_create_autocmd("TermClose", {
+      --   pattern = "*lazygit",
+      --   callback = function()
+      --     if package.loaded["neo-tree.sources.git_status"] then
+      --       require("neo-tree.sources.git_status").refresh()
+      --     end
+      --   end,
+      -- })
     end,
+    -- deactivate = function() vim.cmd([[Neotree close]]) end,
+    -- init = function()
+    --   if vim.fn.argc() == 1 then
+    --     local stat = vim.loop.fs_stat(vim.fn.argv(0))
+    --     if stat and stat.type == "directory" then
+    --       require("neo-tree")
+    --     end
+    --   end
+    -- end,
+    -- opts = {
+    --   sources = { "filesystem", "buffers", "git_status", "document_symbols" },
+    --   open_files_do_not_replace_types = { "terminal", "Trouble", "qf", "Outline" },
+    --   filesystem = {
+    --     bind_to_cwd = false,
+    --     follow_current_file = { enabled = true },
+    --     use_libuv_file_watcher = true,
+    --   },
+    --   window = {
+    --     mappings = {
+    --       ["<space>"] = "none",
+    --       ["S"] = "none", -- 取消open_split的默认设置
+    --       ["o"] = "open",
+    --       ["s"] = "open_split",
+    --       ["v"] = "open_vsplit",
+    --     },
+    --   },
+    --   default_component_configs = {
+    --     indent = {
+    --       with_expanders = true, -- if nil and file nesting is enabled, will enable expanders
+    --       expander_collapsed = "",
+    --       expander_expanded = "",
+    --       expander_highlight = "NeoTreeExpander",
+    --     },
+    --   },
+    -- },
   }
 }

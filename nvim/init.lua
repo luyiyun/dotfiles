@@ -1,4 +1,3 @@
--- 安装前置工具
 -- 1. neovim 0.8+
 -- 2. node和npm，设置好国内镜像
 -- 3. 安装make，gcc, (windows可以通过scoop进行安装（scoop的安装查看https://zhuanlan.zhihu.com/p/594363658）)
@@ -20,11 +19,9 @@ vim.cmd([[silent! colorscheme onedark]])
 -- vim.cmd.colorscheme("base16-gruvbox-dark-soft")
 
 -- neovide
-vim.g.isNeovide = false;
-if vim.fn.exists("g:neovide") == 1 then
-  vim.g.isNeovide = true;
+if vim.g.neovide then
   require("neovide")
-end
+end 
 
 -- 配置颜色方案
 -- vim.api.nvim_set_hl(0, "BufferVisibleERROR", {bg = "#282c34", fg = "#e86671"})

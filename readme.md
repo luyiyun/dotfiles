@@ -3,6 +3,10 @@
 ### requirements
 
 1. [neovim](https://github.com/neovim/neovim/releases/tag/stable) 0.8+
+  ```bash
+  # windows
+  scoop install neovim  neovide
+  ```
 
 2. [node, npm](https://nodejs.org/en/download)，设置国内镜像
 
@@ -46,7 +50,12 @@ git clone https://github.com/luyiyun/dotfiles.git
 2. 建立库中nvim到config路径下的软链接
 
 ```bash
+# linux
 ln -s /path/dotfiles/nvim ~/.config/nvim
+```
+```powershell
+# windows (admin)
+New-Item -ItemType SymbolicLink -Path ~/AppData/Local/nvim -Target ~/Documents/dotfiles/nvim
 ```
 
 3. 安装nerd font

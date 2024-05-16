@@ -21,16 +21,16 @@ return {
   -- ----------
   -- -缩进显示-
   -- ----------
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    event = "VeryLazy",
-    opts = {
-      -- NOTE: 开启后会导致一些内容泄露到行号的左侧
-      show_current_context = false,
-      show_current_context_start = false,
-      show_end_of_line = false,
-    },
-  },
+  -- {
+  --   "lukas-reineke/indent-blankline.nvim",
+  --   event = "VeryLazy",
+  --   opts = {
+  --     -- NOTE: 开启后会导致一些内容泄露到行号的左侧
+  --     show_current_context = false,
+  --     show_current_context_start = false,
+  --     show_end_of_line = false,
+  --   },
+  -- },
   -- ----------
   -- -智能缩进-
   -- ----------
@@ -48,32 +48,32 @@ return {
     event = "VeryLazy",
     config = true
   },
-  -- ----------------
-  -- -TODO及其他标识-
-  -- ----------------
-  {
-    "folke/todo-comments.nvim",
-    dependencies = "nvim-lua/plenary.nvim",
-    event = "VeryLazy",
-    config = true,
-    keys = {
-      {"]t", function() require("todo-comments").jump_next() end, desc = "Next todo comment"},
-      {"[t", function() require("todo-comments").jump_prev() end, desc = "Previous todo comment"},
-      {"<leader>ft", "<cmd>TodoTelescope<cr>", desc = "Search through all project todos with Telescope"},
-    }
-  },
-  -- ------------------
-  -- -高亮光标所在对象-
-  -- ------------------
-  {"RRethy/vim-illuminate", event = "VeryLazy"},
-  -- ------------------
-  -- -自动删除行尾空格-
-  -- ------------------
-  {
-    "cappyzawa/trim.nvim",
-    event = "VeryLazy",
-    config = true,
-  },
+  -- -- ----------------
+  -- -- -TODO及其他标识-
+  -- -- ----------------
+  -- {
+  --   "folke/todo-comments.nvim",
+  --   dependencies = "nvim-lua/plenary.nvim",
+  --   event = "VeryLazy",
+  --   config = true,
+  --   keys = {
+  --     {"]t", function() require("todo-comments").jump_next() end, desc = "Next todo comment"},
+  --     {"[t", function() require("todo-comments").jump_prev() end, desc = "Previous todo comment"},
+  --     {"<leader>ft", "<cmd>TodoTelescope<cr>", desc = "Search through all project todos with Telescope"},
+  --   }
+  -- },
+  -- -- ------------------
+  -- -- -高亮光标所在对象-
+  -- -- ------------------
+  -- {"RRethy/vim-illuminate", event = "VeryLazy"},
+  -- -- ------------------
+  -- -- -自动删除行尾空格-
+  -- -- ------------------
+  -- {
+  --   "cappyzawa/trim.nvim",
+  --   event = "VeryLazy",
+  --   config = true,
+  -- },
   -- ----------------
   -- -  快速定位    -
   -- ----------------
