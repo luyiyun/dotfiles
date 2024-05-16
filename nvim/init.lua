@@ -5,9 +5,9 @@
 -- 5. 安装fd，(optional 更快的file browser)   TODO:
 --
 
-require("functions") -- custom utility functions
-require("options") -- basic settings (like line number, tab size, ...)
-require("mappings") -- basic keyboard mappings (like leader, switching windows, ...)
+require("functions")    -- custom utility functions
+require("options")      -- basic settings (like line number, tab size, ...)
+require("mappings")     -- basic keyboard mappings (like leader, switching windows, ...)
 require("plugins_lazy") -- plugins managed by lazy.nvim
 
 vim.cmd([[silent! colorscheme onedark]])
@@ -21,7 +21,8 @@ vim.cmd([[silent! colorscheme onedark]])
 -- neovide
 if vim.g.neovide then
   require("neovide")
-end 
+end
+
 
 -- 配置颜色方案
 -- vim.api.nvim_set_hl(0, "BufferVisibleERROR", {bg = "#282c34", fg = "#e86671"})

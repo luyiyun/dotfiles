@@ -11,7 +11,7 @@ return {
       { "<leader>vd", function() require("venv-selector").deactivate_venv() end, desc = "python enviroment deactivate" }
     },
     opts = {
-      anaconda_path = "$HOME/mambaforge/envs/",
+      anaconda_path = osinfo() == "WIN" and "C:\\Softwares\\miniforge\\envs" or "$HOME/mambaforge/envs/",
       search = false,
       search_workspace = false,
     }

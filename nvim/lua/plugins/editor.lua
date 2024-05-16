@@ -82,7 +82,7 @@ return {
     event = "VeryLazy",
     opts = {},
     keys = {
-      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "s",  mode = { "n", "x", "o" }, function() require("flash").jump() end,       desc = "Flash" },
       { "st", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
       -- { "<leader>r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
       -- { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
@@ -101,11 +101,20 @@ return {
     "rainbowhxch/accelerated-jk.nvim",
     event = "VeryLazy",
     keys = {
-      {"j", "<Plug>(accelerated_jk_j)"},
-      {"k", "<Plug>(accelerated_jk_k)"},
+      { "j", "<Plug>(accelerated_jk_j)" },
+      { "k", "<Plug>(accelerated_jk_k)" },
       -- {"gj", "<Plug>(accelerated_jk_gj)"},
       -- {"gk", "<Plug>(accelerated_jk_gk)"},
     },
     config = true
+  },
+  -- --------------------
+  -- -  输入法自动切换  -
+  -- --------------------
+  {
+    "keaising/im-select.nvim",
+    config = function()
+      require("im_select").setup({})
+    end,
   }
 }
