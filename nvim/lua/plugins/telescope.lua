@@ -32,6 +32,8 @@ return {
               ["<C-k>"] = actions.move_selection_previous,
               ["<C-q>"] = actions.close,
               ["<A-q>"] = actions.close,  -- NOTE: 按起来更舒服一些
+              ["<C-l>"] = actions.file_vsplit, -- open selected file in vertical split window
+              ["<C-b>"] = actions.file_split,  -- open selected file in horizontal split window
               -- ["<esc>"] = actions.close,  --  NOTE: 不要映射esc，因为还要用它来进行i和n的转换
             },
             n = {
@@ -74,7 +76,8 @@ return {
       }) end, desc = "Goto Symbol (Workspace)" },
       { "<leader>fU", function() require("telescope.builtin")["lsp_dynamic_workspace_symbols"]({
         symbols = { "Class", "Function", "Method", "Constructor", "Interface", "Module", "Struct", "Trait", "Field", "Property"},
-      }) end, desc = "Goto Symbol (Workspace)" }
+      }) end, desc = "Goto Symbol (Workspace)" },
+      { "<leader>s", function() require("telescope.builtin")["treesitter"]() end, desc = "Lists Function names, variabels, from Treesitter" },
     }
   },
 

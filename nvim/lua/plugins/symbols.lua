@@ -44,40 +44,40 @@ return {
   ------------------------------------------------------------------
   -- lsp symbols navigator
   ------------------------------------------------------------------
-  {
-    "SmiteshP/nvim-navbuddy",
-    event = "VeryLazy",
-    dependencies = {
-      "neovim/nvim-lspconfig",
-      "SmiteshP/nvim-navic",
-      "MunifTanjim/nui.nvim",
-      "numToStr/Comment.nvim",        -- Optional
-      "nvim-telescope/telescope.nvim" -- Optional
-    },
-    keys = {
-      { "<leader>s", "<cmd>Navbuddy<cr>", "symbols outline" },
-    },
-    config = function()
-      local navbuddy = require("nvim-navbuddy")
-      -- local icons = {}
-      -- for k, v in ipairs(require("icons").kind) do
-      --   icons[k] = v .. " "
-      -- end
-      -- vim.api.nvim_create_autocmd("LspAttach", {
-      --   callback = function(args)
-      --     local buffer = args.buf
-      --     local client = vim.lsp.get_client_by_id(args.data.client_id)
-      --     navbuddy.attach(client, buffer)
-      --   end
-      -- })
-      navbuddy.setup({
-        lsp = {
-          auto_attach = true,
-          preference = { "pyright", "lua_ls", "yamlls" }
-        },
-        icons = require("icons").kind
-      })
-    end
-  }
+  -- {
+  --   "SmiteshP/nvim-navbuddy",
+  --   event = "VeryLazy",
+  --   dependencies = {
+  --     "neovim/nvim-lspconfig",
+  --     "SmiteshP/nvim-navic",
+  --     "MunifTanjim/nui.nvim",
+  --     "numToStr/Comment.nvim",        -- Optional
+  --     "nvim-telescope/telescope.nvim" -- Optional
+  --   },
+  --   -- keys = {
+  --   --   { "<leader>s", "<cmd>Navbuddy<cr>", "symbols outline" },
+  --   -- },
+  --   config = function()
+  --     local navbuddy = require("nvim-navbuddy")
+  --     -- local icons = {}
+  --     -- for k, v in ipairs(require("icons").kind) do
+  --     --   icons[k] = v .. " "
+  --     -- end
+  --     -- vim.api.nvim_create_autocmd("LspAttach", {
+  --     --   callback = function(args)
+  --     --     local buffer = args.buf
+  --     --     local client = vim.lsp.get_client_by_id(args.data.client_id)
+  --     --     navbuddy.attach(client, buffer)
+  --     --   end
+  --     -- })
+  --     navbuddy.setup({
+  --       lsp = {
+  --         auto_attach = true,
+  --         preference = { "pyright", "lua_ls", "yamlls" }
+  --       },
+  --       icons = require("icons").kind
+  --     })
+  --   end
+  -- }
 
 }
