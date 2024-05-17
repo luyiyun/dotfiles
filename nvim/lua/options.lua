@@ -188,3 +188,4 @@ vim.api.nvim_create_autocmd("FileType", {
 -- 其他设置
 -----------------------------------------------------------------------------------------
 vim.bo.autoread = true
+vim.opt.conceallevel = 2  -- for obsidian.nvim

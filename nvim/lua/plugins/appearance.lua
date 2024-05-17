@@ -110,7 +110,7 @@ return {
     config = function()
       -- 得到当前lsp的名称
       local function lsp_info()
-        local clients = vim.lsp.get_active_clients({bufnr = 0})
+        local clients = vim.lsp.get_clients({ bufnr = 0 })
         if #clients == 0 then
           return ""
         elseif #clients == 1 then
@@ -130,21 +130,25 @@ return {
 
       local function venv_info()
         local has_vs, vs = pcall(require, "venv-selector")
-        if has_vs then
-          local venv_name = vs.get_active_venv()
-          if venv_name ~= nil then
-            return string.gsub(venv_name, ".*/mambaforge/envs/", "(mamba) ")
+        local buf_id = vim.api.nvim_get_current_buf()
+        local filename = vim.api.nvim_buf_get_name(buf_id)
+        if filename:sub(-3) == ".py" then
+          if has_vs then
+            local python_path = vs.python()
+            if python_path ~= nil then
+              return python_path:gsub(".*\\envs\\", "(mamba) "):gsub("\\python.exe", "")
+            end
           end
         end
         return ""
       end
 
-      require("lualine").setup{
+      require("lualine").setup {
         options = {
           icons_enabled = true,
           theme = 'auto',
-          component_separators = { left = '', right = ''},
-          section_separators = { left = '', right = ''},
+          component_separators = { left = '', right = '' },
+          section_separators = { left = '', right = '' },
           disabled_filetypes = {
             statusline = {},
             winbar = {},
@@ -159,18 +163,18 @@ return {
           }
         },
         sections = {
-          lualine_a = {'mode'},
-          lualine_b = {'branch', 'diff', 'diagnostics'},
-          lualine_c = {'filename'},
-          lualine_x = {'encoding', lsp_info, venv_info, 'filetype'},
-          lualine_y = {'progress'},
-          lualine_z = {'location'}
+          lualine_a = { 'mode' },
+          lualine_b = { 'branch', 'diff', 'diagnostics' },
+          lualine_c = { 'filename' },
+          lualine_x = { 'encoding', lsp_info, venv_info, 'filetype' },
+          lualine_y = { 'progress' },
+          lualine_z = { 'location' }
         },
         inactive_sections = {
           lualine_a = {},
           lualine_b = {},
-          lualine_c = {'filename'},
-          lualine_x = {'location'},
+          lualine_c = { 'filename' },
+          lualine_x = { 'location' },
           lualine_y = {},
           lualine_z = {}
         },
@@ -191,11 +195,11 @@ return {
     init = function() vim.g.barbar_auto_setup = false end,
     opts = {},
     keys = {
-      {"<A-h>", "<cmd>BufferPrevious<cr>", desc = "previous buffer"},
-      {"<A-l>", "<cmd>BufferNext<cr>", desc = "next buffer"},
-      {"<A-p>", "<cmd>BufferPin<cr>", desc = "pin buffer"},
-      {"<A-q>", "<cmd>BufferClose<cr>", desc = "close buffer"},
-      {"<A-v>", "<cmd>BufferCloseAllButVisible<cr>", desc = "close all buffers but visible"},
+      { "<A-h>", "<cmd>BufferPrevious<cr>",           desc = "previous buffer" },
+      { "<A-l>", "<cmd>BufferNext<cr>",               desc = "next buffer" },
+      { "<A-p>", "<cmd>BufferPin<cr>",                desc = "pin buffer" },
+      { "<A-q>", "<cmd>BufferClose<cr>",              desc = "close buffer" },
+      { "<A-v>", "<cmd>BufferCloseAllButVisible<cr>", desc = "close all buffers but visible" },
     },
     config = function(_, opts)
       require("barbar").setup(opts)
@@ -204,21 +208,21 @@ return {
       vim.api.nvim_create_user_command(
         'Mksession',
         function(attr)
-          vim.api.nvim_exec_autocmds('User', {pattern = 'SessionSavePre'})
+          vim.api.nvim_exec_autocmds('User', { pattern = 'SessionSavePre' })
           -- Neovim 0.8+
-          vim.cmd.mksession {bang = attr.bang, args = attr.fargs}
+          vim.cmd.mksession { bang = attr.bang, args = attr.fargs }
           -- Neovim 0.7
           -- vim.api.nvim_command('mksession ' .. (attr.bang and '!' or '') .. attr.args)
         end,
-        {bang = true, complete = 'file', desc = 'Save barbar with :mksession', nargs = '?'}
+        { bang = true, complete = 'file', desc = 'Save barbar with :mksession', nargs = '?' }
       )
 
       -- 当目录树打开时，令bufferline的左侧有一块特定的区域
       -- 这里我们改用专属于nvim-tree的特定解决方案
-      local ok, nvim_tree_events = pcall(require, "nvim-tree.events")  -- 这样可以保证之后存在nvim-tree的插件时才会调用该函数
+      local ok, nvim_tree_events = pcall(require, "nvim-tree.events") -- 这样可以保证之后存在nvim-tree的插件时才会调用该函数
       if ok then
         local bufferline_api = require('bufferline.api')
-        local function get_tree_size() return require'nvim-tree.view'.View.width end
+        local function get_tree_size() return require 'nvim-tree.view'.View.width end
         nvim_tree_events.subscribe('TreeOpen', function() bufferline_api.set_offset(get_tree_size()) end)
         nvim_tree_events.subscribe('Resize', function() bufferline_api.set_offset(get_tree_size()) end)
         nvim_tree_events.subscribe('TreeClose', function() bufferline_api.set_offset(0) end)
