@@ -38,7 +38,7 @@ opt.termguicolors = true
 -- 隐藏命令行
 opt.cmdheight = 0
 -- 判定为组合键的间隔时间
-opt.timeoutlen = 500  -- for Comment.nvim
+opt.timeoutlen = 500 -- for Comment.nvim
 
 
 -----------------------------------------------------------------------------------------
@@ -99,7 +99,7 @@ opt.cindent = false
 -- vim内的复制/粘贴会依赖''、0、*、+这4个registor。
 -- *和+就是系统剪切板，在外部复制的内容也会放到这两个registor内
 -- 因此我们也可以直接使用p来将外部复制的内容粘贴到vim内
-opt.clipboard:append ("unnamedplus")
+opt.clipboard:append("unnamedplus")
 
 
 -----------------------------------------------------------------------------------------
@@ -150,7 +150,7 @@ opt.swapfile = false
 -- 创建备份文件
 opt.writebackup = true
 -- 备份文件路径，.表示当前文件所在路径
-opt.backupdir = {"."}
+opt.backupdir = { "." }
 
 
 -----------------------------------------------------------------------------------------
@@ -170,16 +170,16 @@ opt.splitright = true
 vim.api.nvim_create_autocmd("FileType", {
   pattern = '*',
   callback = function(args)
-      if vim.endswith(args.file, "py") then
-          vim.opt_local.tabstop = 4  -- 文件中制表符所占用的空格数量
-          vim.opt_local.softtabstop = 4  -- 编辑文件时，新输入的制表符所对应的空格数量
-          vim.opt_local.shiftwidth = 4  -- 每次缩进使用的空格数量，当使用>>或<<时
-					vim.opt_local.colorcolumn = "81"
-      else
-          vim.opt_local.tabstop = 2  -- 文件中制表符所占用的空格数量
-          vim.opt_local.softtabstop = 2  -- 编辑文件时，新输入的制表符所对应的空格数量
-          vim.opt_local.shiftwidth = 2  -- 每次缩进使用的空格数量，当使用>>或<<时
-      end
+    if vim.endswith(args.file, "py") then
+      vim.opt_local.tabstop = 4         -- 文件中制表符所占用的空格数量
+      vim.opt_local.softtabstop = 4     -- 编辑文件时，新输入的制表符所对应的空格数量
+      vim.opt_local.shiftwidth = 4      -- 每次缩进使用的空格数量，当使用>>或<<时
+      vim.opt_local.colorcolumn = "81"
+    else
+      vim.opt_local.tabstop = 2         -- 文件中制表符所占用的空格数量
+      vim.opt_local.softtabstop = 2     -- 编辑文件时，新输入的制表符所对应的空格数量
+      vim.opt_local.shiftwidth = 2      -- 每次缩进使用的空格数量，当使用>>或<<时
+    end
   end
 })
 
@@ -188,4 +188,11 @@ vim.api.nvim_create_autocmd("FileType", {
 -- 其他设置
 -----------------------------------------------------------------------------------------
 vim.bo.autoread = true
-vim.opt.conceallevel = 2  -- for obsidian.nvim
+vim.opt.conceallevel = 2 -- for obsidian.nvim
+-- yank highlight
+vim.api.nvim_create_autocmd("TextYankPost", {
+  pattern = "*",
+  callback = function()
+    vim.highlight.on_yank { higroup = 'Visual', timeout = 300 }
+  end
+})
