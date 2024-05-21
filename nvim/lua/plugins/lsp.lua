@@ -191,7 +191,7 @@ return {
             -- local lsp_cfg = { on_attach = on_attach }
             local lsp_cfg = {}
             if has_cmp_nlsp then
-              lsp_cfg["capabilities"] = cmp_nlsp.default_capabilities()
+              lsp_cfg["capabilities"] = cmp_nlsp.default_capabilities() -- 使用cmp的自动补全
             end
             require("lspconfig")[server_name].setup(
               vim.tbl_deep_extend("keep", lsp_cfg, servers[server_name])

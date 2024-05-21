@@ -4,20 +4,21 @@ return {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
     dependencies = {
-      "hrsh7th/cmp-nvim-lsp",         -- 使cmp可以利用到lsp中的source
-      "hrsh7th/cmp-buffer",           -- { name = 'buffer' },
-      "hrsh7th/cmp-path",             -- { name = 'path' }
-      "hrsh7th/cmp-cmdline",          -- { name = 'cmdline' }
-      "rafamadriz/friendly-snippets", -- 常见编程语言 snippets
-      "hrsh7th/cmp-vsnip",            -- 使cmp可以利用到vsnip中的source
-      "hrsh7th/vim-vsnip",            -- vim-vsnip 插件，提供snippets
-      -- use({ "hrsh7th/cmp-nvim-lsp-signature-help" })   -- { name = 'nvim_lsp_signature_help' }
+      "hrsh7th/cmp-nvim-lsp",                -- 使cmp可以利用到lsp中的source
+      "hrsh7th/cmp-buffer",                  -- { name = 'buffer' },
+      "hrsh7th/cmp-path",                    -- { name = 'path' }
+      "hrsh7th/cmp-cmdline",                 -- { name = 'cmdline' }
+      "rafamadriz/friendly-snippets",        -- 常见编程语言 snippets片段，与vsnip、luasnips等完美融合
+      "hrsh7th/vim-vsnip",                   -- vim-vsnip 插件，vscode-like snippets engine
+      "hrsh7th/cmp-vsnip",                   -- 使cmp可以利用到vsnip中的source
+      "hrsh7th/cmp-nvim-lsp-signature-help", -- 显示函数签名，并显示当前参数
       -- use({ "hrsh7th/cmp-nvim-lua" })                  -- { name = 'nvim_lua' }
-      -- use({ "jose-elias-alvarez/null-ls.nvim" })       -- 多语言代码检查工具, 功能类似 ESLint
+      "onsails/lspkind.nvim",                -- 为提示提供一些图标表示
     },
     config = function()
       local cmp = require("cmp")
       local has_autopair, autopair_cmp = pcall(require, "nvim-autopairs.completion.cmp")
+      local lspkind = require("lspkind")
 
       -- 用于配置vsnip的mapping
       local has_words_before = function()
@@ -41,7 +42,12 @@ return {
         -- 1. 可以直接使用一个函数，其接受fallback函数作为参数（fallback表示该按键正常的功能）
         -- 2. 当需要在特定模式进行设置时，需要使用到cmp.mapping函数（具体使用方式可以查看:h cmp）
         -- 3. 其内置了一系列的函数，可以直接用于进行配置
-        mapping = cmp.mapping.preset.insert({
+        -- 这里的mapping可以直接是一个table，也可以使用preset.insert将
+        --  tabel再封装一下，该函数的作用是将一些默认的insert mode下
+        --  的快捷键加入到我们自定义的table中再返回。如果我们确认不会
+        --  用到这些默认快捷键的话，是可以不使用这个函数的。
+        -- mapping = cmp.mapping.preset.insert({
+        mapping = {
           -- 确定选中提示
           ["<CR>"] = cmp.mapping.confirm({ select = true }),
           -- 关闭代码提示
@@ -96,7 +102,7 @@ return {
               fallback()
             end
           end, { "i", "s" }),
-        }),
+        },
 
         -- Disabling completion in certain contexts, such as comments
         enabled = function()
@@ -112,51 +118,6 @@ return {
             -- return not context.in_syntax_group("Comment")
           end
         end,
-
-        -- 补全提示时使用的图标
-        formatting = {
-          fields = { "kind", "abbr", "menu" },
-          format = function(entry, vim_item)
-            local lspkind_icons = {
-              Text = "",
-              Method = "",
-              Function = "",
-              Constructor = "",
-              Field = "ﰠ",
-              Variable = "",
-              Class = "ﴯ",
-              Interface = "",
-              Module = "",
-              Property = "ﰠ",
-              Value = "",
-              Enum = "",
-              Keyword = "",
-              Snippet = "",
-              Color = "",
-              File = "",
-              Reference = "",
-              Folder = "",
-              EnumMember = "",
-              Constant = "",
-              Struct = "פּ",
-              Event = "",
-              Operator = "",
-              TypeParameter = ""
-            }
-            local meta_type = vim_item.kind
-            vim_item.kind = lspkind_icons[vim_item.kind] or "";
-            vim_item.menu = ({
-              nvim_lsp                = " [" .. string.lower(meta_type) .. "]",
-              path                    = " [path]",
-              vsnip                   = " [vsnip]",
-              nvim_lua                = " [nvim_lua]",
-              buffer                  = " [buffer]",
-              nvim_lsp_signature_help = " [signature_help]",
-            })[entry.source.name]
-
-            return vim_item
-          end,
-        },
 
         -- 指定 snippets 引擎:
         -- docs: https://github.com/hrsh7th/nvim-cmp/wiki/List-of-sources
@@ -177,10 +138,65 @@ return {
           { name = 'nvim_lsp' },
           { name = 'path' },
           { name = 'vsnip' }, -- For vsnip users.
+          { name = "nvim_lsp_signature_help" },
           -- { name = 'luasnip' }, -- For luasnip users.
           -- { name = 'ultisnips' }, -- For ultisnips users.
           -- { name = 'snippy' }, -- For snippy users.
-        }, { { name = 'buffer' }, }),
+        }, { name = 'buffer' }), -- 这样，buffer的group_index被设置为2，而其他的source被设置为1，当group1被放入备选列表的时候，group2会被忽略
+
+        -- 补全提示时使用的图标
+        formatting = {
+          format = lspkind.cmp_format({
+            mode = "symbol_text",
+            -- menu = ({
+            --   nvim_lsp = "[LSP]",
+            --   buffer = "[Buffer]",
+            --   vsnip = "[VSnip]",
+            --   path = "[Path]",
+            --   -- luasnip = "[LuaSnip]",
+            -- })
+            before = function(entry, vim_item)
+              local lspkind_icons = {
+                Text = "",
+                Method = "",
+                Function = "",
+                Constructor = "",
+                Field = "ﰠ",
+                Variable = "",
+                Class = "ﴯ",
+                Interface = "",
+                Module = "",
+                Property = "ﰠ",
+                Value = "",
+                Enum = "",
+                Keyword = "",
+                Snippet = "",
+                Color = "",
+                File = "",
+                Reference = "",
+                Folder = "",
+                EnumMember = "",
+                Constant = "",
+                Struct = "פּ",
+                Event = "",
+                Operator = "",
+                TypeParameter = ""
+              }
+              local meta_type = vim_item.kind
+              vim_item.kind = lspkind_icons[vim_item.kind] or "";
+              vim_item.menu = ({
+                nvim_lsp                = " [" .. string.lower(meta_type) .. "]",
+                buffer                  = " [Buffer]",
+                vsnip                   = " [VSnip]",
+                path                    = " [Path]",
+                -- nvim_lua                = " [nvim_lua]",
+                nvim_lsp_signature_help = " [Signature_Help]",
+              })[entry.source.name]
+
+              return vim_item
+            end
+          })
+        }
 
       })
 
