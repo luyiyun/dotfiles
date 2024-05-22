@@ -22,7 +22,7 @@ return {
       -- local cmp_im_zh = require("cmp_im_zh")
       cmp_im.setup {
         -- Enable/Disable IM
-        enable = true,
+        enable = false,
         -- IM keyword pattern
         keyword = [[\l\+]],
         -- IM tables path array
@@ -36,7 +36,7 @@ return {
 
       local config = cmp.get_config()
       table.insert(config.sources, {
-        name = "IM"
+        name = "IM", group_index = 2  -- 将其归入第二组，只有当lsp等没有提示时才出现
       })
       cmp.setup(config)
     end
