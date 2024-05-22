@@ -4,13 +4,27 @@ return {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
     dependencies = {
-      "hrsh7th/cmp-nvim-lsp",                -- 使cmp可以利用到lsp中的source
-      "hrsh7th/cmp-buffer",                  -- { name = 'buffer' },
-      "hrsh7th/cmp-path",                    -- { name = 'path' }
-      "hrsh7th/cmp-cmdline",                 -- { name = 'cmdline' }
-      "rafamadriz/friendly-snippets",        -- 常见编程语言 snippets片段，与vsnip、luasnips等完美融合
-      "hrsh7th/vim-vsnip",                   -- vim-vsnip 插件，vscode-like snippets engine
-      "hrsh7th/cmp-vsnip",                   -- 使cmp可以利用到vsnip中的source
+      "hrsh7th/cmp-nvim-lsp",         -- 使cmp可以利用到lsp中的source
+      "hrsh7th/cmp-buffer",           -- { name = 'buffer' },
+      "hrsh7th/cmp-path",             -- { name = 'path' }
+      "hrsh7th/cmp-cmdline",          -- { name = 'cmdline' }
+      "rafamadriz/friendly-snippets", -- 常见编程语言 snippets片段，与vsnip、luasnips等完美融合
+
+      -- {
+      --   "L3MON4D3/LuaSnip",
+      --   version = "v2.*",
+      --   build = "make install_jsregexp",
+      --   config = function()
+      --     require("luasnip.loaders.from_vscode").lazy_load()
+      --   end
+      -- },
+      "L3MON4D3/LuaSnip",
+      "saadparwaiz1/cmp_luasnip",
+
+      -- vsnip相关，更偏向luasnip，因为是用lua写的，配置起来更方便
+      -- "hrsh7th/vim-vsnip",                   -- vim-vsnip 插件，vscode-like snippets engine
+      -- "hrsh7th/cmp-vsnip",                   -- 使cmp可以利用到vsnip中的source
+      --
       "hrsh7th/cmp-nvim-lsp-signature-help", -- 显示函数签名，并显示当前参数
       -- use({ "hrsh7th/cmp-nvim-lua" })                  -- { name = 'nvim_lua' }
       "onsails/lspkind.nvim",                -- 为提示提供一些图标表示
@@ -19,17 +33,20 @@ return {
       local cmp = require("cmp")
       local has_autopair, autopair_cmp = pcall(require, "nvim-autopairs.completion.cmp")
       local lspkind = require("lspkind")
+      local luasnip = require("luasnip")
+
+      -- luasnip
+      require("luasnip.loaders.from_vscode").lazy_load()
 
       -- 用于配置vsnip的mapping
-      local has_words_before = function()
-        unpack = unpack or table.unpack
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-      end
-
-      local feedkey = function(key, mode)
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
-      end
+      -- local has_words_before = function()
+      --   unpack = unpack or table.unpack
+      --   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+      --   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+      -- end
+      -- local feedkey = function(key, mode)
+      --   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
+      -- end
 
       -- 补全时自动将括号加入
       if has_autopair then
@@ -37,6 +54,28 @@ return {
       end
 
       cmp.setup({
+        -- 指定 snippets 引擎:
+        -- docs: https://github.com/hrsh7th/nvim-cmp/wiki/List-of-sources
+        snippet = {
+          expand = function(args)
+            -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+            luasnip.lsp_expand(args.body) -- For `luasnip` users.
+            -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+            -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+          end,
+        },
+
+        -- 配置补全所用的源
+        sources = cmp.config.sources({
+          { name = 'nvim_lsp' },
+          { name = 'path' },
+          -- { name = 'vsnip' }, -- For vsnip users.
+          { name = 'luasnip' }, -- For luasnip users.
+          { name = "nvim_lsp_signature_help" },
+          -- { name = 'ultisnips' }, -- For ultisnips users.
+          -- { name = 'snippy' }, -- For snippy users.
+        }, { name = 'buffer' }), -- 这样，buffer的group_index被设置为2，而其他的source被设置为1，当group1被放入备选列表的时候，group2会被忽略
+
         -- 设置快捷键
         -- 快捷键绑定，这里快捷键绑定设置与neovim的不同：
         -- 1. 可以直接使用一个函数，其接受fallback函数作为参数（fallback表示该按键正常的功能）
@@ -49,7 +88,19 @@ return {
         -- mapping = cmp.mapping.preset.insert({
         mapping = {
           -- 确定选中提示
-          ["<CR>"] = cmp.mapping.confirm({ select = true }),
+          ["<CR>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              if luasnip.expandable() then
+                luasnip.expand()
+              else
+                cmp.confirm({
+                  select = true,
+                })
+              end
+            else
+              fallback()
+            end
+          end),
           -- 关闭代码提示
           ["<c-q>"] = cmp.mapping({
             -- 使用q键取消，会保持在insert模式，但是通过补全得到的内容将取消
@@ -80,10 +131,8 @@ return {
             function(fallback)
               if cmp.visible() then
                 cmp.select_next_item();
-              elseif vim.fn["vsnip#available"](1) == 1 then
-                feedkey("<Plug>(vsnip-expand-or-jump)", "")
-              elseif has_words_before() then
-                cmp.complete();
+              elseif luasnip.locally_jumpable(1) then
+                luasnip.jump(1)
               else
                 -- fallback函数是一个特殊的函数，其执行当前按键原来的行为
                 -- fallback("<Tab>", "")
@@ -96,8 +145,8 @@ return {
           ["<S-Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_prev_item();
-            elseif vim.fn["vsnip#jumpable"](-1) == 1 then
-              feedkey("<Plug>(vsnip-jump-prev)", "")
+            elseif luasnip.locally_jumpable(-1) then
+              luasnip.jump(-1)
             else
               fallback()
             end
@@ -119,30 +168,10 @@ return {
           end
         end,
 
-        -- 指定 snippets 引擎:
-        -- docs: https://github.com/hrsh7th/nvim-cmp/wiki/List-of-sources
-        snippet = {
-          expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-            -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-            -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-            -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-          end,
-        },
         window = {
           -- completion = cmp.config.window.bordered(),
           -- documentation = cmp.config.window.bordered(),
         },
-        -- 配置补全所用的源
-        sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
-          { name = 'path' },
-          { name = 'vsnip' }, -- For vsnip users.
-          { name = "nvim_lsp_signature_help" },
-          -- { name = 'luasnip' }, -- For luasnip users.
-          -- { name = 'ultisnips' }, -- For ultisnips users.
-          -- { name = 'snippy' }, -- For snippy users.
-        }, { name = 'buffer' }), -- 这样，buffer的group_index被设置为2，而其他的source被设置为1，当group1被放入备选列表的时候，group2会被忽略
 
         -- 补全提示时使用的图标
         formatting = {
@@ -188,6 +217,7 @@ return {
                 nvim_lsp                = " [" .. string.lower(meta_type) .. "]",
                 buffer                  = " [Buffer]",
                 vsnip                   = " [VSnip]",
+                luasnip                 = " [LuaSnip]",
                 path                    = " [Path]",
                 -- nvim_lua                = " [nvim_lua]",
                 nvim_lsp_signature_help = " [Signature_Help]",
