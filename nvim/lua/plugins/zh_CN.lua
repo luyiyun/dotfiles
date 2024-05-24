@@ -36,8 +36,9 @@ return {
 
       local config = cmp.get_config()
       table.insert(config.sources, {
-        name = "IM", group_index = 2  -- 将其归入第二组，只有当lsp等没有提示时才出现
+        name = "IM", group_index = 2 -- 将其归入第二组，只有当lsp等没有提示时才出现
       })
+      config.mapping["<Space>"] = cmp.mapping(cmp_im.select(), { 'i' })
       cmp.setup(config)
     end
   },
