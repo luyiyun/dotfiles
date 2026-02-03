@@ -1,0 +1,12 @@
+[user]
+	name = rongzhiwei
+	email = 18845728185@163.com
+[credential]
+	helper = store
+[alias]
+  st = status -sb
+  cm = commit -m
+  co = checkout
+  br = branch
+  lg = log --graph --oneline --decorate --all
+  a = add -A
