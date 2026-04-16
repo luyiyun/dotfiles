@@ -6,38 +6,34 @@
 
 这是一个个人 `dotfiles` 仓库，当前主要管理以下配置文件：
 
-- `.bashrc`
-- `.tmux.conf`
-- `.gitconfig`
-- `readme.md`
+- `bash/.bashrc`
+- `tmux/.tmux.conf`
+- `git/.gitconfig`
+- `README.md`
+- `AGENTS.md`
 
 仓库规模很小，没有独立的构建系统、测试框架或包管理配置。对本仓库的修改通常会直接影响用户登录 shell、tmux 行为或 git 使用体验，因此应优先做小步、可验证的变更。
 
 ## 当前结构
 
-顶层文件说明：
+本仓库采用 **GNU Stow** 布局：
 
-- `.bashrc`：Bash 交互式 shell 配置，包含历史记录、提示符、补全、别名与 `PATH` 设置。
-- `.tmux.conf`：tmux 行为配置，启用 `vi` 风格复制模式，并依赖 TPM 插件。
-- `.gitconfig`：git 用户信息、credential helper 和常用 alias。
-- `readme.md`：说明如何用 bare repository 管理 home 目录配置文件。
+- `bash/`：`stow bash` 后部署为 `~/.bashrc`
+- `tmux/`：`stow tmux` 后部署为 `~/.tmux.conf`
+- `git/`：`stow git` 后部署为 `~/.gitconfig`
+- `README.md`：仓库使用说明，不会部署到 `$HOME`
+- `AGENTS.md`：协作说明，不会部署到 `$HOME`
 
-## 重要约定与已知差异
-
-有一个需要特别注意的现实差异：
-
-- `readme.md` 中描述的 bare repository 路径是 `$HOME/dotfiles`
-- `.bashrc` 中 `config` alias 实际指向的是 `git --git-dir=$HOME/.cfg/ --work-tree=$HOME`
-
-在没有先和用户确认前，不要擅自统一这两个约定中的任意一个。若你的任务涉及 README、初始化脚本或 alias，请先判断目标是“修正文档”还是“修正本地实际配置”。
+package 内部路径应镜像目标路径。如果后续新增 `~/.config` 下的配置，请按类似 `package/.config/app/...` 的结构组织。
 
 ## 修改原则
 
 - 保持改动尽量小，避免顺手重写整份 dotfile。
 - 这是用户环境配置仓库，不能假设所有命令都可跨平台；新增配置前先考虑 Linux 与 macOS 差异。
-- 若新增外部依赖、插件或命令，需在文件中留下足够明显的说明，并同步更新 `readme.md`。
+- 若新增外部依赖、插件或命令，需在文件中留下足够明显的说明，并同步更新 `README.md`。
 - 不要提交敏感信息，如 token、私钥、机器专属路径或仅适用于单台主机的凭据。
 - 编辑 shell 配置时，尽量避免破坏非交互 shell；当前 `.bashrc` 已用 `case $- in *i*)` 做了交互式保护，应保留这一行为。
+- 根目录文档不参与部署；只有各个 package 目录中的文件会被 `stow` 链接到 `$HOME`。
 
 ## 文件级注意事项
 
@@ -67,16 +63,17 @@
 
 1. 先阅读目标文件，不要凭 README 假设当前本机实际配置。
 2. 做单文件、小范围修改。
-3. 修改后执行对应的轻量验证命令。
+3. 修改后执行对应的轻量验证命令，必要时用 `stow -n -v <package>` 做部署预演。
 4. 若行为变化需要用户手动生效，在最终说明中明确告知如何 reload。
 
 ## 验证建议
 
 本仓库没有自动化测试，通常使用下列方式做语法或加载验证：
 
-- Bash 配置检查：`bash -n .bashrc`
-- Git 配置检查：`git config --file .gitconfig --list`
-- tmux 配置检查：`tmux source-file .tmux.conf`
+- Bash 配置检查：`bash -n bash/.bashrc`
+- Git 配置检查：`git config --file git/.gitconfig --list`
+- tmux 配置检查：`tmux source-file tmux/.tmux.conf`
+- Stow 预演：`stow -n -v bash git tmux`
 
 注意：
 
@@ -95,5 +92,5 @@
 ## 不该做的事
 
 - 不要把整个 `$HOME` 目录视作当前仓库内容进行大范围扫描或批量改写。
-- 不要根据 README 直接执行 bare-repo checkout、覆盖用户 home 目录文件，除非用户明确要求。
-- 不要在未确认的情况下把 README 与 `.bashrc` 中的 bare-repo 路径差异“顺手修掉”。
+- 不要把根目录文档误当作需要部署到 `$HOME` 的配置文件。
+- 不要在未确认用户当前机器状态前，直接用 `stow` 覆盖已有的真实文件。
