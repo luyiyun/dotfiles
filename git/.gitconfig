@@ -1,12 +1,19 @@
+# ======== 身份信息 ========
+# 这里沿用了当前机器上的 Git 身份。
+# 如果某台机器需要使用不同账号，再按机器单独调整。
 [user]
-	name = rongzhiwei
-	email = 18845728185@163.com
+	name = rong
+	email = rongzhiwei@tmu.edu.cn
+
+# ======== 凭据设置 ========
 [credential]
 	helper = store
+
+# ======== 常用别名 ========
 [alias]
-  st = status -sb
-  cm = commit -m
-  co = checkout
-  br = branch
-  lg = log --graph --oneline --decorate --all
-  a = add -A
+	st = status -sb
+	cm = commit -m
+	co = checkout
+	br = branch
+	lg = log --graph --oneline --decorate --all
+	a = add -A
