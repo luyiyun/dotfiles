@@ -110,3 +110,15 @@ if [[ -e "$NVIM_DIR" ]]; then
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
 
+# ==================== 命令别名 ====================
+alias nv='nvim'
+alias vi='nvim'
+alias vim='nvim'
+
+
+# ======== 快速打开当前的common config文件 ========
+open_config () {
+  nvim $HOME/dotfiles/shell/.config/shell/common.sh
+}
+
+
