@@ -17,3 +17,12 @@
 	br = branch
 	lg = log --graph --oneline --decorate --all
 	a = add -A
+
+# ======== 中文名不使用转义字符 ========
+[core]
+	quotepath = false
+
+# ======== message显示正常中文 ========
+[i18n]
+	commitEncoding = utf-8
+	logOutputEncoding = utf-8
