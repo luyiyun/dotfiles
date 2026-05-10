@@ -1,8 +1,41 @@
 return {
+
+  -- Enable and configure LuaSnip. In LazyVim you can also enable the extra
+  -- with :LazyExtras -> coding.luasnip; this spec just adds the settings
+  -- needed for Obsidian-like auto snippets.
+  {
+    "L3MON4D3/LuaSnip",
+    build = "make install_jsregexp",
+    event = "InsertEnter",
+    opts = function(_, opts)
+      opts.history = true
+      opts.delete_check_events = "TextChanged"
+      opts.enable_autosnippets = true
+      -- Visual mode: select text, press <Tab>, then type a visual snippet trigger
+      -- such as S/U/O/C/K to wrap the selected expression.
+      opts.store_selection_keys = "<Tab>"
+    end,
+    config = function(_, opts)
+      local ls = require("luasnip")
+      ls.setup(opts)
+      require("luasnip.loaders.from_lua").lazy_load({
+        paths = vim.fn.stdpath("config") .. "/luasnippets",
+      })
+      ls.filetype_extend("quarto", { "markdown" })
+      ls.filetype_extend("rmd", { "markdown" })
+    end,
+  },
+
   {
     "saghen/blink.cmp",
-    opts = function(_, opts)
-      opts.keymap = {
+    opts = {
+      -- NOTE: 这里我直接使用LazyVim的Extra来开启luasnip
+      -- snippets = { preset = "luasnip" },
+      --
+      -- ================================================
+      -- 改变补全时的快捷键
+      -- ================================================
+      keymap = {
         preset = "enter",
         -- NOTE: 这里我们不实用tab进行移动，这是引文其会和
         -- snippets产生冲突。
@@ -12,16 +45,18 @@ return {
         ["<C-j>"] = { "select_next", "fallback" },
         ["<C-k>"] = { "select_prev", "fallback" },
         ["<CR>"] = { "accept", "fallback" },
-      }
-      opts.completion = {
+      },
+      completion = {
         list = {
-          -- 避免一弹出菜单就自动选择第一项
-          preselect = false,
-          -- 选择候选时直接替换正文
-          auto_insert = true,
+          selection = {
+            -- 避免一弹出菜单就自动选择第一项
+            preselect = false,
+            -- 选择候选时直接替换正文
+            auto_insert = true,
+          },
         },
-      }
-      opts.cmdline = {
+      },
+      cmdline = {
         enabled = true,
 
         keymap = {
@@ -55,7 +90,7 @@ return {
             end,
           },
         },
-      }
-    end,
+      },
+    },
   },
 }
