@@ -37,11 +37,9 @@ return {
       -- ================================================
       keymap = {
         preset = "enter",
-        -- NOTE: 这里我们不实用tab进行移动，这是引文其会和
-        -- snippets产生冲突。
         -- Tab / Shift-Tab 只用于在候选项之间移动
-        -- ["<Tab>"] = { "select_next", "fallback" },
-        -- ["<S-Tab>"] = { "select_prev", "fallback" },
+        ["<Tab>"] = { "select_next", "fallback" },
+        ["<S-Tab>"] = { "select_prev", "fallback" },
         ["<C-j>"] = { "select_next", "fallback" },
         ["<C-k>"] = { "select_prev", "fallback" },
         ["<CR>"] = { "accept", "fallback" },
