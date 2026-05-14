@@ -125,6 +125,14 @@ local function add_parse(trig, body, opts, priority)
   table.insert(snippets, parse(ctx, body, { trim_empty = false, dedent = false }))
 end
 
+local function quarto_theorem(prefix, title)
+  return ("::: {#%s-${1:label}}\n\n## ${2:%s}\n\n$3\n:::"):format(prefix, title)
+end
+
+local function quarto_callout(prefix, callout_type, title)
+  return ("::: {#%s-${1:label} .callout-%s}\n\n## ${2:%s}\n\n$3\n:::"):format(prefix, callout_type, title)
+end
+
 local simple = {
   { trig = "mk", body = "\\$$1\\$", opts = "tA" },
   { trig = "dm", body = "\\$\\$\n$1\n\\$\\$", opts = "tAw" },
@@ -353,33 +361,33 @@ local simple = {
     body = "${1:f}(${2:x} + ${3:h}) = ${1:f}(${2:x}) + ${1:f}'(${2:x})${3:h} + ${1:f}''(${2:x}) \\frac{${3:h}^{2}}{2!} + \\dots$4",
     opts = "mA",
   },
-  { trig = "axm", body = "> [!axiom] $1\n> $2", opts = "t" },
-  { trig = "def", body = "> [!definition] $1\n> $2", opts = "t" },
-  { trig = "lem", body = "> [!lemma] $1\n> $2", opts = "t" },
-  { trig = "prp", body = "> [!proposition] $1\n> $2", opts = "t" },
-  { trig = "thm", body = "> [!theorem] $1\n> $2", opts = "t" },
-  { trig = "cor", body = "> [!corollary] $1\n> $2", opts = "t" },
-  { trig = "clm", body = "> [!claim] $1\n> $2", opts = "t" },
-  { trig = "asm", body = "> [!assumption] $1\n> $2", opts = "t" },
-  { trig = "exm", body = "> [!exm] $1\n> $2", opts = "t" },
-  { trig = "exr", body = "> [!exercise] $1\n> $2", opts = "t" },
-  { trig = "cnj", body = "> [!conjecture] $1\n> $2", opts = "t" },
-  { trig = "hyp", body = "> [!hypothesis] $1\n> $2", opts = "t" },
-  { trig = "rmk", body = "> [!remark] $1\n> $2", opts = "t" },
-  { trig = "axiom", body = "> [!axiom] $1\n> $2", opts = "t" },
-  { trig = "definition", body = "> [!definition] $1\n> $2", opts = "t" },
-  { trig = "lemma", body = "> [!lemma] $1\n> $2", opts = "t" },
-  { trig = "proposition", body = "> [!proposition] $1\n> $2", opts = "t" },
-  { trig = "theorem", body = "> [!theorem] $1\n> $2", opts = "t" },
-  { trig = "corollary", body = "> [!corollary] $1\n> $2", opts = "t" },
-  { trig = "claim", body = "> [!claim] $1\n> $2", opts = "t" },
-  { trig = "assumption", body = "> [!assumption] $1\n> $2", opts = "t" },
-  { trig = "example", body = "> [!example] $1\n> $2", opts = "t" },
-  { trig = "exercise", body = "> [!exercise] $1\n> $2", opts = "t" },
-  { trig = "conjecture", body = "> [!conjecture] $1\n> $2", opts = "t" },
-  { trig = "hypothesis", body = "> [!hypothesis] $1\n> $2", opts = "t" },
-  { trig = "remark", body = "> [!remark] $1\n> $2", opts = "t" },
-  { trig = "proof", body = "`\\begin{proof}`\n$1\n`\\end{proof}`", opts = "t" },
+  { trig = "axm", body = quarto_callout("imp", "important", "Axiom"), opts = "t" },
+  { trig = "def", body = quarto_theorem("def", "Definition"), opts = "t" },
+  { trig = "lem", body = quarto_theorem("lem", "Lemma"), opts = "t" },
+  { trig = "prp", body = quarto_theorem("prp", "Proposition"), opts = "t" },
+  { trig = "thm", body = quarto_theorem("thm", "Theorem"), opts = "t" },
+  { trig = "cor", body = quarto_theorem("cor", "Corollary"), opts = "t" },
+  { trig = "clm", body = quarto_callout("nte", "note", "Claim"), opts = "t" },
+  { trig = "asm", body = quarto_callout("nte", "note", "Assumption"), opts = "t" },
+  { trig = "exm", body = quarto_theorem("exm", "Example"), opts = "t" },
+  { trig = "exr", body = quarto_theorem("exr", "Exercise"), opts = "t" },
+  { trig = "cnj", body = quarto_theorem("cnj", "Conjecture"), opts = "t" },
+  { trig = "hyp", body = quarto_callout("nte", "note", "Hypothesis"), opts = "t" },
+  { trig = "rmk", body = quarto_theorem("rem", "Remark"), opts = "t" },
+  { trig = "axiom", body = quarto_callout("imp", "important", "Axiom"), opts = "t" },
+  { trig = "definition", body = quarto_theorem("def", "Definition"), opts = "t" },
+  { trig = "lemma", body = quarto_theorem("lem", "Lemma"), opts = "t" },
+  { trig = "proposition", body = quarto_theorem("prp", "Proposition"), opts = "t" },
+  { trig = "theorem", body = quarto_theorem("thm", "Theorem"), opts = "t" },
+  { trig = "corollary", body = quarto_theorem("cor", "Corollary"), opts = "t" },
+  { trig = "claim", body = quarto_callout("nte", "note", "Claim"), opts = "t" },
+  { trig = "assumption", body = quarto_callout("nte", "note", "Assumption"), opts = "t" },
+  { trig = "example", body = quarto_theorem("exm", "Example"), opts = "t" },
+  { trig = "exercise", body = quarto_theorem("exr", "Exercise"), opts = "t" },
+  { trig = "conjecture", body = quarto_theorem("cnj", "Conjecture"), opts = "t" },
+  { trig = "hypothesis", body = quarto_callout("nte", "note", "Hypothesis"), opts = "t" },
+  { trig = "remark", body = quarto_theorem("rem", "Remark"), opts = "t" },
+  { trig = "proof", body = "::: {.proof}\n\n$1\n:::", opts = "t" },
 }
 
 for _, it in ipairs(simple) do
