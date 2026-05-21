@@ -37,7 +37,6 @@ return {
       -- ================================================
       keymap = {
         preset = "enter",
-        -- Tab / Shift-Tab 只用于在候选项之间移动
         ["<Tab>"] = { "select_next", "fallback" },
         ["<S-Tab>"] = { "select_prev", "fallback" },
         ["<C-j>"] = { "select_next", "fallback" },
