@@ -128,8 +128,8 @@ export FZF_DEFAULT_OPTS="
   --layout=reverse
   --border
   --info=inline
-  --marker='✓ '
-  --pointer='▶ '
+  --marker='+'
+  --pointer='>'
   --prompt='fzf> '
   --bind='ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down'
 "
