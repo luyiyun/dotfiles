@@ -17,3 +17,10 @@ fi
 # ======== 个人说明 ========
 # 当前主题由 Oh My Zsh 提供。
 # 如果之后要切换到 starship，建议在框架加载完成后再初始化。
+
+
+# ======== fzf 配置 (主要配置在common.sh中) ========
+# 启用 fzf zsh integration
+if command -v fzf >/dev/null 2>&1; then
+  source <(fzf --zsh)
+fi

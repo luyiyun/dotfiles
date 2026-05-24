@@ -3,8 +3,8 @@
 
 # 统一追加用户本地可执行文件目录，避免重复写入 PATH。
 case ":$PATH:" in
-  *":$HOME/.local/bin:"*) ;;
-  *) export PATH="$HOME/.local/bin:$PATH" ;;
+*":$HOME/.local/bin:"*) ;;
+*) export PATH="$HOME/.local/bin:$PATH" ;;
 esac
 
 # 统一使用 UTF-8 locale，减少终端中中文显示异常的问题。
@@ -20,7 +20,7 @@ elif [ -z "${TERM:-}" ]; then
 fi
 
 # ==================== bash配置 ====================
-set -o vi  # 在bash中使用vim方式移动光标
+set -o vi # 在bash中使用vim方式移动光标
 
 # ==================== 代理快捷开关 (mihomo) ====================
 # 代理变量说明：
@@ -51,63 +51,61 @@ set -o vi  # 在bash中使用vim方式移动光标
 #    HTTP_PROXY / HTTPS_PROXY / ALL_PROXY
 #    以提高兼容性。
 
-
 # 代理地址（你实测可用的配置，无需修改）
 PROXY_URL="socks5h://127.0.0.1:7890"
 
 # 主代理控制函数
 proxy() {
-    case "$1" in
-        on)
-            # 开启代理
-            export http_proxy="$PROXY_URL"
-            export https_proxy="$PROXY_URL"
-            export all_proxy="$PROXY_URL"
-            echo -e "\033[32m[✔] 代理已开启：$PROXY_URL\033[0m"
-            ;;
-        off)
-            # 关闭代理
-            unset http_proxy https_proxy all_proxy
-            echo -e "\033[31m[✘] 代理已关闭\033[0m"
-            ;;
-        status)
-            # 查看状态
-            if [ -n "$all_proxy" ]; then
-                echo -e "\033[32m[✔] 代理当前：开启\033[0m"
-                echo "代理地址：$all_proxy"
-            else
-                echo -e "\033[31m[✘] 代理当前：关闭\033[0m"
-            fi
-            ;;
-        *)
-            # 帮助说明
-            echo "用法："
-            echo "  proxy on      - 开启代理"
-            echo "  proxy off     - 关闭代理"
-            echo "  proxy status  - 查看代理状态"
-            echo "当前可用代理：$PROXY_URL"
-            ;;
-    esac
+  case "$1" in
+  on)
+    # 开启代理
+    export http_proxy="$PROXY_URL"
+    export https_proxy="$PROXY_URL"
+    export all_proxy="$PROXY_URL"
+    echo -e "\033[32m[✔] 代理已开启：$PROXY_URL\033[0m"
+    ;;
+  off)
+    # 关闭代理
+    unset http_proxy https_proxy all_proxy
+    echo -e "\033[31m[✘] 代理已关闭\033[0m"
+    ;;
+  status)
+    # 查看状态
+    if [ -n "$all_proxy" ]; then
+      echo -e "\033[32m[✔] 代理当前：开启\033[0m"
+      echo "代理地址：$all_proxy"
+    else
+      echo -e "\033[31m[✘] 代理当前：关闭\033[0m"
+    fi
+    ;;
+  *)
+    # 帮助说明
+    echo "用法："
+    echo "  proxy on      - 开启代理"
+    echo "  proxy off     - 关闭代理"
+    echo "  proxy status  - 查看代理状态"
+    echo "当前可用代理：$PROXY_URL"
+    ;;
+  esac
 }
-
 
 # ==================== opencode ====================
 export OPENCODE_BIN="$HOME/.opencode/bin"
 if [[ -e "$OPENCODE_BIN" ]]; then
-    export PATH="$OPENCODE_BIN:$PATH"
+  export PATH="$OPENCODE_BIN:$PATH"
 fi
 
 # ==================== bun ====================
 export BUN_INSTALL="$HOME/.bun"
 if [[ -e "$BUN_INSTALL" ]]; then
-    export PATH="$BUN_INSTALL/bin:$PATH"
+  export PATH="$BUN_INSTALL/bin:$PATH"
 fi
 
 # ==================== nvm ====================
 export NVM_DIR="$HOME/.nvm"
 if [[ -e "$NVIM_DIR" ]]; then
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 fi
 
 # ==================== 命令别名 ====================
@@ -115,10 +113,68 @@ alias nv='nvim'
 alias vi='nvim'
 alias vim='nvim'
 
-
 # ======== 快速打开当前的common config文件 ========
-open_config () {
+open_config() {
   nvim $HOME/dotfiles/shell/.config/shell/common.sh
 }
 
+# ==============================
+# fzf configuration
+# ==============================
 
+# 基础显示样式
+export FZF_DEFAULT_OPTS="
+  --height=80%
+  --layout=reverse
+  --border
+  --info=inline
+  --marker='✓ '
+  --pointer='▶ '
+  --prompt='fzf> '
+  --bind='ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down'
+"
+
+# 兼容 macOS 的 fd 和 Ubuntu 的 fdfind
+if command -v fd >/dev/null 2>&1; then
+  _fzf_fd_cmd="fd"
+elif command -v fdfind >/dev/null 2>&1; then
+  _fzf_fd_cmd="fdfind"
+else
+  _fzf_fd_cmd=""
+fi
+
+# 默认搜索命令：隐藏文件也搜，但排除常见垃圾目录
+if [ -n "$_fzf_fd_cmd" ]; then
+  export FZF_DEFAULT_COMMAND="$_fzf_fd_cmd --hidden --follow --exclude .git --exclude node_modules --exclude .venv --exclude __pycache__"
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  export FZF_ALT_C_COMMAND="$_fzf_fd_cmd --type d --hidden --follow --exclude .git --exclude node_modules --exclude .venv --exclude __pycache__"
+fi
+
+# Ctrl-t：在当前命令行插入文件/目录路径
+export FZF_CTRL_T_OPTS="
+  --prompt='Path> '
+  --preview '
+    if [ -d {} ]; then
+      command -v eza >/dev/null 2>&1 && eza -la --tree --level=2 {} || ls -la {};
+    else
+      command -v bat >/dev/null 2>&1 && bat --style=numbers --color=always --line-range=:300 {} || sed -n \"1,200p\" {};
+    fi
+  '
+  --bind='ctrl-/:toggle-preview'
+"
+
+# Alt-c：模糊搜索目录并 cd 进去
+export FZF_ALT_C_OPTS="
+  --prompt='Cd> '
+  --preview '
+    command -v eza >/dev/null 2>&1 && eza -la --tree --level=2 {} || ls -la {}
+  '
+  --bind='ctrl-/:toggle-preview'
+"
+
+# Ctrl-r：模糊搜索历史命令
+export FZF_CTRL_R_OPTS="
+  --prompt='History> '
+  --preview='echo {}'
+  --preview-window=down:3:wrap
+"

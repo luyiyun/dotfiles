@@ -1,8 +1,8 @@
 # ======== 交互式 Shell 保护 ========
 # 非交互式 shell 直接返回，避免影响脚本执行。
 case $- in
-  *i*) ;;
-  *) return ;;
+*i*) ;;
+*) return ;;
 esac
 
 # ======== 历史记录与基础行为 ========
@@ -24,7 +24,7 @@ fi
 
 # ======== 提示符 ========
 case "$TERM" in
-  xterm-color|*-256color) color_prompt=yes ;;
+xterm-color | *-256color) color_prompt=yes ;;
 esac
 
 if [ -n "${force_color_prompt:-}" ]; then
@@ -43,9 +43,9 @@ fi
 unset color_prompt force_color_prompt
 
 case "$TERM" in
-  xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
+xterm* | rxvt*)
+  PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+  ;;
 esac
 
 # ======== 颜色与常用别名 ========
@@ -81,4 +81,9 @@ fi
 # 这样 Bash 和 Zsh 可以复用同一份 PATH、locale、代理和终端辅助逻辑。
 if [ -r "$HOME/.config/shell/common.sh" ]; then
   . "$HOME/.config/shell/common.sh"
+fi
+
+# ======== fzf 配置 (主要配置在comman.sh中) ========
+if command -v fzf >/dev/null 2>&1; then
+  eval "$(fzf --bash)"
 fi
