@@ -2,6 +2,7 @@ return {
   {
     "keaising/im-select.nvim",
     event = "VeryLazy",
+    enabled = vim.fn.has("macunix") == 1,
     config = function()
       require("im_select").setup({
         -- 离开 Insert / 进入命令行时切换到英文输入法
