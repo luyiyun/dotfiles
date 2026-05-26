@@ -62,9 +62,9 @@ nvim/
 
 ## 依赖
 
-先确保系统安装了 `stow`。
+如果只部署 shell、git、tmux 等配置，先确保系统安装了 `stow` 即可。若同时部署 `nvim` package，还需要为 LazyVim 和当前插件配置准备额外命令行工具。
 
-常见安装方式：
+### 基础安装
 
 ```bash
 # macOS (Homebrew)
@@ -74,6 +74,52 @@ brew install stow
 sudo apt-get update
 sudo apt-get install -y stow
 ```
+
+### Neovim / LazyVim 依赖
+
+当前 Neovim 配置基于 LazyVim，并启用了 Python、LuaSnip、Quarto、tmux 导航、图片粘贴上传等插件。常用远端 Ubuntu 服务器可先安装这些系统包；这条命令暂不包含 `nvim` 本体，因为 Ubuntu apt 源中的版本可能不满足 LazyVim 要求：
+
+```bash
+sudo apt-get update
+sudo apt-get install -y \
+  stow git curl unzip tar gzip \
+  build-essential ripgrep fd-find tmux \
+  python3 python3-venv python3-pip nodejs npm \
+  xclip wl-clipboard
+```
+
+说明：
+
+- `nvim`：LazyVim 当前要求 Neovim >= `0.11.2`。Ubuntu 官方 apt 源里的 `neovim` 可能偏旧，安装后先用 `nvim --version` 检查；版本满足时可直接 `sudo apt-get install -y neovim`，版本不足时建议改用 Neovim 官方 release、PPA、bob/nvim 或其他新版安装方式。
+- `git`：首次启动时 `lua/config/lazy.lua` 会用 `git clone` bootstrap `lazy.nvim`，后续插件更新也需要它。
+- `build-essential`：提供 `make` 和 C 编译器；LuaSnip 的 `make install_jsregexp` 以及 Treesitter parser 编译会用到。
+- `ripgrep` / `fd-find`：Snacks picker、全文搜索和自定义拼音 grep 依赖 `rg`，文件查找优先用 `fd`/`fdfind`。Debian / Ubuntu 的包名是 `fd-find`，命令通常叫 `fdfind`，当前 Snacks 能识别它。
+- `curl`：图片上传配置会把本地图片 POST 到 PicList 的 `http://127.0.0.1:36677/upload`。
+- `python3` / `python3-venv` / `nodejs` / `npm`：Python extra 选择了 `basedpyright` 和 `ruff`，通常由 Mason 安装；`nodejs` / `npm` 可供 Mason 安装基于 npm 的语言服务。
+- `xclip` / `wl-clipboard`：Linux 下 `img-clip.nvim` 从系统剪贴板粘贴图片需要它们；X11 用 `xclip`，Wayland 用 `wl-clipboard`。macOS 对应工具是 `pngpaste`。
+- `tmux`：`vim-tmux-navigator` 只在 tmux 会话里发挥作用。
+
+首次进入 Neovim 后，可以用这些命令检查或补装插件侧工具：
+
+```vim
+:Lazy
+:Mason
+:checkhealth
+```
+
+Mason 侧当前重点关注：
+
+- `basedpyright`：Python LSP，来自 `vim.g.lazyvim_python_lsp = "basedpyright"`。
+- `ruff`：Python LSP/formatter/import sort，当前 `conform.nvim` 使用 `ruff_organize_imports` 和 `ruff_format`。
+- `stylua`：LazyVim 默认 Lua formatter；仓库里已有 `stylua.toml`。
+
+可选增强：
+
+- `lazygit`：LazyVim/Snacks 的 Git UI 快捷入口会用到。
+- `quarto`：编辑 `.qmd`、预览或渲染 Quarto 文档时需要；如果运行 Python chunks，还需在项目环境中安装 Jupyter 相关包。
+- `PicList`：只有使用 `<leader>ip` / `:UploadLocalImage` 上传图片时才需要启动本地 PicList 服务。
+- `macism`：当前 `im-select.nvim` 在 macOS 上用它切换输入法；远端 Linux 机器可以忽略，或按需改成 Linux 输入法切换命令。
+- Nerd Font：LazyVim 图标显示更完整；不安装也不影响主要功能。
 
 ## 在新机器上部署
 
