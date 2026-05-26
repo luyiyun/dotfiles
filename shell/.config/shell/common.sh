@@ -110,8 +110,6 @@ fi
 
 # ==================== 命令别名 ====================
 alias nv='nvim'
-alias vi='nvim'
-alias vim='nvim'
 
 # ======== 快速打开当前的common config文件 ========
 open_config() {
