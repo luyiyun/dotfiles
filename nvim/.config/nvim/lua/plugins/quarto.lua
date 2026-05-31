@@ -20,4 +20,15 @@ return {
       },
     },
   },
+  {
+    dir = "/Users/rong/Project/quarto-sync.nvim",
+    ft = { "quarto", "markdown" },
+    main = "quarto_sync",
+    opts = {
+      port = 18787,
+      quarto_cmd = "quarto",
+      open_browser = true,
+      debounce_ms = 120,
+    },
+  },
 }
