@@ -26,3 +26,8 @@
 [i18n]
 	commitEncoding = utf-8
 	logOutputEncoding = utf-8
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
