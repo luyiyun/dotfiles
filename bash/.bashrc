@@ -88,3 +88,10 @@ if command -v fzf >/dev/null 2>&1; then
   eval "$(fzf --bash)"
 fi
 . "$HOME/.cargo/env"
+
+# ======== 多个shell之间共享历史 ========
+export HISTSIZE=100000
+export HISTFILESIZE=200000
+shopt -s histappend
+
+PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
