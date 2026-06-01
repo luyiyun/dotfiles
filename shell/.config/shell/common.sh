@@ -176,3 +176,49 @@ export FZF_CTRL_R_OPTS="
   --preview='echo {}'
   --preview-window=down:3:wrap
 "
+
+# ===== frpc wrapper =====
+
+export FRPC_BIN="frpc"
+export FRPC_CONF="$HOME/.config/frp/tmu.toml"
+export FRPC_DIR="$HOME/.frpc"
+export FRPC_LOG="$FRPC_DIR/frpc.log"
+export FRPC_PID="$FRPC_DIR/frpc.pid"
+
+frpc-start() {
+  mkdir -p "$FRPC_DIR"
+
+  if [ -f "$FRPC_PID" ]; then
+    old_pid=$(cat "$FRPC_PID")
+    if kill -0 "$old_pid" 2>/dev/null; then
+      echo "frpc 已经在后台运行，PID: $old_pid"
+      return 0
+    else
+      rm -f "$FRPC_PID"
+    fi
+  fi
+
+  nohup "$FRPC_BIN" -c "$FRPC_CONF" >>"$FRPC_LOG" 2>&1 &
+  echo $! >"$FRPC_PID"
+
+  echo "frpc 已后台启动，PID: $(cat "$FRPC_PID")"
+  echo "日志文件: $FRPC_LOG"
+}
+
+frpc-stop() {
+  if [ ! -f "$FRPC_PID" ]; then
+    echo "没有找到 frpc PID 文件，可能没有通过 frpc-start 启动。"
+    return 1
+  fi
+
+  pid=$(cat "$FRPC_PID")
+
+  if kill -0 "$pid" 2>/dev/null; then
+    kill "$pid"
+    rm -f "$FRPC_PID"
+    echo "frpc 已关闭，PID: $pid"
+  else
+    rm -f "$FRPC_PID"
+    echo "frpc 进程不存在，已清理 PID 文件。"
+  fi
+}
