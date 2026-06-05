@@ -222,3 +222,10 @@ frpc-stop() {
     echo "frpc 进程不存在，已清理 PID 文件。"
   fi
 }
+
+
+# ===== 快捷命令，用于将文件快速回传至本地机器 =====
+# 需要开启反向隧道，并开启本地的ssh服务
+tolocal() {
+  scp -P 2222 "$1" rong@localhost:/tmp/
+}
