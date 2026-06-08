@@ -52,6 +52,14 @@ return {
             auto_insert = true,
           },
         },
+        accept = {
+          auto_brackets = {
+            enabled = false,
+          },
+        },
+        ghost_text = {
+          enabled = false,
+        },
       },
       cmdline = {
         enabled = true,
