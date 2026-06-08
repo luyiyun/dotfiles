@@ -24,3 +24,36 @@ end, { desc = "Format" })
 
 -- remap for rename
 vim.keymap.set({ "n", "v" }, "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
+
+local function has_treesitter()
+  return vim.treesitter.get_parser(0, nil, { error = false }) ~= nil
+end
+
+-- normal 模式：开始选择当前语法节点
+vim.keymap.set("n", "vv", function()
+  vim.cmd("normal! v")
+
+  if has_treesitter() then
+    require("vim.treesitter._select").select_parent(1)
+  else
+    vim.lsp.buf.selection_range(1)
+  end
+end, { desc = "Start Treesitter/LSP Selection" })
+
+-- visual 模式：继续扩大选择
+vim.keymap.set("x", "vv", function()
+  if has_treesitter() then
+    require("vim.treesitter._select").select_parent(vim.v.count1)
+  else
+    vim.lsp.buf.selection_range(vim.v.count1)
+  end
+end, { desc = "Expand Treesitter/LSP Selection" })
+
+-- visual 模式：缩小选择
+vim.keymap.set("x", "VV", function()
+  if has_treesitter() then
+    require("vim.treesitter._select").select_child(vim.v.count1)
+  else
+    vim.lsp.buf.selection_range(-vim.v.count1)
+  end
+end, { desc = "Shrink Treesitter/LSP Selection" })
