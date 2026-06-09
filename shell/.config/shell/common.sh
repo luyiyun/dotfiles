@@ -229,3 +229,305 @@ frpc-stop() {
 tolocal() {
   scp -P 2222 "$1" rong@localhost:/tmp/
 }
+
+
+# ===== 快捷命令，快速赋予某个路径某个用户组权限 =====
+
+shareperm() {
+  local GROUP=""
+  local TARGET=""
+  local CREATE_GROUP=0
+  local YES=0
+  local DRY_RUN=0
+  local FORCE=0
+  local NO_ACL=0
+  local CHANGED=0
+  local BACKUP_DIR="${HOME}/.cache/shareperm"
+  local BACKUP_FILE=""
+  local USERS=()
+
+  _sp_usage() {
+    cat <<'EOF'
+shareperm - 安全地把某个目录授权给指定用户组
+
+用法：
+  shareperm --group 组名 --path 路径 [选项]
+
+必选参数：
+  -g, --group GROUP       要授权的用户组
+  -p, --path PATH         要处理的目录路径
+
+可选参数：
+  -u, --user USER         把某个用户加入该组，可重复使用
+      --create-group      如果用户组不存在，则自动创建
+      --no-acl            不设置 ACL，只设置 chgrp/chmod/setgid
+      --dry-run           只显示将要执行的操作，不真正修改
+  -y, --yes               跳过交互确认
+      --force             允许处理高风险路径
+  -h, --help              显示帮助
+
+示例：
+  shareperm --group research --path /data/project --create-group
+  shareperm --group research --path /data/project --user zhangsan --create-group
+  shareperm --group research --path /data/project --dry-run
+EOF
+  }
+
+  _sp_die() {
+    echo "[shareperm][错误] $*" >&2
+    return 1
+  }
+
+  _sp_log() {
+    echo "[shareperm] $*"
+  }
+
+  _sp_need_cmd() {
+    command -v "$1" >/dev/null 2>&1 || {
+      _sp_die "缺少命令：$1"
+      return 1
+    }
+  }
+
+  _sp_run() {
+    if [[ "$DRY_RUN" -eq 1 ]]; then
+      printf '[dry-run]'
+      printf ' %s' "$@"
+      printf '\n'
+      return 0
+    fi
+
+    "$@"
+  }
+
+  _sp_rollback() {
+    if [[ "$DRY_RUN" -eq 0 && "$CHANGED" -eq 1 && -n "$BACKUP_FILE" && -f "$BACKUP_FILE" && "$NO_ACL" -eq 0 ]]; then
+      echo "[shareperm][警告] 操作失败，正在尝试回滚 ACL/权限快照..."
+      if sudo setfacl --restore="$BACKUP_FILE"; then
+        echo "[shareperm] 已尝试回滚。快照文件保留在：$BACKUP_FILE"
+      else
+        echo "[shareperm][警告] 自动回滚失败，请手动检查。快照文件：$BACKUP_FILE" >&2
+      fi
+    fi
+  }
+
+  _sp_run_or_rollback() {
+    _sp_run "$@" || {
+      local code=$?
+      _sp_rollback
+      return "$code"
+    }
+  }
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -g|--group)
+        [[ -n "${2:-}" ]] || { _sp_die "--group 后面不能为空"; return 1; }
+        GROUP="$2"
+        shift 2
+        ;;
+      -p|--path)
+        [[ -n "${2:-}" ]] || { _sp_die "--path 后面不能为空"; return 1; }
+        TARGET="$2"
+        shift 2
+        ;;
+      -u|--user)
+        [[ -n "${2:-}" ]] || { _sp_die "--user 后面不能为空"; return 1; }
+        USERS+=("$2")
+        shift 2
+        ;;
+      --create-group)
+        CREAT[118;1:3uE_GROUP=1
+        shift
+        ;;
+      --no-acl)
+        NO_ACL=1
+        shift
+        ;;
+      --dry-run)
+        DRY_RUN=1
+        shift
+        ;;
+      -y|--yes)
+        YES=1
+        shift
+        ;;
+      --force)
+        FORCE=1
+        shift
+        ;;
+      -h|--help)
+        _sp_usage
+        return 0
+        ;;
+      *)
+        _sp_die "未知参数：$1。使用 shareperm --help 查看帮助。"
+        return 1
+        ;;
+    esac
+  done
+
+  [[ -n "$GROUP" ]] || { _sp_die "缺少参数：--group"; return 1; }
+  [[ -n "$TARGET" ]] || { _sp_die "缺少参数：--path"; return 1; }
+
+  _sp_need_cmd sudo || return 1
+  _sp_need_cmd getent || return 1
+  _sp_need_cmd chgrp || return 1
+  _sp_need_cmd chmod || return 1
+  _sp_need_cmd find || return 1
+  _sp_need_cmd readlink || return 1
+  _sp_need_cmd id || return 1
+
+  if [[ "$NO_ACL" -eq 0 ]]; then
+    if ! command -v setfacl >/dev/null 2>&1 || ! command -v getfacl >/dev/null 2>&1; then
+      echo "[shareperm][错误] 未安装 ACL 工具。"
+      echo "请先执行："
+      echo "  sudo apt update && sudo apt install acl"
+      return 1
+    fi
+  fi
+
+  [[ -e "$TARGET" ]] || { _sp_die "路径不存在：$TARGET"; return 1; }
+  [[ -d "$TARGET" ]] || { _sp_die "目标必须是目录：$TARGET"; return 1; }
+
+  if [[ -L "$TARGET" && "$FORCE" -eq 0 ]]; then
+    _sp_die "目标路径本身是符号链接，为避免误操作已拒绝。确实要处理请加 --force。"
+    return 1
+  fi
+
+  TARGET="$(readlink -f -- "$TARGET")" || return 1
+
+  case "$TARGET" in
+    "/"|"/bin"|"/boot"|"/dev"|"/etc"|"/home"|"/lib"|"/lib64"|"/media"|"/mnt"|"/opt"|"/proc"|"/root"|"/run"|"/sbin"|"/srv"|"/sys"|"/tmp"|"/usr"|"/var")
+      if [[ "$FORCE" -eq 0 ]]; then
+        _sp_die "目标路径是高风险目录：$TARGET。如确实需要，请加 --force。"
+        return 1
+      fi
+      ;;
+  esac
+
+  if [[ "$GROUP" =~ [[:space:]/:] ]]; then
+    _sp_die "用户组名称包含非法字符：$GROUP"
+    return 1
+  fi
+
+  local user
+  for user in "${USERS[@]}"; do
+    id "$user" >/dev/null 2>&1 || {
+      _sp_die "用户不存在：$user"
+      return 1
+    }
+  done
+
+  if getent group "$GROUP" >/dev/null; then
+    _sp_log "用户组已存在：$GROUP"
+  else
+    if [[ "$CREATE_GROUP" -eq 1 ]]; then
+      _sp_log "用户组不存在，将创建：$GROUP"
+      _sp_run sudo groupadd "$GROUP" || return 1
+    else
+      _sp_die "用户组不存在：$GROUP。可以先执行 sudo groupadd $GROUP，或加参数 --create-group。"
+      return 1
+    fi
+  fi
+
+  echo
+  echo "即将执行以下操作："
+  echo
+  echo "  目标目录：$TARGET"
+  echo "  授权用户组：$GROUP"
+  echo "  是否创建组：$([[ "$CREATE_GROUP" -eq 1 ]] && echo "是" || echo "否")"
+  echo "  是否设置 ACL：$([[ "$NO_ACL" -eq 0 ]] && echo "是" || echo "否")"
+  echo "  是否 dry-run：$([[ "$DRY_RUN" -eq 1 ]] && echo "是" || echo "否")"
+  echo
+  echo "将执行："
+  echo "  1. 将目录及其内容的所属组改为 $GROUP"
+  echo "  2. 给组添加读写权限，目录添加进入权限"
+  echo "  3. 给所有子目录设置 setgid，使新文件继承用户组"
+  echo "  4. 设置默认 ACL，使新文件默认给 $GROUP 读写权限"
+  echo "  5. 可选：把指定用户加入 $GROUP"
+  echo
+
+  if [[ "${#USERS[@]}" -gt 0 ]]; then
+    echo "将加入该组的用户："
+    for user in "${USERS[@]}"; do
+      echo "  - $user"
+    done
+    echo
+  fi
+
+  if [[ "$YES" -eq 0 && "$DRY_RUN" -eq 0 ]]; then
+    local answer
+    printf "确认继续？请输入 yes： "
+    IFS= read -r answer
+    [[ "$answer" == "yes" ]] || {
+      _sp_die "用户取消操作。"
+      return 1
+    }
+  fi
+
+  if [[ "$DRY_RUN" -eq 0 && "$NO_ACL" -eq 0 ]]; then
+    mkdir -p "$BACKUP_DIR" || return 1
+
+    local safe_name
+    safe_name="$(echo "$TARGET" | sed 's#/#_#g' | sed 's#[^A-Za-z0-9_.-]#_#g')"
+    BACKUP_FILE="${BACKUP_DIR}/${safe_name}_$(date +%Y%m%d_%H%M%S).acl"
+
+    _sp_log "保存 ACL/权限快照：$BACKUP_FILE"
+    sudo getfacl -R -p "$TARGET" > "$BACKUP_FILE" || return 1
+  fi
+
+  for user in "${USERS[@]}"; do
+    _sp_log "将用户加入用户组：$user -> $GROUP"
+    _sp_run sudo usermod -aG "$GROUP" "$user" || return 1
+  done
+
+  _sp_log "修改所属组：$GROUP"
+  CHANGED=1
+  _sp_run_or_rollback sudo chgrp -R "$GROUP" "$TARGET" || return 1
+
+  _sp_log "给用户组添加读写权限，目录添加进入权限"
+  _sp_run_or_rollback sudo chmod -R g+rwX "$TARGET" || return 1
+
+  _sp_log "给所有目录设置 setgid，使新建文件继承用户组"
+  _sp_run_or_rollback sudo find "$TARGET" -type d -exec chmod g+s {} + || return 1
+
+  if [[ "$NO_ACL" -eq 0 ]]; then
+    _sp_log "给现有文件和目录设置 ACL"
+    _sp_run_or_rollback sudo setfacl -R -m "g:${GROUP}:rwX" "$TARGET" || return 1
+
+    _sp_log "设置默认 ACL，使未来新建文件继承组权限"
+    _sp_run_or_rollback sudo setfacl -R -d -m "g:${GROUP}:rwX" "$TARGET" || return 1
+  fi
+
+  echo
+  echo "完成。"
+  echo
+  echo "目标目录："
+  echo "  $TARGET"
+  echo
+  echo "用户组："
+  echo "  $GROUP"
+  echo
+  echo "建议检查："
+  echo "  ls -ld \"$TARGET\""
+  echo "  getfacl \"$TARGET\""
+  echo
+
+  if [[ "${#USERS[@]}" -gt 0 ]]; then
+    echo "注意："
+    echo "  已加入用户组的用户需要重新登录后，组权限才会完全生效。"
+    echo "  也可以让用户临时执行："
+    echo "    newgrp $GROUP"
+    echo
+  fi
+
+  if [[ -n "$BACKUP_FILE" && -f "$BACKUP_FILE" ]]; then
+    echo "快照文件："
+    echo "  $BACKUP_FILE"
+    echo
+    echo "如需手动恢复 ACL/权限快照，可执行："
+    echo "  sudo setfacl --restore=\"$BACKUP_FILE\""
+    echo
+  fi
+}
