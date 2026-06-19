@@ -10,12 +10,12 @@ vim.keymap.del({ "n", "i", "v" }, "<A-j>")
 vim.keymap.del({ "n", "i", "v" }, "<A-k>")
 
 -- remap for moving lines
-vim.keymap.set("n", "<C-J>", "<cmd>m .+1<cr>==", { desc = "Move Down" })
-vim.keymap.set("n", "<C-K>", "<cmd>m .-2<cr>==", { desc = "Move Up" })
-vim.keymap.set("i", "<C-J>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move Down" })
-vim.keymap.set("i", "<C-J>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move Up" })
-vim.keymap.set("v", "<C-J>", ":m '>+1<cr>gv=gv", { desc = "Move Down" })
-vim.keymap.set("v", "<C-K>", ":m '<-2<cr>gv=gv", { desc = "Move Up" })
+-- vim.keymap.set("n", "<M-J>", "<cmd>m .+1<cr>==", { desc = "Move Down" })
+-- vim.keymap.set("n", "<M-K>", "<cmd>m .-2<cr>==", { desc = "Move Up" })
+-- vim.keymap.set("i", "<M-J>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move Down" })
+-- vim.keymap.set("i", "<M-J>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move Up" })
+-- vim.keymap.set("v", "<M-J>", ":m '>+1<cr>gv=gv", { desc = "Move Down" })
+-- vim.keymap.set("v", "<M-K>", ":m '<-2<cr>gv=gv", { desc = "Move Up" })
 
 -- remap for formatting
 vim.keymap.set({ "n", "v" }, "<leader>rf", function()
