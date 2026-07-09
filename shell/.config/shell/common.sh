@@ -222,3 +222,7 @@ frpc-stop() {
     echo "frpc 进程不存在，已清理 PID 文件。"
   fi
 }
+
+# ======== shell 行编辑功能的编辑器 ========
+export EDITOR=vim
+export VISUAL=vim

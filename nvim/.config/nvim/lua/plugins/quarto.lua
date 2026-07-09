@@ -21,7 +21,9 @@ return {
     },
   },
   {
-    dir = "/Users/rong/Project/quarto-sync.nvim",
+    "luyiyun/quarto-sync.nvim",
+    enabled = false,
+    -- dir = "/Users/rong/Project/quarto-sync.nvim",
     ft = { "quarto", "markdown" },
     main = "quarto_sync",
     opts = {
